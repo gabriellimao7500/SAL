@@ -11,6 +11,7 @@
 table {
     border-collapse: collapse;
     min-width: 100%;
+    border-inline: 2px solid black;
 }
 
 th, td {
@@ -25,7 +26,8 @@ th, td {
     margin-bottom: 10px;
     padding: 10px;
     justify-content: space-around;
-    gap: 80px;
+    gap: 240px;
+    padding: 20px;
 }
 
 .navigation button {
@@ -64,10 +66,11 @@ th, td {
 .select{
     cursor: pointer;
     transition: 150ms ease-in-out; 
-    height: 32px;
+    height: 40px;
 }
 
 .select:hover{
+    height: 56px;
     background-color: #6C63FF;
     transition: 150ms ease-in-out;
 }
@@ -81,7 +84,8 @@ th, td {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80vh;
+    height: 85vh;
+    gap: 20px;
 }
 
 .hours{
@@ -95,5 +99,11 @@ th, td {
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-top: 28px;
+    margin-top: 40px;
+}
+
+.dontmove{
+    display: flex;
+    height: 76vh;
+    align-items: end;
 }
