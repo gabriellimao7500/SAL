@@ -20,8 +20,53 @@ const requisicao = {
     dataReserva: '28-06-2021'
 }*/
 
+//Codigo SQL com join para pegar o nome do requisitor
+/*SELECT professor.nome 
+FROM requisicao 
+JOIN professor ON requisicao.idProfessorRequisitor = professor.idProfessor
+WHERE requisicao.idProfessorRequisitor = ?;*/
+
+//Codigo SQL com join para pegar o nome do requisitado
+/*SELECT professor.nome
+FROM requisicao
+JOIN professor ON requisicao.idProfessorRequisitado = professor.idProfessor
+WHERE requisicao.idProfessorRequisitado = ?;*/
+
+//Codigo SQL com join para pegar o email do requisitado
+/*SELECT professor.email
+FROM requisicao
+JOIN professor ON requisicao.idProfessorRequisitado = professor.idProfessor
+WHERE requisicao.idProfessorRequisitado = ?;*/
+
+//Codigo SQL com join para pegar o periodo da reserva
+/*SELECT reserva.periodo 
+FROM requisicao 
+JOIN reserva ON requisicao.idReserva = reserva.idReserva
+WHERE requisicao.idReserva = ?;*/
+
+//Codigo SQL com join para pegar a aula da reserva
+/*SELECT reserva.aulaReserva
+FROM requisicao
+JOIN reserva ON requisicao.idReserva = reserva.idReserva
+WHERE requisicao.idReserva = ?;*/
+
+//Codigo SQL com join para pegar o tipo do laboratorio DUVIDAS AQUI!!!
+/*SELECT laboratorio.tipoLaboratorio 
+FROM requisicao 
+JOIN laboratorio ON requisicao.idLaboratorio = laboratorio.idLaboratorio
+WHERE requisicao.idLaboratorio = 2;*/
+
+//Codigo SQL com join para pegar a data da reserva
+/*SELECT reserva.dataReserva
+FROM requisicao
+JOIN reserva ON requisicao.idReserva = reserva.idReserva
+WHERE requisicao.idReserva = ?;*/
+
+    
+
+
 function requisitar(requisicao) {
-    const { idRequisicao, dataRequisicao, nomeRequisitor, nomeRequisitado, emailRequisitado, motivo, idLaboratorio, periodo, aulaRequisicao, statusRequisicao, dataReserva } = requisicao;
+    const { idRequisicao, dataRequisicao, nomeRequisitor, nomeRequisitado, emailRequisitado, motivo, nomeLaboratorio, periodo, aulaRequisicao, statusRequisicao, dataReserva } = requisicao;
 
     const transporter = nodemailer.createTransport({
         host: 'smtp-mail.outlook.com',
@@ -45,6 +90,7 @@ function requisitar(requisicao) {
             <ul>
                 <li>Professor(a) requisitor(a): ${nomeRequisitor}</li>
                 <li>Período: ${periodo}</li>
+                <li>Laboratorio: ${nomeLaboratorio}</li>
                 <li>Data da reserva: ${dataReserva}</li>
                 <li>Aula: ${aulaRequisicao}</li>
                 <li>Motivo da requisição: ${motivo}</li>
@@ -60,6 +106,7 @@ function requisitar(requisicao) {
 
                 Professor(a) requisitor(a): ${nomeRequisitor}
                 Período: ${periodo}
+                Laboratorio: ${nomeLaboratorio}
                 Data da reserva: ${dataReserva}
                 Aula: ${aulaRequisicao}
                 Motivo da requisição: ${motivo}
