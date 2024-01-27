@@ -15,7 +15,7 @@ function Labs() {
     const diasNoMes = ultimoDiaMesAtual.getDate();
 
     let sub = sem - 1;
-    let day = dia - sub;
+    let day = 1;
 
     const [currentWeek, setCurrentWeek] = useState(0);
     const [currentMes, setCurrentMes] = useState(mes);
@@ -33,19 +33,23 @@ function Labs() {
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 53; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
+    
+
 
     const changeWeek = (direction) => {
         setCurrentWeek((prevWeek) => {
+            const somas = [5, 4.5, 7 , 4.5, 11.5, 9, 16, 18, 20.5, 15, 5]
             const newWeek = (prevWeek + direction + weeks.length) % weeks.length;
-            if (newWeek === 0) {
-                setCurrentMes(mesatu);
-            } else if (newWeek < prevWeek) {
-                setCurrentMes((prevMes) => prevMes - 1 );
-            } else if (newWeek > prevWeek) {
-                setCurrentMes((prevMes) => prevMes + 1 );
+                console.log(newWeek);
+            if(newWeek == 0){
+                setCurrentMes(0)
+            }else if (newWeek<prevWeek && (newWeek+1)%somas[currentMes] == 0) {
+                setCurrentMes(currentMes-1);    
+            } else if (newWeek > prevWeek && (newWeek%somas[currentMes]) == 0) {
+                setCurrentMes(currentMes+1);
             }
             return newWeek;
         });
@@ -72,7 +76,7 @@ function Labs() {
                                 <thead>
                                     <tr>
                                         {week.map((day, idx) => (
-                                            <th key={idx} className={day === dia && currentMes === mesatu ? "in" : ""}>
+                                            <th key={idx} className={day === dia && currentMes == mesatu ? "in" : ""}>
                                                 {['Seg', 'Ter', 'Qua', 'Qui', 'Sex'][idx]}
                                                 <br />
                                                 <span className='day'>{day}</span>
