@@ -1,1 +1,1 @@
-# SAL (System de agendamento de laboratórios)
+# SAL (Sistema de agendamento de laboratórios)
