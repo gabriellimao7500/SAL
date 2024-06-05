@@ -1,0 +1,25 @@
+.user{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.userImage{
+    width: 50px;
+    height: 50px;
+    background-color: #646BC1;
+    border-radius: 50%;
+}
+
+.Login{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(4px);
+}
