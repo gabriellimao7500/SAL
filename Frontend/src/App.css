@@ -7,6 +7,8 @@ body{
   margin: 0 auto;
   padding: 0;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -22,4 +24,92 @@ body{
 
 .read-the-docs {
   color: #888;
+}
+
+
+section.Content{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   flex-grow: 1;
+   justify-content: space-around;
+}
+
+section.Content > :nth-child(1) > h1{
+  font-size: 52px;
+  text-shadow: 0px 0px 20px rgba(255, 255, 255,0.25);
+  margin-bottom: -25px;
+}
+
+h2{
+  font-size: 32px;
+  color: #646BC1;
+  font-weight: normal;
+}
+
+section.Content > :nth-child(1) > .desc{
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: -50px;
+  margin-top: -20px;
+}
+
+section.Content > :nth-child(1) > div > :nth-child(1) > div{
+  color: white;
+}
+section.Content > :nth-child(1) > div > :nth-child(1){
+  width: 520px;
+  text-align: center;
+  color: #777;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.line1{
+  height: 2px;
+  width: 65vw;
+  background-color: #333;
+}
+.line2{
+  height: 2px;
+  width: 35vw;
+  background-color: #333;
+}
+
+.buttons{
+  width: 44vw;
+  display: flex;
+  justify-content: space-between;
+  gap: 100px;
+  margin-block: -20px;
+}
+
+.buttons > button{
+  width: 250px;
+  height: 65px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.buttons > :nth-child(1){
+  background-color: #fff;
+  color: #000;
+  border-radius: 8px;
+}
+.buttons > :nth-child(2){
+  background-color: #000;
+  color: #fff;
+  border: #fff 1px solid;
+  border-radius: 8px;
+}
+
+.blur{
+  filter: blur(1px);
 }

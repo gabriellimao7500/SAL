@@ -1,3 +1,7 @@
+.none{
+    display: none !important;
+}
+
 .user{
     display: flex;
     align-items: center;
@@ -13,13 +17,24 @@
 }
 
 .Login{
+    animation: show 300ms ease-in;
+    transition: 1s linear;
     position: fixed;
     top: 0px;
     left: 0px;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(10px);
+}
+
+@keyframes show {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
 }
