@@ -1,0 +1,40 @@
+.none{
+    display: none !important;
+}
+
+.user{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.userImage{
+    width: 50px;
+    height: 50px;
+    background-color: #646BC1;
+    border-radius: 50%;
+}
+
+.Login{
+    animation: show 300ms ease-in;
+    transition: 1s linear;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(10px);
+}
+
+@keyframes show {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}

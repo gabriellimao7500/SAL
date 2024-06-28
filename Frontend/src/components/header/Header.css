@@ -1,0 +1,86 @@
+header{
+    width: 100vw;
+    height: 70px;
+    background-color: #000;
+    border-bottom: #333 solid 1px;
+    display: flex;
+    align-items: center;
+
+}
+
+.division{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.division > :nth-child(1){
+    display: flex;
+    width: 180px;
+}
+
+.division > :nth-child(1) > div{
+    width: 70px;
+}
+
+.division > :nth-child(1) > h1{
+    font-size: 28px;
+    cursor: pointer;
+    transition: 200ms ease-in-out;
+}
+
+.division > :nth-child(1) > h1:hover{
+    color: #f7f7f7;
+    letter-spacing: 2px;
+    transition: 200ms ease-in-out;
+}
+
+.info{
+    width: 200px;
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+
+    font-size: 14px;
+    color: #888;
+}
+
+.info > div{
+    cursor: pointer;
+}
+.info > div:hover{
+    color: #fff;
+    transition: 100ms ease-in;
+}
+
+.division > .duvidas {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.division > .duvidas:hover > div{
+    color: #f7f7f7;
+    transition: 150ms ease-in;
+}
+
+.division > .duvidas > :nth-child(2){
+    display: flex;
+    gap: 2px;
+}
+
+.division > .duvidas > :nth-child(2){
+    color: #888;   
+    transition: 150ms ease-in;
+}
+
+.division > .duvidas > :nth-child(2) > div{
+    padding-inline: 3px;
+    background-color: #646BC1;
+    border-radius: 2px;
+    color: #fff;   
+}
+
+.schoolName{
+    min-width: 15%;
+}
