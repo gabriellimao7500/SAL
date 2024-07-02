@@ -1,0 +1,12 @@
+.carrousel{
+    width: 100vw;
+    flex-grow: 0.98;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carr{
+    width: 98vw;
+}

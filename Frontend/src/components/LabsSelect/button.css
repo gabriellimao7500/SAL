@@ -1,0 +1,12 @@
+.swiper-button-prev, .swiper-button-next {
+    --swiper-theme-color: #f1f1f1;
+    transition: 300ms ease-in-out;
+}
+
+.swiper-button-prev:hover, .swiper-button-next:hover{
+    --swiper-theme-color: #f7f7f7;
+    filter: drop-shadow(0px 0px 6px #fff);
+    transition: 300ms ease-in-out;
+}
+
+

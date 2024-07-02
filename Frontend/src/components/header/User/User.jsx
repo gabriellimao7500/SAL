@@ -17,13 +17,6 @@ function User() {
         }
     }
 
-    function handleSectionClick(event) {
-        // Verifica se o clique ocorreu fora do menu <Login>
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
-            setLogin(false);
-        }
-    }
-
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -39,7 +32,7 @@ function User() {
             </div>
 
             {login && (
-                <section ref={sectionRef} className="Login" onClick={handleSectionClick}>
+                <section ref={sectionRef} className="Login">
                     <div ref={menuRef}>
                         <Login />
                     </div>

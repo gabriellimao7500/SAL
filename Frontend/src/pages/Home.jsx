@@ -42,7 +42,10 @@ function Home(){
                     className='button1' 
                     onMouseEnter={handleSibling1MouseEnter}
                     onMouseLeave={handleSibling1MouseLeave}
-                    style={{ filter: isSibling1Hovered ? 'blur(1.3px)' : 'none' }}>
+                    style={{ 
+                        filter: isSibling1Hovered ? 'blur(1.3px)' : 'none',
+                        transition: '300ms ease-in-out'
+                    }}>
                     Start to use
                 </Link>
                 
@@ -50,7 +53,10 @@ function Home(){
                 className='button2'
                 onMouseEnter={handleSibling2MouseEnter}
                 onMouseLeave={handleSibling2MouseLeave}
-                style={{ filter: isSibling2Hovered ? 'blur(1.3px)' : 'none' }}>
+                style={{ 
+                    filter: isSibling2Hovered ? 'blur(1.3px)' : 'none', 
+                    transition: '300ms ease-in-out'
+                }}>
                     How to use
                 </Link>
                 </div>
