@@ -10,7 +10,7 @@ const velLogin = async (req, res) => {
         const result = await tryLogin.velUser(email, senha);
         console.log(result.rowsCont); // Para depuração
         return result.rowsCont === 1 
-            ? res.status(200).json({ message: "tem" }) 
+            ? res.status(200).json({ message: "tem" })
             : res.status(200).json({ message: "não tem" });
     } catch (error) {
         console.error('Erro ao tentar fazer login:', error);
