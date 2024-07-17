@@ -19,6 +19,7 @@ router.get('/labs/:idLaboratorio', labsConstrollers.getDataFromId);
 router.get('/marks', marksControllers.getData);
 router.get('/marks/:idReserva', marksControllers.getDataFromId);
 router.post('/marks', marksControllers.createMark);
+router.delete('/marks/:idReserva', marksControllers.deleteMark);
 
 
 //puts professor

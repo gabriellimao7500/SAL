@@ -5,15 +5,18 @@ const getData = async() =>{
     const [marks] = await connection.execute(query);// query sql para pegar todas as reservas
     return marks;
 };
-const createMark = async (markData) => {
-    // Verifica se markData é undefined e evita passar valores undefined para a consulta
-    if (!Object.values(markData).includes(undefined)) {
-        const query = "INSERT INTO marks SET ?";
-        const [result] = await connection.execute(query, [markData]);
-        return result;
-    } else {
-        throw new Error("Os parâmetros de ligação não devem conter indefinidos. Para passar SQL NULL, especifique JS null.");
-    }
+
+const createMark = async(reserva)=>{
+    const {idReserva} = reserva;
+    const dateUTC = new Date(Date.now()).toUTCString();
+    const query = 'INSERT INTO reserva(idReserva, dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const [createdMark] = await connection.execute(query, [idReserva,dateUTC, reserva.periodo, reserva.aulaReserva, reserva.idProfessor, reserva.idLaboratorio, reserva.motivo, reserva.turma ] );   
+    return {insertId: createdMark.insertId};
+};
+
+const deleteMark = async (id) => {
+    const deletedTask = await connection.execute("DELETE FROM tasks WHERE id = ?",[id]);
+    return deletedTask;
 };
 
 const getDataFromId = async(idReserva)=>{
@@ -27,5 +30,6 @@ const getDataFromId = async(idReserva)=>{
 module.exports = {
     getData,
     createMark, 
+    deleteMark, 
     getDataFromId
 };
