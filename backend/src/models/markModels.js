@@ -6,12 +6,29 @@ const getData = async() =>{
     return marks;
 };
 
-const createMark = async(reserva)=>{
-    const {idReserva} = reserva;
-    const dateUTC = new Date(Date.now()).toUTCString();
-    const query = 'INSERT INTO reserva(idReserva, dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    const [createdMark] = await connection.execute(query, [idReserva,dateUTC, reserva.periodo, reserva.aulaReserva, reserva.idProfessor, reserva.idLaboratorio, reserva.motivo, reserva.turma ] );   
-    return {insertId: createdMark.insertId};
+const createMark = async (markData) => {
+    const query = `
+        INSERT INTO reserva (idReserva, dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    return new Promise((resolve, reject) => {
+        connection.query(query, [
+            markData.idReserva,
+            markData.dataReserva,
+            markData.periodo,
+            markData.aulaReserva,
+            markData.idProfessor,
+            markData.idLaboratorio,
+            markData.motivo,
+            markData.turma
+        ], (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(results);
+        });
+    });
 };
 
 const deleteMark = async (id) => {

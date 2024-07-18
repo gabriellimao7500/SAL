@@ -1,8 +1,4 @@
-const { response } = require('express');
 const markModels = require('../models/markModels');
-
-
-
 
 const getData = async (_req, res) => {
     try {
@@ -15,10 +11,28 @@ const getData = async (_req, res) => {
 }
 
 
+
 const createMark = async (req, res) => {
-    const createdMark = await markModels.createMark(req.body);
-    return res.status(201).json(createdMark);   
-}
+    try {
+        console.log('Corpo da requisição:', req.body); // Verifique o conteúdo do req.body
+
+        const { idReserva, dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma } = req.body;
+
+        // Verificação básica dos dados recebidos
+        if (!idReserva || !dataReserva || !periodo || !aulaReserva || !idProfessor || !idLaboratorio || !motivo || !turma) {
+            return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
+        }
+
+        const createdMark = await markModels.createMark(req.body);
+
+        res.status(201).json(createdMark);
+    } catch (error) {
+        console.error('Erro:', error);
+        res.status(500).json({ message: 'Erro ao criar a marcação.' });
+    }
+};
+
+    
 
 const deleteMark = async (req, res) => {
     const {id} = req.params;
