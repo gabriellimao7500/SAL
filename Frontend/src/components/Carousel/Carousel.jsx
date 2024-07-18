@@ -4,6 +4,12 @@ import LabsSelect from '../LabsSelect/LabsSelect';
 
 import { Swiper, SwiperSlide} from 'swiper/react'
 
+const fetchLabs = async () => {
+    const response = await fetch('http://localhost:3333/labs')
+    const data = await response.json()
+    return data
+}
+
 
 function Carousel(){
 
