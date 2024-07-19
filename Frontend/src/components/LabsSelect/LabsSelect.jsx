@@ -2,12 +2,12 @@ import styles from './LabsSelect.module.css'
 
 import './button.css'
 
-function LabsSelect({svg, name}){
+function LabsSelect({svg, tipoLaboratorio}){
     
     return(
         <section className={styles.button}>
             <div dangerouslySetInnerHTML={{ __html: svg }} />
-            <h3>{name}</h3>
+            <h3>{tipoLaboratorio}</h3>
         </section>
     )
 }
