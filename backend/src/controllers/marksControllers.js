@@ -1,5 +1,51 @@
 const markModels = require('../models/markModels');
 
+const createMark = async (req, res) => {
+    try {
+        // Verifica se o corpo da requisição contém todos os dados necessários
+        if (!req.body) {
+            return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
+        }
+
+        const { dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma } = {
+            "dataReserva": "2024-07-22T00:00:00Z",
+            "periodo": "M",
+            "aulaReserva": 1,
+            "idProfessor": 1,
+            "idLaboratorio": 1,
+            "motivo": "Aula de revisão",
+            "turma": "Turma A"
+        }
+        ;
+
+        if (!dataReserva || !aulaReserva || !idProfessor || !idLaboratorio || !motivo) {
+            return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
+        }
+        // Chama a função do modelo para criar a reserva
+        const reservaData = {
+            dataReserva,
+            periodo,
+            aulaReserva,
+            idProfessor,
+            idLaboratorio,
+            motivo,
+            turma
+        };
+
+        const createdReserva = await createMark(reservaData);
+
+        // Retorna a resposta com o status 201 (Created) e os dados da reserva criada
+        return res.status(201).json({
+            message: 'Reserva criada com sucesso.',
+            reserva: createdReserva
+        });
+    } catch (err) {
+        // Em caso de erro, retorna a resposta com o status 500 (Internal Server Error) e a mensagem de erro
+        console.error('Erro ao criar a reserva:', err);
+        return res.status(500).json({ error: 'Erro ao criar a reserva.' });
+    }
+};
+
 const getData = async (_req, res) => {
     try {
         const marks = await markModels.getData();
@@ -9,30 +55,6 @@ const getData = async (_req, res) => {
         return res.status(500).json({ message: "Erro ao obter dados" });
     }
 }
-
-
-
-const createMark = async (req, res) => {
-    try {
-        console.log('Corpo da requisição:', req.body); // Verifique o conteúdo do req.body
-
-        const { idReserva, dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma } = req.body;
-
-        // Verificação básica dos dados recebidos
-        if (!idReserva || !dataReserva || !periodo || !aulaReserva || !idProfessor || !idLaboratorio || !motivo || !turma) {
-            return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
-        }
-
-        const createdMark = await markModels.createMark(req.body);
-
-        res.status(201).json(createdMark);
-    } catch (error) {
-        console.error('Erro:', error);
-        res.status(500).json({ message: 'Erro ao criar a marcação.' });
-    }
-};
-
-    
 
 const deleteMark = async (req, res) => {
     const {id} = req.params;
@@ -54,8 +76,8 @@ const getDataFromId = async (req, res) =>{
 
 
 module.exports = {
-    getData,
     createMark,
+    getData,
     deleteMark,
     getDataFromId,
 }
