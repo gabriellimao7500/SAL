@@ -1,14 +1,14 @@
 import styles from './LabsSelect.module.css'
-
+import { Link } from 'react-router-dom'
 import './button.css'
 
-function LabsSelect({svg, tipoLaboratorio}){
+function LabsSelect({svg, name}){
     
     return(
-        <section className={styles.button}>
+        <Link to="/Labs" className={styles.button}>
             <div dangerouslySetInnerHTML={{ __html: svg }} />
-            <h3>{tipoLaboratorio}</h3>
-        </section>
+            <h3>{name}</h3>
+        </Link>
     )
 }
 
