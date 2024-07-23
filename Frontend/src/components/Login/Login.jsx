@@ -5,9 +5,9 @@ import { useState } from 'react';
 const tryLogin = async (email, password) => {
   try {
     const response = await fetch('http://localhost:3333/login', {
-      method: 'POST',
+      method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha: password }), // JSON com chave 'email' e 'senha'
+      body: JSON.stringify({ email, password }), // Certifique-se de que a chave esteja correta
     });
 
     if (!response.ok) {
@@ -16,7 +16,8 @@ const tryLogin = async (email, password) => {
 
     const result = await response.json();
 
-    if (result.length === 1) { // Ajuste conforme a estrutura da resposta esperada
+    
+    if (result.success) { 
       alert('Login bem-sucedido');
     } else {
       alert('Credenciais inválidas');
@@ -30,10 +31,14 @@ const tryLogin = async (email, password) => {
 
 function Login() {
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    tryLogin(email, senha);
+    if (email && password) {
+      tryLogin(email, password);
+    } else {
+      alert('Por favor, preencha todos os campos');
+    }
   };
 
   return (
@@ -44,13 +49,13 @@ function Login() {
           text="Email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)} // Atualiza o estado de email
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Inputs
           text="Senha"
           type="password"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)} // Atualiza o estado de senha
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
       </section>
       <button className='enviar' type='button' onClick={handleLogin}>

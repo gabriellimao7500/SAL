@@ -4,7 +4,7 @@ const velLogin = async (req, res) => {
     try {
         const { email, senha } = req.body;
     /*const email = "prof.a@example.com"
-    const senha = "senha123"hh*/
+    const senha = "senha123"*/
 
         const result = await tryLogin.velUser(email, senha);
         
