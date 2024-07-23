@@ -7,16 +7,7 @@ const createMark = async (req, res) => {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
         }
 
-        const { dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma } = {
-            "dataReserva": "2024-07-22T00:00:00Z",
-            "periodo": "M",
-            "aulaReserva": 1,
-            "idProfessor": 1,
-            "idLaboratorio": 1,
-            "motivo": "Aula de revisão",
-            "turma": "Turma A"
-        }
-        ;
+        const { dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma } = req.body;
 
         if (!dataReserva || !aulaReserva || !idProfessor || !idLaboratorio || !motivo) {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
