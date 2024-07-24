@@ -7,7 +7,7 @@ const marksControllers = require('./controllers/marksControllers');
 const router = express.Router();
 
 // gets
-router.get('/login', loginController.velLogin);
+router.post('/login', loginController.velLogin);
 // profs
 router.get('/prof', profController.getData);
 router.get('/prof/:idProfessor', profController.getDataFromId);

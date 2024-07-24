@@ -1,10 +1,10 @@
+
 const tryLogin = require('../models/login/login');
 
 const velLogin = async (req, res) => {
     try {
-        const { email, senha } = req.body;
-    /*const email = "prof.a@example.com"
-    const senha = "senha123"*/
+       const { email, senha } = req.body;
+    
 
         const result = await tryLogin.velUser(email, senha);
         
