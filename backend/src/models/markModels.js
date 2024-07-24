@@ -1,42 +1,38 @@
 const connection = require('./connection/connection');
 
-const createMark = async (reservaData) => {
+const createReserva = async (reservaData) => {
+    const { dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma } = reservaData;
     const query = `
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    const values = [
-        reservaData.dataReserva,
-        reservaData.periodo,
-        reservaData.aulaReserva,
-        reservaData.idProfessor,
-        reservaData.idLaboratorio,
-        reservaData.motivo,
-        reservaData.turma
-    ];
-
+    // eslint-disable-next-line no-useless-catch
     try {
-        const [result] = await connection.execute(query, values);
-        return { 
-            insertId: result.insertId, 
-            ...reservaData 
-        };
+        const [result] = await connection.execute(query, [dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma]);
+        return { insertId: result.insertId };
     } catch (err) {
-        console.error('Erro ao criar a reserva:', err);
         throw err;
     }
 };
-
 
 const getData = async() =>{
     const query = "SELECT * FROM reserva";
     const [marks] = await connection.execute(query);// query sql para pegar todas as reservas
     return marks;
 };
-  
-const deleteMark = async (id) => {
-    const deletedTask = await connection.execute("DELETE FROM tasks WHERE id = ?",[id]);
-    return deletedTask;
+
+const deleteReserva = async (idReserva) => {
+
+    const query = 'DELETE FROM reserva WHERE idReserva = ?';
+    const values = [idReserva]; 
+
+    try {
+        const [result] = await connection.execute(query, values);
+        return result.affectedRows; // Retorna o número de linhas afetadas
+    } catch (err) {
+        console.error('Erro ao deletar a reserva:', err);
+        throw err;
+    }
 };
 
 const getDataFromId = async(idReserva)=>{
@@ -45,11 +41,9 @@ const getDataFromId = async(idReserva)=>{
     return marks;
 };
 
-
-
 module.exports = {
-    createMark,
+    createReserva,
     getData, 
-    deleteMark, 
+    deleteReserva, 
     getDataFromId
 };

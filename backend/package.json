@@ -4,7 +4,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mysql2": "^3.10.1"
+    "mysql2": "^3.10.1",
+    "nodemailer": "^6.9.14"
   },
   "name": "backend",
   "version": "1.0.0",

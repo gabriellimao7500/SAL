@@ -2,17 +2,14 @@ const markModels = require('../models/markModels');
 
 const createMark = async (req, res) => {
     try {
-        // Verifica se o corpo da requisição contém todos os dados necessários
-        if (!req.body) {
-            return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
-        }
+        console.log("O corpo da requisição é:"+req.body)
 
         const { dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma } = req.body;
 
         if (!dataReserva || !aulaReserva || !idProfessor || !idLaboratorio || !motivo) {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
         }
-        // Chama a função do modelo para criar a reserva
+
         const reservaData = {
             dataReserva,
             periodo,
@@ -22,20 +19,18 @@ const createMark = async (req, res) => {
             motivo,
             turma
         };
-
-        const createdReserva = await createMark(reservaData);
-
-        // Retorna a resposta com o status 201 (Created) e os dados da reserva criada
+        const createdReserva = await markModels.createReserva(reservaData);
         return res.status(201).json({
             message: 'Reserva criada com sucesso.',
             reserva: createdReserva
         });
     } catch (err) {
-        // Em caso de erro, retorna a resposta com o status 500 (Internal Server Error) e a mensagem de erro
         console.error('Erro ao criar a reserva:', err);
         return res.status(500).json({ error: 'Erro ao criar a reserva.' });
     }
 };
+
+
 
 const getData = async (_req, res) => {
     try {
@@ -48,10 +43,25 @@ const getData = async (_req, res) => {
 }
 
 const deleteMark = async (req, res) => {
-    const {id} = req.params;
-    await markModels.deleteMark(id);
-    return res.status(204).json();
-}
+    const { idReserva } = req.params;
+    console.log("A reserva deletada é: " + idReserva)
+    if (!idReserva) {
+        return res.status(400).json({ error: 'ID não fornecido.' });
+    }
+
+    try {
+        const result = await markModels.deleteReserva(Number(idReserva)); // Converta o ID para número
+        
+        if (result > 0) {
+            return res.status(200).json({ message: 'Reserva deletada com sucesso.' });
+        } else {
+            return res.status(404).json({ error: 'Reserva não encontrada.' });
+        }
+    } catch (err) {
+        console.error('Erro ao deletar a reserva:', err);
+        return res.status(500).json({ error: 'Erro ao deletar a reserva.' });
+    }
+};
 
 const getDataFromId = async (req, res) =>{
     const {idReserva} = req.params;
