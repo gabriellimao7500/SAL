@@ -5,7 +5,7 @@ const labsConstrollers = require('./controllers/labsConstrollers');
 const marksControllers = require('./controllers/marksControllers');
 
 const router = express.Router();
-
+router.use(express.json());
 // gets
 router.post('/login', loginController.velLogin);
 // profs
