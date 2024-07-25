@@ -21,6 +21,9 @@ function Login() {
       );
       if(response.data.length === 1){
         alert('encontrado')
+        sessionStorage.setItem('professor', JSON.stringify(response.data[0]))
+        console.log(JSON.parse(sessionStorage.getItem('professor')))
+        
       }
      } catch (error) {
       if(!error?.response){

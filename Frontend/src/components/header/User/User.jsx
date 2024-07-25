@@ -4,8 +4,24 @@ import Login from '../../Login/Login';
 
 function User() {
     const [login, setLogin] = useState(false);
+    const [imageSrc, setImageSrc] = useState('generic.jpg');
     const menuRef = useRef(null);
     const sectionRef = useRef(null);
+
+    // Definindo a imagem
+    useEffect(() => {
+        const professor = sessionStorage.getItem('professor');
+        if (professor) {
+            const { imagem } = JSON.parse(professor);
+            if (imagem) {
+                setImageSrc(imagem);
+            } else {
+                setImageSrc('generic.jpg');
+            }
+        } else {
+            setImageSrc('generic.jpg');
+        }
+    }, []);
 
     function toggleLogin() {
         setLogin(prevLogin => !prevLogin);
@@ -28,7 +44,7 @@ function User() {
         <>
             <div onClick={toggleLogin} className='user'>
                 <div>Login</div>
-                <div className='userImage'></div>
+                <img className='userImage' src={imageSrc} alt="User" />
             </div>
 
             {login && (
