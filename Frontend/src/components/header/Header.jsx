@@ -2,6 +2,7 @@ import './Header.css'
 import User from './User/User'
 
 import Hamburguer from '../Hamburguer/Hamburguer'
+import {Link} from 'react-router-dom'
 
 function Header(){
     return(
@@ -10,7 +11,12 @@ function Header(){
             <section className='division'>
                 <div>
                 <div></div>
-                <h1>S.A.L</h1>
+
+                <h1>
+                <Link to="/">
+                    S.A.L
+                </Link>
+                </h1>
                 </div>
                 <section className='info'>
                     <div>About us</div>

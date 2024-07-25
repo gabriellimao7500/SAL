@@ -24,16 +24,17 @@ header{
     width: 70px;
 }
 
-.division > :nth-child(1) > h1{
+.division > :nth-child(1) > h1 > :nth-child(1){
     font-size: 28px;
     cursor: pointer;
     transition: 200ms ease-in-out;
+    color: #c5c5c5;
+    font-weight: bold;
 }
 
-.division > :nth-child(1) > h1:hover{
+.division > :nth-child(1) > h1:hover> :nth-child(1){
     color: #f7f7f7;
-    letter-spacing: 2px;
-    transition: 200ms ease-in-out;
+    transition: 150ms ease-in-out;
 }
 
 .info{

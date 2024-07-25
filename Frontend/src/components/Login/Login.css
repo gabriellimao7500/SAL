@@ -15,6 +15,7 @@
   box-shadow: inset 0px 0px 36px -23px rgba(255, 255, 255, 0.4);
 
   border-radius: 20px;
+  border: 1px solid #505050;
 }
 
 /* Estilos para o elemento h1*/
@@ -34,7 +35,6 @@
 
 /* Estilos o botão de Login */
 .enviar {
-  margin-top: -45px;
   width: 220px;
   height: 60px;
   background-color: #C2C5E8;
