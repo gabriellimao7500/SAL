@@ -65,3 +65,4 @@ enviarVerificaoEmail(userEmail)
     .catch((err) => {
         console.error('Erro no processo de verificação: ', err);
     });
+    
