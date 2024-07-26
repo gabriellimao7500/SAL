@@ -3,6 +3,7 @@ const profController = require('./controllers/profControllers');
 const loginController = require('./controllers/loginControllers');
 const labsConstrollers = require('./controllers/labsConstrollers');
 const marksControllers = require('./controllers/marksControllers');
+const reqController = require('./controllers/reqsControllers');
 
 const router = express.Router();
 router.use(express.json());
@@ -18,7 +19,14 @@ router.get('/labs/:idLaboratorio', labsConstrollers.getDataFromId);
 router.get('/marks', marksControllers.getData);
 router.get('/marks/:idReserva', marksControllers.getDataFromId);
 router.post('/createMarks', marksControllers.createMark);
+router.put('/marks/:idReserva', marksControllers.updateReserva);
 router.delete('/marks/:idReserva', marksControllers.deleteMark);
+
+// reqs
+router.get('/reqs', reqController.getData);
+router.get('/reqs/:idReserva', reqController.getDataFromId);
+router.post('/createReqs', reqController.createRequisicao);
+
 
 // puts professor
 router.put('/updImage/:idProfessor', profController.updateImagem);

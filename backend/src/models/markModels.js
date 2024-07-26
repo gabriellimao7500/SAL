@@ -41,9 +41,22 @@ const getDataFromId = async(idReserva)=>{
     return marks;
 };
 
+const updateReserva = {
+    async findById(idReserva) {
+        const [rows] = await connection.query('SELECT * FROM reservas WHERE id = ?', [idReserva]);
+        return rows[0];
+    },
+    async update(idReserva, idRequisicao) {
+        const { idProfessorRequisor, motivo} = await this.findById(idRequisicao);
+        await connection.query('UPDATE reserva SET idProfessor = ?, motivo = ?, WHERE idReserva = ?', [idProfessorRequisor, motivo, idReserva]);
+    },
+    // Outros métodos conforme necessário
+};
+
 module.exports = {
     createReserva,
     getData, 
     deleteReserva, 
-    getDataFromId
+    getDataFromId,
+    updateReserva
 };

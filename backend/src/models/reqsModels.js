@@ -1,6 +1,20 @@
 const connection = require('./connection/connection');
 
-
+const = {
+    async createRequisicao(requisicaoData) {
+        const { dataRequisicao, idProfessorRequisor, idProfessorRequisitado, motivo, statusRequisicao, idReserva } = requisicaoData;
+        const query = `
+            INSERT INTO requisicao (dataRequisicao, idProfessorRequisor, idProfessorRequisitado, motivo, statusRequisicao, idReserva)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `;
+        try {
+            const [result] = await pool.execute(query, [dataRequisicao, idProfessorRequisor, idProfessorRequisitado, motivo, statusRequisicao, idReserva]);
+            return { insertId: result.insertId };
+        } catch (err) {
+            throw err;
+        }
+    }
+};
 
 const getData = async() =>{
     const query = "SELECT * FROM reserva";
@@ -14,7 +28,11 @@ const getDataFromId = async(idReserva)=>{
     return marks;
 };
 
+
+
 module.exports = {
+    createRequisicao,
     getData,
     getDataFromId
 };
+

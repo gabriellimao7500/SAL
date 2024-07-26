@@ -1,5 +1,8 @@
 const markModels = require('../models/markModels');
 
+
+
+
 const createMark = async (req, res) => {
     try {
         console.log("O corpo da requisição é:"+req.body)
@@ -29,8 +32,6 @@ const createMark = async (req, res) => {
         return res.status(500).json({ error: 'Erro ao criar a reserva.' });
     }
 };
-
-
 
 const getData = async (_req, res) => {
     try {
@@ -74,6 +75,26 @@ const getDataFromId = async (req, res) =>{
     }
 };
 
+const updateReserva = async (req, res) => {
+    try {
+        const { idReserva } = req.params;
+        const { idProfessorRequisitor, motivo } = req.body;
+
+        // Verifica se a reserva existe
+        const reserva = await markModels.findById(idReserva);
+        if (!reserva) {
+            return res.status(404).json({ message: 'Reserva não encontrada' });
+        }
+
+        // Atualiza a reserva
+        await markModels.update(idReserva, { idProfessorRequisitor, motivo});
+
+        res.status(200).json({ message: 'Reserva atualizada com sucesso' });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao atualizar a reserva', error });
+    }
+};
+
 
 
 module.exports = {
@@ -81,4 +102,5 @@ module.exports = {
     getData,
     deleteMark,
     getDataFromId,
+    updateReserva,
 }
