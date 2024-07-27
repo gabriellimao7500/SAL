@@ -4,7 +4,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "joi": "^17.13.3",
     "mysql2": "^3.10.1",
     "nodemailer": "^6.9.14"
   },
@@ -14,7 +13,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "dev:all": "concurrently \"npm run dev\" \"cd ../frontend && npm run dev\""
   },
   "keywords": [],
   "author": "",
@@ -26,6 +26,7 @@
     "eslint": "^9.6.0",
     "eslint-plugin-react": "^7.34.3",
     "globals": "^15.6.0",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "concurrently": "^7.5.0"
   }
 }
