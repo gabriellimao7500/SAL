@@ -1,20 +1,18 @@
-const profModels = require('../models/profModels');
 const reqsModels = require('../models/reqsModels');
-
 
 const createRequisicao = async (req, res) => {
     try {
         console.log("O corpo da requisição é:", req.body);
 
-        const { dataRequisicao, idProfessorRequisor, idProfessorRequisitado, motivo, statusRequisicao, idReserva } = req.body;
+        const { dataRequisicao, idProfessorRequisitor, idProfessorRequisitado, motivo, statusRequisicao, idReserva } = req.body;
 
-        if (!dataRequisicao || !idProfessorRequisor || !idProfessorRequisitado || !motivo || statusRequisicao === undefined || !idReserva) {
+        if (!dataRequisicao || !idProfessorRequisitor || !idProfessorRequisitado || !motivo || statusRequisicao === undefined || !idReserva) {
             return res.status(400).json({ error: 'Dados insuficientes para criar a requisição.' });
         }
 
         const requisicaoData = {
             dataRequisicao,
-            idProfessorRequisor,
+            idProfessorRequisitor,
             idProfessorRequisitado,
             motivo,
             statusRequisicao,
@@ -32,16 +30,15 @@ const createRequisicao = async (req, res) => {
     }
 };
 
-
 const getData = async (_req,res)=>{
-    const prof = await profModels.getData();
-    return res.status(200).json(prof);
+    const requisicao = await reqsModels.getData();
+    return res.status(200).json(requisicao);
 };
 
 const getDataFromId = async (req, res) => {
-    const { idReserva } = req.params;
+    const { idRequisicao } = req.params;
     try {
-        const marks = await reqsModels.getDataFromId(idReserva);
+        const marks = await reqsModels.getDataFromId(idRequisicao);
         return res.status(200).json(marks);
     } catch (error) {
         console.error('Error retrieving data:', error);
@@ -49,9 +46,31 @@ const getDataFromId = async (req, res) => {
     }
 };
 
+const deleteReq = async (req, res) => {
+    const { idRequisicao } = req.params;
+    console.log("A requisição deletada é: " + idRequisicao);
+    if (!idRequisicao) {
+        return res.status(400).json({ error: 'ID não fornecido.' });
+    }
+
+    try {
+        const result = await reqsModels.deleteReq(Number(idRequisicao)); // Converta o ID para número
+        
+        if (result > 0) {
+            return res.status(200).json({ message: 'Requisição deletada com sucesso.' });
+        } else {
+            return res.status(404).json({ error: 'Requisição não encontrada.' });
+        }
+    } catch (err) {
+        console.error('Erro ao deletar a requisição:', err);
+        return res.status(500).json({ error: 'Erro ao deletar a requisição.' });
+    }
+};
+
 module.exports = {
     createRequisicao,
     getData,
     getDataFromId,
+    deleteReq
 
 };

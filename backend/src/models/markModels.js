@@ -47,8 +47,8 @@ const updateReserva = {
         return rows[0];
     },
     async update(idReserva, idRequisicao) {
-        const { idProfessorRequisor, motivo} = await this.findById(idRequisicao);
-        await connection.query('UPDATE reserva SET idProfessor = ?, motivo = ?, WHERE idReserva = ?', [idProfessorRequisor, motivo, idReserva]);
+        const { idProfessorRequisitor, motivo} = await this.findById(idRequisicao);
+        await connection.query('UPDATE reserva SET idProfessor = ?, motivo = ?, WHERE idReserva = ?', [idProfessorRequisitor, motivo, idReserva]);
     },
     // Outros métodos conforme necessário
 };

@@ -24,8 +24,9 @@ router.delete('/marks/:idReserva', marksControllers.deleteMark);
 
 // reqs
 router.get('/reqs', reqController.getData);
-router.get('/reqs/:idReserva', reqController.getDataFromId);
+router.get('/reqs/:idRequisicao', reqController.getDataFromId);
 router.post('/createReqs', reqController.createRequisicao);
+router.delete('/reqs/:idReserva', reqController.deleteReq);
 
 
 // puts professor

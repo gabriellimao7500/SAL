@@ -1,8 +1,5 @@
 const markModels = require('../models/markModels');
 
-
-
-
 const createMark = async (req, res) => {
     try {
         console.log("O corpo da requisição é:"+req.body)
@@ -12,7 +9,6 @@ const createMark = async (req, res) => {
         if (!dataReserva || !aulaReserva || !idProfessor || !idLaboratorio || !motivo) {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
         }
-
         const reservaData = {
             dataReserva,
             periodo,
