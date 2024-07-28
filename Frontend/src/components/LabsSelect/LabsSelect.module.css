@@ -31,3 +31,17 @@
     transition: 300ms ease-in-out;
 
 }
+
+@media (max-width: 430px) {
+    .button{
+        flex-direction: row;
+        height: 70px !important;
+        width: 250px;
+    }
+    .button svg{
+        width: 30px;
+        height: 50px;
+    }
+    
+    
+}

@@ -11,3 +11,10 @@
 .carr{
     width: 98vw;
 }
+
+@media (max-width: 430px) {
+    .carrousel{
+        flex-direction: column;
+    }
+    
+}

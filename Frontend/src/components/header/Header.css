@@ -90,7 +90,7 @@ header{
     position: fixed;
 }
 
-@media  (max-width: 415px) {
+@media  (max-width: 430px) {
     .info {
         display: none;
     }

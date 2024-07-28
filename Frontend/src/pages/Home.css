@@ -87,7 +87,7 @@ section.Content{
 
  }
 
- @media (max-width: 415px) {
+ @media (max-width: 430px) {
   section.Content > :nth-child(1) > h1 {
     font-size: 40px;
     width: 100vw;
@@ -117,4 +117,33 @@ section.Content{
   .line1 {
     display: none;
   }
+ }
+
+ @media (max-height: 570px) {
+  .buttons{
+    margin-top: 10px;
+    height: 100px !important;
+    gap: 10px;
+    width: 30vw;
+  }
+  section.Content > :nth-child(1) > .desc {
+    width: 80vw;
+    margin-left: 18px;
+  }
+  section.Content > :nth-child(1) > h1{
+    font-size: 35px;
+  }
+  h2{
+    font-size: 15px;
+  }
+  .buttons a{
+    width: 180px;
+    height: 45px;
+    font-size: 13px;
+  }
+  section.Content > :nth-child(1) > .desc {
+    font-size: 10px;
+    margin-left: 30px;
+  }
+  
  }

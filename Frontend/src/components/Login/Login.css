@@ -82,6 +82,40 @@
   }
 }
 
-@media (max-width: 415px) {
-  
+@media (max-width: 430px) {
+  .login{
+    width: 360px;
+    height: 320px;
+  }
+  .login h1{
+    font-size: 30px;
+  }
+  .inputs{
+    width: 63%;
+  }
+  .enviar{
+    width: 180px;
+  }
+
+}
+
+@media (max-height: 570px) {
+  .login{
+    width: 280px;
+    height: 260px;
+  }
+  .login h1{
+    font-size: 23px;
+    margin-bottom: 5px;
+  }
+  .enviar{
+    width: 110px;
+    height: 40px;
+    font-size: 15px;
+    padding: 5px;
+  }
+  .inputs{
+    width: 80%;
+  }
+
 }

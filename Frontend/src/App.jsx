@@ -7,6 +7,7 @@ import SelectLab from './pages/SelectLab'
 import Labs from './pages/Labs'
 
 function App() {
+  
   return (
     <BrowserRouter>
       <Routes>
@@ -17,5 +18,6 @@ function App() {
     </BrowserRouter>
   )
 }
+
 
 export default App

@@ -43,3 +43,11 @@ input.not-empty {
 .inpt > div {
     margin-left: 5px;
 }
+
+@media (max-height: 570px) {
+    .inpt{
+        font-size: 14px;
+        height: 35px;
+    }
+
+}

@@ -9,4 +9,15 @@
     transition: 300ms ease-in-out;
 }
 
+@media (max-width: 430px) {
+    .swiper-button-prev, .swiper-button-next{
+        display: none !important;
+    }
+    .swiper-slide-active, .swiper-slide, .swiper-slide-next{
+        height: 100px !important;
+        align-items: center;
+        justify-content: center;
+        left: calc(50% - 170px);
+    }
+}
 
