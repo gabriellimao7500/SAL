@@ -81,3 +81,7 @@
     left: calc(50% - 104px);
   }
 }
+
+@media (max-width: 415px) {
+  
+}

@@ -86,3 +86,35 @@ section.Content{
    filter: blur(1px);
 
  }
+
+ @media (max-width: 415px) {
+  section.Content > :nth-child(1) > h1 {
+    font-size: 40px;
+    width: 100vw;
+    margin-bottom: 1px;
+  }
+  h2 {
+    font-size: 20px;
+    width: 98vw;
+    margin-bottom: 30px;
+  }
+  section.Content > :nth-child(1) > .desc {
+    font-size: 12px;
+    width: 90vw;
+    margin-left: 18px;
+  }
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+    
+    gap: 50px;
+  }
+  .buttons a{
+    width: 200px;
+    height: 50px;
+    font-size: 15px;
+  }
+  .line1 {
+    display: none;
+  }
+ }

@@ -15,16 +15,16 @@ header{
     justify-content: space-between;
 }
 
-.division > :nth-child(1){
+.division > :nth-child(2){
     display: flex;
     width: 180px;
 }
 
-.division > :nth-child(1) > div{
+.division > :nth-child(2) > div{
     width: 70px;
 }
 
-.division > :nth-child(1) > h1 > :nth-child(1){
+.division > :nth-child(2) > h1 > :nth-child(1){
     font-size: 28px;
     cursor: pointer;
     transition: 200ms ease-in-out;
@@ -32,7 +32,7 @@ header{
     font-weight: bold;
 }
 
-.division > :nth-child(1) > h1:hover> :nth-child(1){
+.division > :nth-child(2) > h1:hover> :nth-child(1){
     color: #f7f7f7;
     transition: 150ms ease-in-out;
 }
@@ -84,4 +84,29 @@ header{
 
 .schoolName{
     min-width: 15%;
+}
+
+.deadpool_2 {
+    position: fixed;
+}
+
+@media  (max-width: 415px) {
+    .info {
+        display: none;
+    }
+    .duvidas {
+        display: none;
+    }
+    .deadpool_3{
+        display: none;
+    }
+    .deadpool_2{
+        position: relative;
+        width: 50px;
+        height: 50px;
+    }
+    .division > :nth-child(2) {
+        width: 75px;
+    }
+
 }

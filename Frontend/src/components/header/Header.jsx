@@ -9,8 +9,9 @@ function Header(){
         <header>
             <Hamburguer></Hamburguer>
             <section className='division'>
+                <div className="deadpool_2"></div>
                 <div>
-                <div></div>
+                <div className='deadpool_3'></div>
 
                 <h1>
                 <Link to="/">
@@ -23,7 +24,6 @@ function Header(){
                     <div>Docs</div>
                     <div>Help</div>
                 </section>
-                <div className='schoolName'></div>
                 <div className='duvidas'>
                     <div>duvidas</div>
                     <div>Tire todas as suas duvidas<div>conosco</div></div>

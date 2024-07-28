@@ -2,6 +2,7 @@
     display: flex;
     position: fixed;
     top: 5px;
+    z-index: 10;
 }
 
 .off{
@@ -27,4 +28,3 @@ section.tela{
     background-color: #1D1D1D;
     border-top: 1px #000 solid;
 }
-

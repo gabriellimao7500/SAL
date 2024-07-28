@@ -39,3 +39,9 @@
         opacity: 1;
     }
 }
+
+@media (max-width: 415px) {
+    .user div {
+        display: none;
+    }
+}
