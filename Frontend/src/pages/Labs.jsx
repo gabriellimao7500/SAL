@@ -1,5 +1,5 @@
 import Header from "../components/header/Header";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Labs.css';
 
 function Labs() {
@@ -9,16 +9,29 @@ function Labs() {
     const ano = date.getFullYear();
     const mesatu = date.getMonth();
 
-    let mes = mesatu;
+    let mes = 6;
     let sub = sem - 1;
     let day = 1;
-   
+
     const primeiroDiaMesSeguinte = new Date(ano, mes + 1, 1);
     const ultimoDiaMesAtual = new Date(primeiroDiaMesSeguinte - 1);
     const diasNoMes = ultimoDiaMesAtual.getDate();
 
     const [currentWeek, setCurrentWeek] = useState(0);
     const [currentMes, setCurrentMes] = useState(mes);
+    const [prevDisabled, setPrevDisabled] = useState(true);
+    const [nextDisabled, setNextDisabled] = useState(false);
+
+    function getWeeksPassed(initialYear, initialMonth, initialDay) {
+        const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
+        const currentDate = new Date();
+        const diffInMs = currentDate - initialDate;
+        const msInAWeek = 1000 * 60 * 60 * 24 * 7;
+        const weeksPassed = diffInMs / msInAWeek;
+        return Math.floor(weeksPassed);
+    }
+
+    const weeksPass = getWeeksPassed(2024, 7, 1);
 
     const verify = (day, temp) => {
         day += temp;
@@ -33,43 +46,44 @@ function Labs() {
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < weeksPass + 7; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
-    
+
     function reorganizeArray(arr, newIndex) {
         const len = arr.length;
         if (newIndex < 0 || newIndex >= len) {
             throw new Error('newIndex must be within the array length');
         }
-    
-        // Ajusta o índice para girar no sentido horário
         const adjustedIndex = (len - newIndex) % len;
-    
-        // Divide o array em duas partes e junta na nova ordem
         const firstPart = arr.slice(adjustedIndex);
         const secondPart = arr.slice(0, adjustedIndex);
         return firstPart.concat(secondPart);
     }
 
-    var somas = [5, 9, 14 , 18, 23, 27, 32, 36, 41, 45, 50, 0];
+    var somas = [5, 9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 0];
     var somas1 = reorganizeArray(somas, mesatu);
+
+    useEffect(() => {
+        setPrevDisabled(currentWeek === 0);
+        setNextDisabled(currentWeek === weeks.length - 1);
+    }, [currentWeek, weeks.length]);
 
     const changeWeek = (direction) => {
         setCurrentWeek((prevWeek) => {
-            
-            const newWeek = (prevWeek + direction + weeks.length) % weeks.length; // garante que o newWeek seja sempre positivo
-            console.log(newWeek);
-    
-            // Ajusta o mês quando a semana muda
-            if (newWeek === 0) {
-                setCurrentMes(0);
-            } else if (newWeek < prevWeek && newWeek + 1 === somas1[currentMes % 12]) {
-                setCurrentMes((currentMes - 1 + 12) % 12);
-            } else if (newWeek > prevWeek && newWeek === somas1[currentMes % 12]) {
-                setCurrentMes((currentMes + 1) % 12);
+            const newWeek = prevWeek + direction;
+            if (newWeek < 0 || newWeek >= weeks.length) {
+                return prevWeek;
             }
-            
+            if (newWeek === 0) {
+                setCurrentMes(mesatu);
+            }
+            if (newWeek > prevWeek && newWeek === somas1[currentMes % 12]) {
+                setCurrentMes((currentMes + 1));
+            }
+            if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 23 || newWeek + 1 === 27 || newWeek + 1 === 32 || newWeek + 1 === 36 || newWeek + 1 === 41 || newWeek + 1 === 45 || newWeek + 1 === 50 || newWeek + 1 === 0)) {
+                setCurrentMes((currentMes - 1));
+            }
             return newWeek;
         });
     };
@@ -122,8 +136,9 @@ function Labs() {
                     </div>
                 </div>
                 <div className="navigation">
-                    <button onClick={() => changeWeek(1)}><span className="material-symbols-outlined">chevron_right</span></button>
-                    <button onClick={() => changeWeek(-1)}><span className="material-symbols-outlined">chevron_left</span></button>
+                    <button onClick={() => changeWeek(1)} disabled={nextDisabled}><span className="material-symbols-outlined">chevron_right</span></button>
+                    <button onClick={() => changeWeek(-1)} disabled={prevDisabled}><span className="material-symbols-outlined">chevron_left</span></button>
+                    
                 </div>
             </section>
         </div>
