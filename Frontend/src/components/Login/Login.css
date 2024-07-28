@@ -16,6 +16,8 @@
 
   border-radius: 20px;
   border: 1px solid #505050;
+  z-index: 20;
+  position: relative;
 }
 
 /* Estilos para o elemento h1*/
@@ -44,4 +46,38 @@
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.25);
   font-weight: bold;
   font-size: 22px;
+}
+
+.incorrect{
+  color: rgb(255, 61, 61);
+  font-weight: bold;
+  position: fixed;
+  top: 50%;
+  z-index: 1;
+  left: calc(50% - 104px);
+  opacity: 0;
+  transition: 0.8s ease-in;
+}
+
+.error{
+  top: 14%;
+  opacity: 1;
+  transition: 0.8s ease-out;
+  animation: balanga 0.2s ease-out 5;
+
+}
+
+@keyframes balanga {
+  0%{
+    left: calc(50% - 104px);
+  }
+  33%{
+    left: calc(50% - 96px);
+  }
+  66%{
+    left: calc(50% - 112px);
+  }
+  100%{
+    left: calc(50% - 104px);
+  }
 }

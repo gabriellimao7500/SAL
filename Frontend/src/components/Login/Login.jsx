@@ -7,6 +7,8 @@ function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
+  const [incorrect, setIncorrect] = useState(false);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     
@@ -29,12 +31,19 @@ function Login() {
       if(!error?.response){
         console.log('erro ao acessar o servidor')
       }else if(error.response.status == 401){
-        alert('usuario ou senha invalidos')
+        setIncorrect(true)
+        setInterval(go, 2000)
       }
      }
   };
 
+  function go(){
+    setIncorrect(false)
+  }
+  
   return (
+    <>
+    <div className={incorrect == true ? "incorrect error" : "incorrect"}>usuário ou senha inválidos</div>
     <section className="login">
       <h1>Login</h1>
       <form className='inputs' onSubmit={handleLogin}>
@@ -57,6 +66,8 @@ function Login() {
         <button className='enviar' type='submit'>Login</button>
       </form>
     </section>
+    </>
+    
   );
 }
 

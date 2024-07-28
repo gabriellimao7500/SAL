@@ -16,8 +16,10 @@ table {
 
 th, td {
     border: 1px solid #444;
-    padding: 10px;
+    padding: 4px;
+    padding-inline: 12px;
     text-align: center;
+    width: 10%;
 }
 
 .navigation {
@@ -65,12 +67,14 @@ th, td {
 
 .select{
     cursor: pointer;
-    transition: 150ms ease-in-out; 
+    transition: 150ms ease-in-out;
     height: 40px;
+    border: black 8px solid;
 }
 
 .select:hover{
-    height: 56px;
+    border: black 0px solid;
+    height: 48px;
     background-color: #6C63FF;
     transition: 150ms ease-in-out;
 }
@@ -106,4 +110,8 @@ th, td {
     display: flex;
     height: 76vh;
     align-items: end;
+}
+
+.footer div{
+    letter-spacing: 40px;
 }
