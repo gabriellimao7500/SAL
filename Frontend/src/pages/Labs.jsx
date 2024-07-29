@@ -9,7 +9,6 @@ function Labs() {
     const ano = date.getFullYear();
     const mesatu = date.getMonth();
     let mes = 6;
-    let sub = sem - 1;
     let day = 1;
 
     const primeiroDiaMesSeguinte = new Date(ano, mes + 1, 1);
@@ -51,7 +50,7 @@ function Labs() {
     ];
 
 
-    // QUANTIDADE DE SEMANAS A FRENTE DA ATUAL
+    // QUANTIDADE DE SEMANAS A FRENTE DA ATUAL (esse comentario n foi do chat gpt!)
     for (let i = 0; i < weeksPass + 2 ; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
@@ -91,7 +90,7 @@ function Labs() {
             for (var i = 0; i < Math.ceil(weeksPass + 2); i++) {
                 const botao = document.getElementById("ir")
                 botao.click()
-                await sleep(4); // Delay de 1 segundo (1000 milissegundos)
+                await sleep(4);
             }
             const voltar = document.getElementById("voltar")
             voltar.click()
@@ -152,7 +151,6 @@ function Labs() {
                 <div className="navigation">
                     <button id="ir" onClick={() => changeWeek(1)} disabled={nextDisabled}><span className="material-symbols-outlined">chevron_right</span></button>
                     <button id="voltar" onClick={() => changeWeek(-1)} disabled={prevDisabled}><span className="material-symbols-outlined">chevron_left</span></button>
-                    
                 </div>
             </section>
         </div>
