@@ -14,7 +14,7 @@ function Hamburguer(){
         }
     }
     return(
-        <div className={menu == true ? "menu on" : "menu off"}>
+        <div className={menu == true ? "menu on z_index" : "menu off z_index_off"}>
             <section className='tela'>
             </section>
             <div className="hamburguer" onClick={onmenu}>

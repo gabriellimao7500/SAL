@@ -41,7 +41,17 @@
     .button svg{
         width: 30px;
         height: 50px;
+    }   
+}
+
+@media (max-width: 1000px) {
+    .button svg {
+        width: 100px;
+        height: 90px;
     }
-    
-    
+    .button{
+        width: 160px;
+        height: 245px;
+        margin: 20px;
+    }
 }

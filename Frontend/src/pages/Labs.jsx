@@ -102,17 +102,32 @@ function Labs() {
 
     const monthLabels = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
 
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
     return (
         <div className="App">
             <Header />
             <section className="calendar">
                 <section className="hours">
-                    <div>7:00 - 7:50</div>
-                    <div>7:50 - 8:40</div>
-                    <div>8:40 - 9:30</div>
-                    <div>9:50 - 10:40</div>
-                    <div>10:40 - 11:30</div>
-                    <div>11:30 - 12:20</div>
+                    <div>{windowWidth > 430 ? '7:00 - 7:50' : '1°'}</div>
+                    <div>{windowWidth > 430 ? '7:50 - 8:40' : '2°'}</div>
+                    <div>{windowWidth > 430 ? '8:40 - 9:30' : '3°'}</div>
+                    <div>{windowWidth > 430 ? '9:50 - 10:40' : '4°'}</div>
+                    <div>{windowWidth > 430 ? '10:40 - 11:30' : '5°'}</div>
+                    <div>{windowWidth > 430 ? '11:30 - 12:20' : '6°'}</div>
                 </section>
                 <div className="schedule-container">
                     <div className="schedule-wrapper" style={{ transform: `translateX(-${currentWeek * 100}%)` }}>
