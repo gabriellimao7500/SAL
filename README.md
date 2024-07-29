@@ -1,6 +1,5 @@
 # SAL (Sistema de agendamento de laboratórios)
-Criadores:  
-           
+<div><h1>Criadores:</h1>  
             Anderson Augusto Santos Reis
             <br/>
             Felipe Daniel Souza Bazilio
@@ -10,3 +9,4 @@ Criadores:
             Gabriel Ortiz dos Anjos Marsura
             <br/>
             Matheus Vinicius Rodrigues Brito
+</div>
