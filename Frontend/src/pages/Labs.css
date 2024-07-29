@@ -116,3 +116,31 @@ th, td {
     letter-spacing: 40px;
     position: fixed;
 }
+
+@media (max-width: 430px) {
+    .hours div{
+        width: 58px;
+        font-size: 9px;
+        margin-top: 55px;
+        margin-left: 5px;
+        margin-right: -9px;
+        display: none;
+    }
+    .navigation{
+        position: fixed;
+        flex-direction: row-reverse;
+        bottom: 15px;
+        gap: 200px;
+    }
+    .calendar{
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-height: 570px){
+    .navigation{
+        bottom: -15px;
+    }
+    
+}
