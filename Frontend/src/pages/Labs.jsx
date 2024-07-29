@@ -17,6 +17,7 @@ function Labs() {
 
     const [currentWeek, setCurrentWeek] = useState(0);
     const [currentMes, setCurrentMes] = useState(mes);
+    const [currentAno, setCurrentAno] = useState(ano)
     const [prevDisabled, setPrevDisabled] = useState(true);
     const [nextDisabled, setNextDisabled] = useState(false);
 
@@ -66,17 +67,21 @@ function Labs() {
             var newWeek = prevWeek + direction;
             if (currentMes > 11) {
                 setCurrentMes(0)
+                setCurrentAno(ano+1)
+                
             }
             if (newWeek < 0 || newWeek >= weeks.length) {
                 return prevWeek;
             }
-            if (newWeek > prevWeek && (newWeek === 5 || newWeek  === 9 || newWeek  === 14 || newWeek  === 18 || newWeek  === 23 || newWeek  === 26 || newWeek  === 31 || newWeek  === 35 || newWeek === 40 || newWeek  === 44 || newWeek === 49 || newWeek  === 0)) {
+            if (newWeek > prevWeek && (newWeek === 5 || newWeek  === 9 || newWeek  === 14 || newWeek  === 18 || newWeek  === 22 || newWeek  === 26 || newWeek  === 31 || newWeek  === 35 || newWeek === 40 || newWeek  === 44 || newWeek === 49 || newWeek  === 0)) {
                 setCurrentMes((currentMes + 1));
             }
-            if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 23 || newWeek + 1 === 26 || newWeek + 1 === 31 || newWeek + 1 === 35 || newWeek + 1 === 40 || newWeek + 1 === 44 || newWeek + 1 === 49 || newWeek + 1 === 0)) {
+            if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 22 || newWeek + 1 === 26 || newWeek + 1 === 31 || newWeek + 1 === 35 || newWeek + 1 === 40 || newWeek + 1 === 44 || newWeek + 1 === 49 || newWeek + 1 === 0)) {
                 setCurrentMes((currentMes - 1));
                 if (currentMes <= 0) {
                     setCurrentMes(11)
+                    setCurrentAno(ano-1)
+                    
                 }
             }
             return newWeek;
@@ -143,7 +148,7 @@ function Labs() {
                                     <tr>
                                         {week.map((day, idx) => (
                                             <th key={idx} 
-                                            className={day === dia && currentMes === mesatu ? "in" : ""}>
+                                            className={day === dia && currentMes === mesatu && currentAno === ano ? "in" : ""}>
                                                 {['Seg', 'Ter', 'Qua', 'Qui', 'Sex'][idx]}
                                                 <br />
                                                 <span className='day'>{day}</span>
