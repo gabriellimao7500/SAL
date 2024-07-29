@@ -8,7 +8,6 @@ function Labs() {
     const sem = date.getDay();
     const ano = date.getFullYear();
     const mesatu = date.getMonth();
-
     let mes = 6;
     let sub = sem - 1;
     let day = 1;
@@ -33,11 +32,16 @@ function Labs() {
 
     const weeksPass = getWeeksPassed(2024, 7, 1);
 
+    const DiasDoMes = [31,ano%4 == 0 ? 29:28,31,30,31,30,31,31,30,31,30,31]
+
     const verify = (day, temp) => {
         day += temp;
-        if (day > diasNoMes) {
+        if(mes > 11){
+            mes = 0
+        }
+        if (day > DiasDoMes[mes]) {
+            day = day - DiasDoMes[mes];
             mes += 1;
-            day = 1;
         }
         return day;
     };
@@ -48,11 +52,10 @@ function Labs() {
 
 
     // QUANTIDADE DE SEMANAS A FRENTE DA ATUAL
-    for (let i = 0; i < weeksPass + 2; i++) {
+    for (let i = 0; i < weeksPass + 2 ; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
-    
 
     useEffect(() => {
         setPrevDisabled(currentWeek === 0);
@@ -61,15 +64,21 @@ function Labs() {
     const changeWeek = (direction) => {
         console.log(currentWeek)
         setCurrentWeek((prevWeek) => {
-            const newWeek = prevWeek + direction;
+            var newWeek = prevWeek + direction;
+            if (currentMes > 11) {
+                setCurrentMes(0)
+            }
             if (newWeek < 0 || newWeek >= weeks.length) {
                 return prevWeek;
             }
-            if (newWeek > prevWeek && (newWeek === 5 || newWeek  === 9 || newWeek  === 14 || newWeek  === 18 || newWeek  === 23 || newWeek  === 27 || newWeek  === 32 || newWeek  === 36 || newWeek === 41 || newWeek  === 45 || newWeek === 50 || newWeek  === 0)) {
+            if (newWeek > prevWeek && (newWeek === 5 || newWeek  === 9 || newWeek  === 14 || newWeek  === 18 || newWeek  === 23 || newWeek  === 26 || newWeek  === 31 || newWeek  === 35 || newWeek === 40 || newWeek  === 44 || newWeek === 49 || newWeek  === 0)) {
                 setCurrentMes((currentMes + 1));
             }
-            if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 23 || newWeek + 1 === 27 || newWeek + 1 === 32 || newWeek + 1 === 36 || newWeek + 1 === 41 || newWeek + 1 === 45 || newWeek + 1 === 50 || newWeek + 1 === 0)) {
+            if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 23 || newWeek + 1 === 26 || newWeek + 1 === 31 || newWeek + 1 === 35 || newWeek + 1 === 40 || newWeek + 1 === 44 || newWeek + 1 === 49 || newWeek + 1 === 0)) {
                 setCurrentMes((currentMes - 1));
+                if (currentMes <= 0) {
+                    setCurrentMes(11)
+                }
             }
             return newWeek;
         });
@@ -82,7 +91,7 @@ function Labs() {
             for (var i = 0; i < Math.ceil(weeksPass + 2); i++) {
                 const botao = document.getElementById("ir")
                 botao.click()
-                await sleep(10); // Delay de 1 segundo (1000 milissegundos)
+                await sleep(4); // Delay de 1 segundo (1000 milissegundos)
             }
             const voltar = document.getElementById("voltar")
             voltar.click()
