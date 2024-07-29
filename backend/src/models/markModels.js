@@ -43,15 +43,30 @@ const getDataFromId = async(idReserva)=>{
 
 const updateReserva = {
     async findById(idReserva) {
-        const [rows] = await connection.query('SELECT * FROM reservas WHERE id = ?', [idReserva]);
-        return rows[0];
+        try {
+            const [rows] = await connection.query('SELECT * FROM reservas WHERE id = ?', [idReserva]);
+            return rows[0];
+        } catch (err) {
+            console.error('Erro ao buscar reserva:', err);
+            throw err;
+        }
     },
-    async update(idReserva, idRequisicao) {
-        const { idProfessorRequisitor, motivo} = await this.findById(idRequisicao);
-        await connection.query('UPDATE reserva SET idProfessor = ?, motivo = ?, WHERE idReserva = ?', [idProfessorRequisitor, motivo, idReserva]);
+
+    async update(idReserva, { idProfessorRequisitor, motivo }) {
+        try {
+            await connection.query(
+                'UPDATE reservas SET idProfessor = ?, motivo = ? WHERE id = ?',
+                [idProfessorRequisitor, motivo, idReserva]
+            );
+        } catch (err) {
+            console.error('Erro ao atualizar reserva:', err);
+            throw err;
+        }
     },
+
     // Outros métodos conforme necessário
 };
+
 
 module.exports = {
     createReserva,

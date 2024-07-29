@@ -48,7 +48,8 @@ const getDataFromId = async (req, res) => {
 
 const deleteReq = async (req, res) => {
     const { idRequisicao } = req.params;
-    console.log("A requisição deletada é: " + idRequisicao);
+    console.log("Parâmetros recebidos:", req.params);
+    console.log("A requisição deletada é: " + [idRequisicao]);
     if (!idRequisicao) {
         return res.status(400).json({ error: 'ID não fornecido.' });
     }
@@ -66,6 +67,7 @@ const deleteReq = async (req, res) => {
         return res.status(500).json({ error: 'Erro ao deletar a requisição.' });
     }
 };
+
 
 module.exports = {
     createRequisicao,

@@ -75,6 +75,9 @@ const updateReserva = async (req, res) => {
     try {
         const { idReserva } = req.params;
         const { idProfessorRequisitor, motivo } = req.body;
+        console.log("Parâmetros recebidos:", req.params);
+        console.log("Corpo da requisição:", req.body);
+        console.log("A requisição atualizada é: " + [idReserva, idProfessorRequisitor, motivo]);
 
         // Verifica se a reserva existe
         const reserva = await markModels.findById(idReserva);
@@ -83,13 +86,15 @@ const updateReserva = async (req, res) => {
         }
 
         // Atualiza a reserva
-        await markModels.update(idReserva, { idProfessorRequisitor, motivo});
+        await markModels.update(idReserva, { idProfessorRequisitor, motivo });
 
-        res.status(200).json({ message: 'Reserva atualizada com sucesso' });
+        return res.status(200).json({ message: 'Reserva atualizada com sucesso' });
     } catch (error) {
-        res.status(500).json({ message: 'Erro ao atualizar a reserva', error });
+        console.error('Erro ao atualizar a reserva:', error);
+        return res.status(500).json({ message: 'Erro ao atualizar a reserva', error });
     }
 };
+
 
 
 

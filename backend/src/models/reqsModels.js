@@ -28,10 +28,8 @@ const getDataFromId = async(idRequisicao)=>{
 };
 
 const deleteReq = async (idRequisicao) => {
-
     const query = 'DELETE FROM requisicao WHERE idRequisicao = ?';
-    const values = [idRequisicao]; 
-
+    const values = [idRequisicao];
     try {
         const [result] = await connection.execute(query, values);
         return result.affectedRows; // Retorna o número de linhas afetadas
