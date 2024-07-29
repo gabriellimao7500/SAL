@@ -1,6 +1,8 @@
 .swiper-button-prev, .swiper-button-next {
     --swiper-theme-color: #f1f1f1;
     transition: 300ms ease-in-out;
+    z-index: 20 !important;
+    position: absolute !important;
 }
 
 .swiper-button-prev:hover, .swiper-button-next:hover{
@@ -18,6 +20,12 @@
         align-items: center;
         justify-content: center;
         left: calc(50% - 170px);
+    }
+}
+
+@media (max-width: 1000px) {
+    .swiper-slide-active, .swiper-slide, .swiper-slide-next{
+        width: 180px !important;
     }
 }
 

@@ -118,14 +118,7 @@ th, td {
 }
 
 @media (max-width: 430px) {
-    .hours div{
-        width: 58px;
-        font-size: 9px;
-        margin-top: 55px;
-        margin-left: 5px;
-        margin-right: -9px;
-        display: none;
-    }
+    
     .navigation{
         position: fixed;
         flex-direction: row-reverse;
@@ -142,5 +135,18 @@ th, td {
     .navigation{
         bottom: -15px;
     }
-    
+    .schedule-wrapper{
+        height: 400px;
+    }
+    th, td {
+        height: 40px !important;
+        width: 40px !important;
+        padding: 2px;
+    }
+}
+
+@media (max-height: 800px) {
+    .navigation{
+        bottom: -20px;
+    }
 }
