@@ -62,7 +62,6 @@ function Labs() {
         setNextDisabled(currentWeek === weeks.length - 1);
     }, [currentWeek, weeks.length]);
     const changeWeek = (direction) => {
-        console.log(currentWeek)
         setCurrentWeek((prevWeek) => {
             var newWeek = prevWeek + direction;
             if (currentMes > 11) {

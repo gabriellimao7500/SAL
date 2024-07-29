@@ -54,6 +54,13 @@ th, td {
     transition: none;
 
 }
+
+.navigation button:disabled{
+    cursor: not-allowed;
+    border: 1px solid #6C63FF;
+    color: #6C63FF;
+}
+
 .footer {
     display: flex;
     justify-content: center;
