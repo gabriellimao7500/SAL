@@ -68,11 +68,11 @@ th, td {
 .select{
     cursor: pointer;
     transition: 150ms ease-in-out;
-    height: 40px;
-    border: black 8px solid;
+    height: 20px;
+    border: black 18px solid;
 }
 
-.select:hover{
+td:hover .select{
     border: black 0px solid;
     height: 48px;
     background-color: #6C63FF;
@@ -148,5 +148,9 @@ th, td {
 @media (max-height: 800px) {
     .navigation{
         bottom: -20px;
+    }
+    .hours{
+        gap: 1px;
+        height: 70%;
     }
 }

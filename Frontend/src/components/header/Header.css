@@ -30,6 +30,10 @@ header{
     transition: 200ms ease-in-out;
     color: #c5c5c5;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 4px;
 }
 
 .division > :nth-child(2) > h1:hover> :nth-child(1){

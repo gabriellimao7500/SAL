@@ -82,22 +82,28 @@ function Labs() {
             return newWeek;
         });
     };
-    window.addEventListener('load', function() {
+    useEffect(() => {
         function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+          return new Promise(resolve => setTimeout(resolve, ms));
         }
+    
         async function applyChanges() {
-            for (var i = 0; i < Math.ceil(weeksPass + 2); i++) {
-                const botao = document.getElementById("ir")
-                botao.click()
-                await sleep(4);
+          for (let i = 0; i < Math.ceil(weeksPass + 2); i++) {
+            const botao = document.getElementById("ir");
+            if (botao) {
+              botao.click();
+              await sleep(4);
             }
-            const voltar = document.getElementById("voltar")
-            voltar.click()
+          }
+          const voltar = document.getElementById("voltar");
+          if (voltar) {
+            voltar.click();
+          }
         }
     
         applyChanges();
-    });
+      }, []);
+    
     
 
     const monthLabels = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
