@@ -169,9 +169,11 @@ function Labs() {
                             </table>
                         ))}
                     </div>
-                    <div className="footer">
-                        <div>{monthLabels[currentMes % 12]}</div>
-                    </div>
+                        <div className="footer" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+                            <div>{monthLabels[currentMes % 12]}</div>
+                        </div>
+
+                    
                 </div>
                 <div className="navigation">
                     <button id="ir" onClick={() => changeWeek(1)} disabled={nextDisabled}><span className="material-symbols-outlined">chevron_right</span></button>
