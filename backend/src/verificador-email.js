@@ -1,5 +1,14 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const connection = require('./models/connection');
+
+//Verificar se email inserido existe no banco de dados
+const velEmail = async (email) => {
+    const query = "SELECT * FROM professor WHERE email = ?";
+    const [rows] = await connection.execute(query, [email])
+    return rows;
+};
+
 
 // Configuração do Nodemailer para emails do Outlook
 const transporter = nodemailer.createTransport({

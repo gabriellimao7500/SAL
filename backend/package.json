@@ -15,7 +15,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "dev:all": "concurrently \"npm run dev\" \"cd ../frontend && npm run dev\""
+    "dev:all": "concurrently \"npm run dev\" \"cd ../Frontend && npm run dev\""
   },
   "keywords": [],
   "author": "",

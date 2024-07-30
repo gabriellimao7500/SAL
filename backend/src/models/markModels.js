@@ -35,11 +35,13 @@ const deleteReserva = async (idReserva) => {
     }
 };
 
-const getDataFromId = async(idReserva)=>{
-    const query = "SELECT * FROM reserva WHERE idReserva = ?";
-    const [marks] = await connection.execute(query,[idReserva]);//query sql para pegar uma reserva especifica
+const getDataFromDate = async(dataReserva)=>{
+    const query = "SELECT * FROM reserva WHERE dataReserva = ?";
+    const [marks] = await connection.execute(query,[dataReserva]);//query sql para pegar uma reserva especifica
     return marks;
 };
+
+
 
 const updateReserva = {
     async findById(idReserva) {
@@ -72,6 +74,6 @@ module.exports = {
     createReserva,
     getData, 
     deleteReserva, 
-    getDataFromId,
+    getDataFromDate,
     updateReserva
 };

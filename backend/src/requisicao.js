@@ -3,6 +3,7 @@ const express = require('express')
 const routes = require('./router')
 const cors = require('cors')
 require('dotenv').config();
+const connection = require('./models/connection');
 const nodemailer = require('nodemailer');
 
 /*
