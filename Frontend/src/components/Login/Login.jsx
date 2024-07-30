@@ -22,7 +22,7 @@ function Login() {
         }
       );
       if(response.data.length === 1){
-        setIncorrect(true)
+        alert('encontrado')
         sessionStorage.setItem('professor', JSON.stringify(response.data[0]))
         console.log(JSON.parse(sessionStorage.getItem('professor')))
         
