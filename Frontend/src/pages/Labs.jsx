@@ -121,7 +121,6 @@ function Labs() {
 
     window.addEventListener('resize', handleResize);
 
-    // Cleanup the event listener on component unmount
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -169,9 +168,10 @@ function Labs() {
                             </table>
                         ))}
                     </div>
-                        <div className="footer" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-                            <div>{monthLabels[currentMes % 12]}</div>
-                        </div>
+                    <div className="month" >
+                        <div>{monthLabels[currentMes % 12]}</div>
+                        <div>{currentAno}</div>
+                    </div>
 
                     
                 </div>
