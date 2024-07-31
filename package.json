@@ -1,14 +1,14 @@
 {
-    "name": "sal",
-    "version": "1.0.0",
-    "private": true,
-    "scripts": {
-      "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\"",
-      "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
-      "build": "npm run build --prefix backend && npm run build --prefix frontend"
-    },
-    "dependencies": {
-      "concurrently": "^7.6.0"
-    }
+  "name": "SAL",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"npm run start --prefix backend\" \"npm run start --prefix frontend\"",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend"
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
   }
-  
+}
