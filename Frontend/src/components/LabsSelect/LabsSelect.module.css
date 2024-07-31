@@ -32,6 +32,12 @@
 
 }
 
+.button div:nth-child(2){
+    display: flex;
+    gap: 6px;
+    font-size: 1.1em;
+}
+
 @media (max-width: 430px) {
     .button{
         flex-direction: row;

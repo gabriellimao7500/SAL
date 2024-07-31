@@ -56,7 +56,6 @@ function Labs() {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
-
     useEffect(() => {
         setPrevDisabled(currentWeek === 0);
         setNextDisabled(currentWeek === weeks.length - 1);
@@ -170,8 +169,6 @@ function Labs() {
                         <div>{monthLabels[currentMes % 12]}</div>
                         <div>{currentAno}</div>
                     </div>
-
-                    
                 </div>
                 <div className="navigation">
                     <button id="ir" onClick={() => changeWeek(1)} disabled={nextDisabled}><span className="material-symbols-outlined">chevron_right</span></button>

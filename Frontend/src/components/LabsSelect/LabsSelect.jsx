@@ -6,9 +6,11 @@ function LabsSelect({svg, name, number}){
     
     return(
         <Link to="/Labs" className={styles.button}>
-            <div dangerouslySetInnerHTML={{ __html: svg }} />
-            <h3>{name}</h3>
-            <h3>{number}</h3>
+            <div dangerouslySetInnerHTML={{ __html: svg }}></div>
+            <div>
+                <h3>{name}</h3>
+                <h3>{number}</h3>
+            </div>
         </Link>
     )
 }
