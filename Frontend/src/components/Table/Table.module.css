@@ -69,7 +69,7 @@ th, td {
     margin-top: 10px;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
     width: 100vw;
 }
 
@@ -81,12 +81,12 @@ th, td {
 .select{
     cursor: pointer;
     transition: 150ms ease-in-out;
-    height: 20px;
-    border: black 18px solid;
+    height: 40px;
+    border: black 24px solid;
 }
 
 td:hover .select{
-    border: black 0px solid;
+    border: black 2px solid;
     height: 48px;
     background-color: #6C63FF;
     transition: 150ms ease-in-out;
@@ -101,14 +101,14 @@ td:hover .select{
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 65vh;
+
     gap: 20px;
 }
 
 .hours{
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
     flex-direction: column;
 }
 
@@ -116,7 +116,7 @@ td:hover .select{
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-top: 40px;
+    margin-top: 36px;
 }
 
 .dontmove{
@@ -125,10 +125,6 @@ td:hover .select{
     align-items: end;
 }
 
-.footer div{
-    letter-spacing: 40px;
-    position: fixed;
-}
 
 @media (max-width: 430px) {
     
