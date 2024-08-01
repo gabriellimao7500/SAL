@@ -120,13 +120,26 @@ function Table() {
     const renderMonthLabel = () => {
         const week = weeks[currentWeek];
         const isMonthTransition = week.some(day => day === 1);
-
-        if (isMonthTransition) {
-            return <div>{monthLabels[currentMes % 12]} - {monthLabels[(currentMes % 12) + 1]}</div>;
+    
+        if (currentWeek !== 0 && isMonthTransition) {
+            // Se a semana não for a primeira e há transição de mês
+            const nextMonth = (currentMes + 1) % 12;
+            return (
+                <div>
+                    {monthLabels[currentMes % 12]} - {monthLabels[nextMonth]}
+                </div>
+            );
         } else {
-            return <div>{monthLabels[currentMes % 12]}</div>;
+            // Caso contrário, apenas exibe o mês atual
+            return (
+                <div>
+                    {monthLabels[currentMes % 12]}
+                </div>
+            );
         }
     };
+    
+    
 
     return (
         <section className={styles.calendar}>
