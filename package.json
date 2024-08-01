@@ -9,6 +9,17 @@
     "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend"
   },
   "dependencies": {
-    "concurrently": "^7.6.0"
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "concurrently": "^7.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemailer": "^6.9.14",
+    "nodemon": "^3.1.4",
+    "swiper": "^11.1.9"
+  },
+  "devDependencies": {
+    "vite": "^5.3.5"
   }
 }

@@ -1,8 +1,8 @@
-const express = require('express');
-const cors = require('cors');  // Adicionando a importação do cors
+const express = require('../../node_modules/express');
+const cors = require('../../node_modules/cors');  // Adicionando a importação do cors
 const router = require('./router');
 const app = express();
-const bodyParser = require('body-parser');
+const bodyParser = require('../../node_modules/body-parser');
 
 app.use(express.json());
 app.use(bodyParser.json())

@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer');
-require('dotenv').config();
+const nodemailer = require('../../node_modules/nodemailer');
+require('../../node_modules/dotenv').config();
 const connection = require('./models/connection');
 
 //Verificar se email inserido existe no banco de dados

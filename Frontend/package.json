@@ -16,7 +16,7 @@
     "react-router-dom": "^6.23.1",
     "sal": "file:..",
     "SAL": "file:..",
-    "swiper": "^11.1.4"
+    "swiper": "^11.1.9"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
