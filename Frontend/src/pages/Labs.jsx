@@ -4,7 +4,6 @@ import Select from "../components/Select/Select";
 import './Labs.css';
 
 function Labs() {
-<<<<<<< HEAD
     const date = new Date();
     const dia = date.getDate();
     const sem = date.getDay();
@@ -124,8 +123,6 @@ function Labs() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-=======
->>>>>>> 814d5268e8e6d48e1019bb1931b74406f712ec14
 
     return (
         <div className="App">
