@@ -1,5 +1,6 @@
 import Header from "../components/header/Header";
 import Table from "../components/Table/Table";
+import Select from "../components/Select/Select";
 import './Labs.css';
 
 function Labs() {
@@ -8,6 +9,7 @@ function Labs() {
         <div className="App">
             <Header />
             <Table />
+            <Select />
         </div>
     );
 }

@@ -9,7 +9,6 @@ function LabsSelect({svg, name, number}){
             <div dangerouslySetInnerHTML={{ __html: svg }}></div>
             <div>
                 <h3>{name}</h3>
-                <h3>{number}</h3>
             </div>
         </Link>
     )
