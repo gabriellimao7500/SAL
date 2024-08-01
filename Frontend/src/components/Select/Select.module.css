@@ -2,7 +2,7 @@
     width: 200px;
     height: 30px;
     padding: 10px;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 180;
     cursor: pointer;
     border: 1px solid #fff;
@@ -10,7 +10,7 @@
     background: black;
     display: flex;
     align-items: center;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: center;
     transition: 0.2s ease-in;
     z-index: 10;
@@ -46,10 +46,13 @@
     border: 1px solid #00000000;
     
 }.mainactive{
+    width: 180px;
     border: white 1px solid;
+    border-top: none;
     background-color: black;
     padding: 20px;
     z-index: 10;
+    font-size: 18px;
 }
 
 .on {
