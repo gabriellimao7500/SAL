@@ -1,8 +1,9 @@
 import Header from "../components/header/Header";
-import React, { useState, useEffect } from 'react';
+import Table from "../components/Table/Table";
 import './Labs.css';
 
 function Labs() {
+<<<<<<< HEAD
     const date = new Date();
     const dia = date.getDate();
     const sem = date.getDay();
@@ -122,59 +123,13 @@ function Labs() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+=======
+>>>>>>> 814d5268e8e6d48e1019bb1931b74406f712ec14
 
     return (
         <div className="App">
             <Header />
-            <section className="calendar">
-                <section className="hours">
-                    <div>{windowWidth > 430 ? '7:00 - 7:50' : '1°'}</div>
-                    <div>{windowWidth > 430 ? '7:50 - 8:40' : '2°'}</div>
-                    <div>{windowWidth > 430 ? '8:40 - 9:30' : '3°'}</div>
-                    <div>{windowWidth > 430 ? '9:50 - 10:40' : '4°'}</div>
-                    <div>{windowWidth > 430 ? '10:40 - 11:30' : '5°'}</div>
-                    <div>{windowWidth > 430 ? '11:30 - 12:20' : '6°'}</div>
-                </section>
-                <div className="schedule-container">
-                    <div className="schedule-wrapper" style={{ transform: `translateX(-${currentWeek * 100}%)` }}>
-                        {weeks.map((week, index) => (
-                            <table key={index} className={`week-${index + 1}`}>
-                                <thead>
-                                    <tr>
-                                        {week.map((day, idx) => (
-                                            <th key={idx} 
-                                            className={day === dia && currentMes === mesatu && currentAno === ano ? "in" : ""}>
-                                                {['Seg', 'Ter', 'Qua', 'Qui', 'Sex'][idx]}
-                                                <br />
-                                                <span className='day'>{day}</span>
-                                            </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {Array(6).fill().map((_, rowIndex) => (
-                                        <tr key={rowIndex}>
-                                            {Array(5).fill().map((_, colIndex) => (
-                                                <td key={colIndex}>
-                                                    <div className="select"></div>
-                                                </td>
-                                            ))}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        ))}
-                    </div>
-                    <div className="month" >
-                        <div>{monthLabels[currentMes % 12]}</div>
-                        <div>{currentAno}</div>
-                    </div>
-                </div>
-                <div className="navigation">
-                    <button id="ir" onClick={() => changeWeek(1)} disabled={nextDisabled}><span className="material-symbols-outlined">chevron_right</span></button>
-                    <button id="voltar" onClick={() => changeWeek(-1)} disabled={prevDisabled}><span className="material-symbols-outlined">chevron_left</span></button>
-                </div>
-            </section>
+            <Table />
         </div>
     );
 }
