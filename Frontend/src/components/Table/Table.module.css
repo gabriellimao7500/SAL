@@ -1,8 +1,6 @@
 .schedule-container {
     overflow: hidden;
     width: 80vw;
-    display: flex;
-    justify-content: center;
 }
 
 .schedule-wrapper {
@@ -66,15 +64,13 @@ th, td {
 .month {
     position: fixed;
     bottom: 30px;
-    
+    left:0px;
     display: flex;
     margin-top: 10px;
     flex-direction: column;
     align-items: center;
-    width: 100vw;
     gap: 20px;
-    
-    
+    width: 100vw;
 }
 
 .month div {
