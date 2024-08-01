@@ -9,8 +9,8 @@ function Login() {
 
   const [incorrect, setIncorrect] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
+    
     
      try {
       const response = await axios.post('http://localhost:3333/login',
