@@ -1,0 +1,83 @@
+.select {
+    width: 200px;
+    height: 30px;
+    padding: 10px;
+    font-size: 22px;
+    font-weight: 180;
+    cursor: pointer;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    background: black;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    transition: 0.2s ease-in;
+    z-index: 10;
+    user-select: none; /* Para navegadores modernos */
+  -webkit-user-select: none; /* Para Safari e Chrome */
+  -moz-user-select: none; /* Para Firefox */
+  -ms-user-select: none; /* Para Internet Explorer/Edge */
+}.selectactive{
+    transition: 0.2s ease-in;
+    justify-content: start;
+}
+
+
+.select:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.option {
+    margin-right: 10px;
+    cursor: pointer;
+    display: none; /* Hides options by default */
+}
+
+.menu {
+    display: flex;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #00000000;
+    
+}.mainactive{
+    border: white 1px solid;
+    background-color: black;
+    padding: 20px;
+    z-index: 10;
+}
+
+.on {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-inline: 10px;
+    justify-content: space-around;
+    transition: 0.1s ease-out;
+}
+.on:hover {
+    text-shadow: white 0px 0px 4px;
+    transition: 0.1s ease-in;
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-inline: 10px;
+    font-weight: 200;
+}
+
+.info{
+    margin-top: 20px;
+}.info:hover{
+    text-shadow: white 0px 0px 8px;
+}

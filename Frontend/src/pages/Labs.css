@@ -1,0 +1,9 @@
+.select_main{
+    height: 10vh;
+    width: 100vw;
+    z-index: 11;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+}
