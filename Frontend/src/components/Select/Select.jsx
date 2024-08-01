@@ -24,9 +24,10 @@ var labs = [
     }
 ]
 
-function Select({ LabTipe, LabAtu, Type }) {
+function Select({ LabTipe, LabAtu, Type, horarioAtu }) {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedLab, setSelectedLab] = useState(LabAtu);
+    const [selectedHour, setSelectedHour] = useState(horarioAtu);
     const selectRef = useRef(null);
 
     function handleLabClick(lab, event) {
@@ -38,6 +39,19 @@ function Select({ LabTipe, LabAtu, Type }) {
         } else {
             // Set the selected lab and close the menu if a different lab is clicked
             setSelectedLab(lab.numeroLaboratorio);
+            setIsOpen(false);
+        }
+    }
+
+    function handleHourClick(hour, event) {
+        event.stopPropagation(); // Prevents click event from propagating to the parent div
+
+        if (selectedHour === hour.hora) {
+            // Toggle menu visibility if the same hour is clicked
+            setIsOpen(prevIsOpen => !prevIsOpen);
+        } else {
+            // Set the selected hour and close the menu if a different hour is clicked
+            setSelectedHour(hour.hora);
             setIsOpen(false);
         }
     }
@@ -62,63 +76,67 @@ function Select({ LabTipe, LabAtu, Type }) {
         };
     }, []);
 
+    var horarios = [{ hora: "Manhã" }, { hora: "Tarde" }, { hora: "Noite" }]
+
     return (
-        <div 
+        <div
             ref={selectRef} // Attach the ref to the container
-            className={isOpen ? `${styles.select} ${styles.selectactive}` : styles.select} 
-            id="options" 
-            name="options" 
+            className={isOpen ? `${styles.select} ${styles.selectactive}` : styles.select}
+            id="options"
+            name="options"
             onClick={handleSelectClick} // Handle click for opening/closing the menu
         >
             <div className={isOpen ? styles.main && styles.mainactive : styles.main}>
                 {Type == "lab" ? labs.map((lab, index) => (
-                    <div 
+                    <div
                         className={
-                            isOpen 
-                            ? `${styles.option} ${styles.menu}` 
-                            : (selectedLab === lab.numeroLaboratorio 
-                                ? `${styles.option} ${styles.on}` 
-                                : styles.option)
-                        } 
+                            isOpen
+                                ? `${styles.option} ${styles.menu}`
+                                : (selectedLab === lab.numeroLaboratorio
+                                    ? `${styles.option} ${styles.on}`
+                                    : styles.option)
+                        }
                         key={index}
                         onClick={(event) => handleLabClick(lab, event)} // Handle click for selecting an option
                     >
                         <div id={lab.numeroLaboratorio} className={!isOpen ? '' : styles.info}>
                             {lab.tipoLaboratorio + " "}{lab.numeroLaboratorio}
                         </div>
-                        {(selectedLab === lab.numeroLaboratorio && !isOpen) ? 
+                        {(selectedLab === lab.numeroLaboratorio && !isOpen) ?
                             (<div className={styles.arrow}>
                                 <span className="material-symbols-outlined">
                                     keyboard_arrow_down
                                 </span>
                             </div>)
-                        : null}
+                            : null}
                     </div>
                 )) : null}
-                {Type == "date" ? labs.map((lab, index) => (
-                    <div 
+
+                {Type == "date" ? horarios.map((hour, index) => (
+                    <div
                         className={
-                            isOpen 
-                            ? `${styles.option} ${styles.menu}` 
-                            : (selectedLab === lab.numeroLaboratorio 
-                                ? `${styles.option} ${styles.on}` 
-                                : styles.option)
-                        } 
+                            isOpen
+                                ? `${styles.option} ${styles.menu}`
+                                : (selectedHour === hour.hora
+                                    ? `${styles.option} ${styles.on}`
+                                    : styles.option)
+                        }
                         key={index}
-                        onClick={(event) => handleLabClick(lab, event)} // Handle click for selecting an option
+                        onClick={(event) => handleHourClick(hour, event)} // Handle click for selecting an option
                     >
-                        <div id={lab.numeroLaboratorio} className={!isOpen ? '' : styles.info}>
-                            {lab.tipoLaboratorio + " "}{lab.numeroLaboratorio}
+                        <div id={hour.hora} className={!isOpen ? '' : styles.info}>
+                            {hour.hora}
                         </div>
-                        {(selectedLab === lab.numeroLaboratorio && !isOpen) ? 
+                        {(selectedHour === hour.hora && !isOpen) ?
                             (<div className={styles.arrow}>
                                 <span className="material-symbols-outlined">
                                     keyboard_arrow_down
                                 </span>
                             </div>)
-                        : null}
+                            : null}
                     </div>
                 )) : null}
+
             </div>
         </div>
     )

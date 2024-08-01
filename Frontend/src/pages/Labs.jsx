@@ -10,7 +10,7 @@ function Labs() {
             <Header Labs={true}/>
             <div className="select_main">
                 <Select LabAtu={1} Type={"lab"}/>
-                <Select LabAtu={1} Type={"date"}/>
+                <Select Type={"date"} horarioAtu={"Manhã"}/>
             </div>
             <Table />
         </div>
