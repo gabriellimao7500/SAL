@@ -3,16 +3,17 @@ import { useState, useEffect, useRef } from 'react';
 import Login from '../../Login/Login';
 
 function User() {
+    const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')));
+    const [session, setSession] = useState(!!professor);
     const [login, setLogin] = useState(false);
     const [imageSrc, setImageSrc] = useState('generic.jpg');
     const menuRef = useRef(null);
     const sectionRef = useRef(null);
 
-    // Definindo a imagem
+    // Atualizando a imagem do professor
     useEffect(() => {
-        const professor = sessionStorage.getItem('professor');
         if (professor) {
-            const { imagem } = JSON.parse(professor);
+            const { imagem } = professor;
             if (imagem) {
                 setImageSrc(imagem);
             } else {
@@ -21,7 +22,7 @@ function User() {
         } else {
             setImageSrc('generic.jpg');
         }
-    }, []);
+    }, [professor]);
 
     function toggleLogin() {
         setLogin(prevLogin => !prevLogin);
@@ -33,6 +34,13 @@ function User() {
         }
     }
 
+    function handleLogout() {
+        sessionStorage.removeItem('professor');
+        setProfessor(null);
+        setSession(false);
+        setLogin(false);
+    }
+
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -42,8 +50,8 @@ function User() {
 
     return (
         <>
-            <div onClick={toggleLogin} className='user'>
-                <div>Login</div>
+            <div onClick={session ? handleLogout : toggleLogin} className='user'>
+                <div>{session ? 'Logout' : 'Login'}</div>
                 <img className='userImage' src={imageSrc} alt="User" />
             </div>
 
