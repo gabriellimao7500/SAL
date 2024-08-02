@@ -69,8 +69,9 @@ th, td {
     margin-top: 10px;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
     width: 100vw;
+
 }
 
 .month div {
@@ -83,6 +84,8 @@ th, td {
     transition: 150ms ease-in-out;
     height: 40px;
     border: black 24px solid;
+    display: flex;
+    align-items: center;
 }
 
 td:hover .select{

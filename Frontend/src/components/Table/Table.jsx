@@ -9,6 +9,10 @@ function Table() {
     let mes = 6;
     let day = 1;
 
+    const mes2 = 7;
+    const day2 = 1;
+    const year2 = 2024;
+
     const primeiroDiaMesSeguinte = new Date(ano, mes + 1, 1);
     const ultimoDiaMesAtual = new Date(primeiroDiaMesSeguinte - 1);
     const diasNoMes = ultimoDiaMesAtual.getDate();
@@ -27,6 +31,17 @@ function Table() {
         const weeksPassed = diffInMs / msInAWeek;
         return Math.floor(weeksPassed);
     }
+
+   function getWeeksPassed2(initialYear, initialMonth, initialDay, endYear, endMonth, endDay) {
+    const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
+    const endDate = new Date(endYear, endMonth - 1, endDay);
+    const diffInMs = endDate - initialDate;
+    const msInAWeek = 1000 * 60 * 60 * 24 * 7;
+    const weeksPassed = diffInMs / msInAWeek;
+    return Math.floor(weeksPassed);
+    }
+
+    
 
     const weeksPass = getWeeksPassed(2024, 7, 1);
 
@@ -120,13 +135,76 @@ function Table() {
     const renderMonthLabel = () => {
         const week = weeks[currentWeek];
         const isMonthTransition = week.some(day => day === 1);
-
-        if (isMonthTransition) {
-            return <div>{monthLabels[currentMes % 12]} - {monthLabels[(currentMes % 12) + 1]}</div>;
+    
+        if (currentWeek !== 0 && isMonthTransition) {
+            // Se a semana não for a primeira e há transição de mês
+            const nextMonth = (currentMes + 1) % 12;
+            return (
+                <div>
+                    {monthLabels[currentMes % 12]} - {monthLabels[nextMonth]}
+                </div>
+            );
         } else {
-            return <div>{monthLabels[currentMes % 12]}</div>;
+            // Caso contrário, apenas exibe o mês atual
+            return (
+                <div>
+                    {monthLabels[currentMes % 12]}
+                </div>
+            );
         }
     };
+
+    function getDayOfWeek(dateString) {
+        const date = new Date(dateString);
+        const day = date.getUTCDay();
+        // Ajustar para que segunda-feira seja 1 e sexta-feira seja 5
+        return day === 0 || day === 6 ? null : day;
+    }
+    
+    var bolas = 0
+
+    var reserva = [
+        {
+          idReserva: 1,
+          dataReserva: "2024-07-10T03:00:00.000Z",
+          periodo: "Manhã",
+          aulaReserva: 1,
+          nome: "pedro",
+          email:"pedro@pedrin.com",
+          tipoLaboratorio: "quimica",
+          numeroLaboratorio:"1",
+          svg: "bbbbb",
+          motivo: "Experimento de química",
+          turma: "Turma A"
+        },
+      {
+          idReserva: 1,
+          dataReserva: "2024-07-26T03:00:00.000Z",
+          periodo: "Manhã",
+          aulaReserva: 2,
+          nome: "pedro",
+          email:"pedro@pedrin.com",
+          tipoLaboratorio: "quimica",
+          numeroLaboratorio:"1",
+          svg: "bbbbb",
+          motivo: "Experimento de química",
+          turma: "Turma A"
+        }
+      ]
+
+      var dt = new Date(reserva[1].dataReserva);
+      var d = dt.getUTCDate();
+      var m = dt.getUTCMonth() + 1;
+      var a = dt.getUTCFullYear();
+      let wp = getWeeksPassed2(year2,mes2,day2,a,m,d)
+      var multi = 5 * wp
+      var aula = (wp * 7) + reserva[1].aulaReserva
+      var sem = getDayOfWeek(dt)
+  
+      var indice = ((aula-1)*5+sem-1) - multi
+      console.log(indice)
+      var idx = 0
+
 
     return (
         <section className={styles.calendar}>
@@ -159,7 +237,7 @@ function Table() {
                                     <tr key={rowIndex}>
                                         {Array(5).fill().map((_, colIndex) => (
                                             <td key={colIndex}>
-                                                <div className={styles.select}></div>
+                                                <div className={styles.select}><div className={idx == indice ? `ocupado ${idx ++} ` : `none ${idx ++}`}><h1>ocup</h1></div></div>
                                             </td>
                                         ))}
                                     </tr>

@@ -7,3 +7,14 @@
     flex-direction: row;
     justify-content: space-around;
 }
+
+.ocupado{
+    background: #FF3162;
+    min-height: 40px;
+    height: 100%;
+    width: 100%;
+    border: black 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
