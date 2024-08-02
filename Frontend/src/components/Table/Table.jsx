@@ -153,6 +153,8 @@ function Table() {
             );
         }
     };
+    
+    
 
     function getDayOfWeek(dateString) {
         const date = new Date(dateString);
