@@ -168,7 +168,7 @@ function Table() {
     var reserva = [
         {
           idReserva: 1,
-          dataReserva: "2024-07-10T03:00:00.000Z",
+          dataReserva: "2024-08-01T03:00:00.000Z",
           periodo: "Manhã",
           aulaReserva: 1,
           nome: "pedro",
@@ -179,9 +179,9 @@ function Table() {
           motivo: "Experimento de química",
           turma: "Turma A"
         },
-      {
+        {
           idReserva: 1,
-          dataReserva: "2024-07-26T03:00:00.000Z",
+          dataReserva: "2024-08-02T03:00:00.000Z",
           periodo: "Manhã",
           aulaReserva: 2,
           nome: "pedro",
@@ -191,22 +191,65 @@ function Table() {
           svg: "bbbbb",
           motivo: "Experimento de química",
           turma: "Turma A"
-        }
-      ]
+        },
+        {
+            idReserva: 1,
+            dataReserva: "2024-08-02T03:00:00.000Z",
+            periodo: "Manhã",
+            aulaReserva: 3 ,
+            nome: "pedro",
+            email:"pedro@pedrin.com",
+            tipoLaboratorio: "quimica",
+            numeroLaboratorio:"1",
+            svg: "bbbbb",
+            motivo: "Experimento de química",
+            turma: "Turma A"
+          },{
+            idReserva: 1,
+            dataReserva: "2024-08-07T03:00:00.000Z",
+            periodo: "Manhã",
+            aulaReserva: 5,
+            nome: "pedro",
+            email:"pedro@pedrin.com",
+            tipoLaboratorio: "quimica",
+            numeroLaboratorio:"1",
+            svg: "bbbbb",
+            motivo: "Experimento de química",
+            turma: "Turma A"
+          }
+    ]
 
-      var dt = new Date(reserva[1].dataReserva);
-      var d = dt.getUTCDate();
-      var m = dt.getUTCMonth() + 1;
-      var a = dt.getUTCFullYear();
-      let wp = getWeeksPassed2(year2,mes2,day2,a,m,d)
-      var multi = 5 * wp
-      var aula = (wp * 7) + reserva[1].aulaReserva
-      var sem = getDayOfWeek(dt)
+      var idx = []
+    reserva.map((reserva, id) => {
+        var dt = new Date(reserva.dataReserva);
+        var d = dt.getUTCDate();
+        var m = dt.getUTCMonth() + 1;
+        var a = dt.getUTCFullYear();
+        let wp = getWeeksPassed2(year2,mes2,day2,a,m,d)
+        var multi = 5 * wp
+        var aula = (wp * 7) + reserva.aulaReserva
+        var sem = getDayOfWeek(dt)
   
       var indice = ((aula-1)*5+sem-1) - multi
-      console.log(indice)
-      var idx = 0
 
+      idx.push(indice)
+    });
+      
+
+
+    var idxAtu = 0
+    var atu = 0
+
+    const getClassName = () => {
+        if (idx[atu] === idxAtu) {
+            idxAtu++;
+            atu ++
+            return 'ocupado';
+        } else {
+            idxAtu++;
+            return styles.select;
+        }
+    };
 
     return (
         <section className={styles.calendar}>
@@ -239,7 +282,7 @@ function Table() {
                                     <tr key={rowIndex}>
                                         {Array(5).fill().map((_, colIndex) => (
                                             <td key={colIndex}>
-                                                <div className={styles.select}><div className={idx == indice ? `ocupado ${idx ++} ` : `none ${idx ++}`}><h1>ocup</h1></div></div>
+                                                <div className={getClassName()} />
                                             </td>
                                         ))}
                                     </tr>

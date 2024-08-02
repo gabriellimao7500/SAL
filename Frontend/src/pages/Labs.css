@@ -10,11 +10,16 @@
 
 .ocupado{
     background: #FF3162;
-    min-height: 40px;
+    min-height: 44px;
     height: 100%;
     width: 100%;
-    border: black 1px solid;
+    border: black 5px solid;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    transition: 200ms ease-in ;
+}.ocupado:hover{
+    border: black 1px solid;
+    transition: 200ms ease-out;
 }
