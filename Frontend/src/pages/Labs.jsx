@@ -5,6 +5,8 @@ import Select from "../components/Select/Select";
 import './Labs.css';
 
 function Labs() {
+    
+
     return (
         <div className="App">
             <Header Labs={true}/>

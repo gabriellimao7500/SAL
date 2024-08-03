@@ -38,6 +38,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu }) {
             setIsOpen(prevIsOpen => !prevIsOpen);
         } else {
             // Set the selected lab and close the menu if a different lab is clicked
+            localStorage.setItem("numLab", lab.numeroLaboratorio)
             setSelectedLab(lab.numeroLaboratorio);
             setIsOpen(false);
         }
@@ -51,6 +52,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu }) {
             setIsOpen(prevIsOpen => !prevIsOpen);
         } else {
             // Set the selected hour and close the menu if a different hour is clicked
+            localStorage.setItem("periodo", hour.hora)
             setSelectedHour(hour.hora);
             setIsOpen(false);
         }
@@ -80,7 +82,6 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu }) {
 
     return (
         <div
-            onChange={`${localStorage.setItem("periodo", horarios.hora)}${console.log(localStorage.getItem("periodo"))}`}
             ref={selectRef} // Attach the ref to the container
             className={isOpen ? `${styles.select} ${styles.selectactive}` : styles.select}
             id="options"
