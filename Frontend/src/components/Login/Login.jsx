@@ -46,7 +46,7 @@ function Login() {
       <section className="login">
         <h1>Login</h1>
         <form className='inputs' onSubmit={handleLogin}>
-          <Inputs 
+          <Inputs
             text="username" 
             type="text" 
             name="email" 

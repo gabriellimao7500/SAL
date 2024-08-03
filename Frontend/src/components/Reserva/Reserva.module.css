@@ -1,0 +1,22 @@
+.blur{
+    width: 100vw;
+    height: 100vh;
+    bottom: 0;
+    position: fixed;
+    backdrop-filter: blur(6px);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reservas{
+    width: 440px;
+    height: 540px;
+    border-radius: 8px;
+    background: linear-gradient(to bottom, rgba(100,107,193,0.9),rgba(47,50,91,0.8));
+}
+
+.submit{
+    cursor: pointer;
+}

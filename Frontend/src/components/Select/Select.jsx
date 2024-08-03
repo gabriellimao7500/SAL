@@ -80,6 +80,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu }) {
 
     return (
         <div
+            onChange={`${localStorage.setItem("periodo", horarios.hora)}${console.log(localStorage.getItem("periodo"))}`}
             ref={selectRef} // Attach the ref to the container
             className={isOpen ? `${styles.select} ${styles.selectactive}` : styles.select}
             id="options"

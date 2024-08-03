@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createElement } from 'react';
 import styles from './Table.module.css';
+import Reserva from '../Reserva/Reserva';
 
 function Table() {
     const date = new Date();
@@ -33,12 +34,12 @@ function Table() {
     }
 
    function getWeeksPassed2(initialYear, initialMonth, initialDay, endYear, endMonth, endDay) {
-    const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
-    const endDate = new Date(endYear, endMonth - 1, endDay);
-    const diffInMs = endDate - initialDate;
-    const msInAWeek = 1000 * 60 * 60 * 24 * 7;
-    const weeksPassed = diffInMs / msInAWeek;
-    return Math.floor(weeksPassed);
+        const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
+        const endDate = new Date(endYear, endMonth - 1, endDay);
+        const diffInMs = endDate - initialDate;
+        const msInAWeek = 1000 * 60 * 60 * 24 * 7;
+        const weeksPassed = diffInMs / msInAWeek;
+        return Math.floor(weeksPassed);
     }
 
     
@@ -162,8 +163,6 @@ function Table() {
         // Ajustar para que segunda-feira seja 1 e sexta-feira seja 5
         return day === 0 || day === 6 ? null : day;
     }
-    
-    var bolas = 0
 
     var reserva = [
         {
@@ -219,7 +218,7 @@ function Table() {
           }
     ]
 
-      var idx = []
+    var idx = []
     reserva.map((reserva, id) => {
         var dt = new Date(reserva.dataReserva);
         var d = dt.getUTCDate();
@@ -235,8 +234,6 @@ function Table() {
       idx.push(indice)
     });
       
-
-
     var idxAtu = 0
     var atu = 0
 
@@ -251,8 +248,75 @@ function Table() {
         }
     };
 
+    const [onReserva, setOnReserva] = useState(false);
+    const [type, setType] = useState(false);
+    const [targetReserva, setTargetReserva] = useState(0);
+    function reser(event) {
+        const target = event.target;
+        if (target.classList.contains('ocupado')) {
+            setType(false)
+            setOnReserva(true)
+        } else {
+            setType(true)
+            setOnReserva(true)
+        }
+
+    }
+    function reservasOff() {
+        setOnReserva(false)
+    }
+
+    const obj = document.querySelectorAll(".ocupado")
+    obj.forEach((element, index) => {
+        element.addEventListener('click', () => {
+            setTargetReserva(index)
+        })
+    })
+
+    function calculateDate(startDay, startMonth, startYear, weeksPassed, weekDay) {
+        // Cria uma nova data com base nos parâmetros fornecidos
+        let startDate = new Date(startYear, startMonth - 1, startDay);
+        
+        // Calcula o número total de dias a serem adicionados
+        let totalDays = weeksPassed * 7 + (weekDay - 1);
+        
+        // Adiciona os dias à data inicial
+        startDate.setDate(startDate.getDate() + totalDays);
+        
+        // Retorna a data final no formato YYYY-MM-DD
+        let year = startDate.getFullYear();
+        let month = (startDate.getMonth() + 1).toString().padStart(2, '0');
+        let day = startDate.getDate().toString().padStart(2, '0');
+        
+        var dateReserva = new Date(Date.UTC(year, month - 1, day, 3, 0, 0));
+
+        return dateReserva;
+    }
+    var indie = 0
+
+    const [dateReserva,setDateReserva] = useState('')
+
+    const allButtons = document.querySelectorAll(".indice")
+    allButtons.forEach((element, index) => {
+        element.addEventListener('click', () => {
+            indie = index
+            let aula = Math.floor(indie / 5) + 1;
+            let diaSem = (indie % 5) + 1;
+            
+            let wp = 0;
+            while (aula > 6) {
+                aula -= 6;
+                wp++;
+            }
+            let temp = calculateDate( day2, mes2, year2, wp, diaSem)
+            var formatoISO = temp.toISOString();
+            setDateReserva(formatoISO);
+        })
+    })
+
     return (
         <section className={styles.calendar}>
+            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={reserva[targetReserva]} type={type} date={dateReserva}></Reserva>) : ''}
             <section className={styles.hours}>
                 <div>{windowWidth > 430 ? '7:00 - 7:50' : '1°'}</div>
                 <div>{windowWidth > 430 ? '7:50 - 8:40' : '2°'}</div>
@@ -282,7 +346,7 @@ function Table() {
                                     <tr key={rowIndex}>
                                         {Array(5).fill().map((_, colIndex) => (
                                             <td key={colIndex}>
-                                                <div className={getClassName()} />
+                                                <div className={`${getClassName()} indice`} onClick={reser} type={type}/>
                                             </td>
                                         ))}
                                     </tr>
