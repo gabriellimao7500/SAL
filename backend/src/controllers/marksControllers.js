@@ -2,11 +2,11 @@ const markModels = require('../models/markModels');
 
 const createMark = async (req, res) => {
     try {
-        console.log("O corpo da requisição é:"+req.body)
+        
+        const { dataReserva, periodo, aulaReserva, idProfessor,numeroLaboratorio,tipoLaboratorio, motivo} = req.body;
 
-        const { dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma } = req.body;
 
-        if (!dataReserva || !aulaReserva || !idProfessor || !idLaboratorio || !motivo) {
+        if (!dataReserva || !aulaReserva || !idProfessor || !numeroLaboratorio||!tipoLaboratorio || !motivo) {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
         }
         const reservaData = {
@@ -14,9 +14,9 @@ const createMark = async (req, res) => {
             periodo,
             aulaReserva,
             idProfessor,
-            idLaboratorio,
-            motivo,
-            turma
+            numeroLaboratorio,
+            tipoLaboratorio,
+            motivo
         };
         const createdReserva = await markModels.createReserva(reservaData);
         return res.status(201).json({
@@ -29,9 +29,11 @@ const createMark = async (req, res) => {
     }
 };
 
-const getData = async (_req, res) => {
+const getData = async (req, res) => {
+    const{periodo,tipoLaboratorio,numeroLaboratorio} = req.body;
+    
     try {
-        const marks = await markModels.getData();
+        const marks = await markModels.getData(periodo,tipoLaboratorio,numeroLaboratorio);
         return res.status(200).json(marks);
     } catch (error) {
         console.error('Erro ao obter dados:', error);

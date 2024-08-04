@@ -1,7 +1,8 @@
 import styles from './Select.module.css'
 import { useState, useEffect, useRef } from 'react'
+import axios from 'axios'
 
-var labs = [
+/*var labs = [
     {
         "idLaboratorio": 1,
         "tipoLaboratorio": "Informatica",
@@ -22,13 +23,43 @@ var labs = [
         "tipoLaboratorio": "Informatica",
         "numeroLaboratorio": 4,
     }
-]
+]*/
 
-function Select({ LabTipe, LabAtu, Type, horarioAtu }) {
+function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedLab, setSelectedLab] = useState(LabAtu);
     const [selectedHour, setSelectedHour] = useState(horarioAtu);
     const selectRef = useRef(null);
+
+
+
+
+
+    const[labs, setLabs] = useState([]);
+    const[loading, setLoading] =useState(true);
+    useEffect(()=>{
+        const tipo = localStorage.getItem('typeLab')
+        console.log(tipo)
+        const fetchLabs = async()=>{
+            try {
+                const response = await axios.get(`http://localhost:3333/labsType/${tipo}`);
+                setLabs(response.data);
+            } catch (error) {
+                console.log('erro', error);
+            }
+            
+        }
+        fetchLabs()
+
+    },[]);
+
+
+
+
+
+
+
+
 
     function handleLabClick(lab, event) {
         event.stopPropagation(); // Prevents click event from propagating to the parent div
@@ -41,6 +72,8 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu }) {
             localStorage.setItem("numLab", lab.numeroLaboratorio)
             setSelectedLab(lab.numeroLaboratorio);
             setIsOpen(false);
+            pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'))
+            
         }
     }
 
@@ -55,6 +88,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu }) {
             localStorage.setItem("periodo", hour.hora)
             setSelectedHour(hour.hora);
             setIsOpen(false);
+            pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'))
         }
     }
 

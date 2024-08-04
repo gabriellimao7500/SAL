@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './Reserva.module.css';
+import axios from 'axios'
 
-function Reserva({ reserva , onBotaoClique, type, date}) {
+function Reserva({ reserva , onBotaoClique, type, date, aula}) {
   const [visible, setVisible] = useState(true);
+  const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')))
+  const [motivo, setMotivo] = useState('')
   const reservasRef = useRef(null);
   const { periodo } = reserva
   var dt = new Date(date);
@@ -29,16 +32,56 @@ function Reserva({ reserva , onBotaoClique, type, date}) {
     };
   }, [reservasRef]);
 
+const handleLogin = async() =>{
+  if(professor){
+      const  data2 = date;
+      const periodo2 = localStorage.getItem('periodo');
+      const aula2 = aula;
+      const idProf = professor.idProfessor;
+      const numLab2 = localStorage.getItem('numLab');
+      const tipoLab = localStorage.getItem('typeLab');
+      const motivo2 = motivo;
+
+      const result = await axios.post('http://localhost:3333/createMarks',
+        JSON.stringify({
+          "dataReserva": date,
+          "periodo": periodo2,
+          "aulaReserva":aula2,
+          "idProfessor": idProf,
+          "numeroLaboratorio": numLab2,
+          "tipoLaboratorio":tipoLab,
+          "motivo":motivo2
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+
+      console.log(professor.idProfessor)
+      console.log(localStorage.getItem('periodo'))
+      console.log(aula)
+      console.log(localStorage.getItem('typeLab'))
+      console.log(localStorage.getItem('numLab'))
+      console.log(date)
+      console.log(motivo)
+
+  }else{
+    alert('não encontrado')
+  }
+
+  onBotaoClique()
+}
+
   return (
     <section className={visible ? styles.blur : "none"}>
       <section ref={reservasRef} className={styles.reservas}>
         {`${periodo} ${d}/${m}/${a}`}
         {type ? (
-            <form action="" onSubmit={(e) => {
-                e.preventDefault()
-            }}>
-                <input type="text" name="" id="" />
-                <input className={styles.submit}  type="submit" value="Reservar" onClick={onBotaoClique} />
+            <form action="" onSubmit={handleLogin}>
+                <input type="text" name="" id="" onChange={(e) => setMotivo(e.target.value)} />
+                <input className={styles.submit}  type="submit" value="Reservar"/>
             </form>
         ): ''}
       </section>

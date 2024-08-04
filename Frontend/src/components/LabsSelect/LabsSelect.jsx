@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './button.css'
 import { useRef } from 'react'
 
-function LabsSelect({ svg, name, number }) {
+function LabsSelect({ svg, name}) {
     const nameRef = useRef(null);
 
     const handleClick = () => {

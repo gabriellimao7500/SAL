@@ -14,9 +14,9 @@ router.get('/prof', profController.getData);
 router.get('/prof/:idProfessor', profController.getDataFromId);
 // labs
 router.get('/labs', labsConstrollers.getAll);
-router.get('/labs/:idLaboratorio', labsConstrollers.getDataFromId);
+router.get('/labsType/:tipoLaboratorio', labsConstrollers.getDataFromType);
 // reservas
-router.get('/marks', marksControllers.getData);
+router.post('/marks', marksControllers.getData);
 router.get('/marks/:idReserva', marksControllers.getDataFromId);
 router.post('/createMarks', marksControllers.createMark);
 router.put('/marks/:idReserva', marksControllers.updateReserva);

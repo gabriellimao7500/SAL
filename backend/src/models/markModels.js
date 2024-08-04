@@ -1,23 +1,33 @@
 const connection = require('./connection/connection');
+const { format } = require('date-fns');
 
 const createReserva = async (reservaData) => {
-    const { dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma } = reservaData;
+    const { dataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo } = reservaData;
+
+    const formattedDataReserva = format(new Date(dataReserva), 'yyyy-MM-dd');
+
     const query = `
-        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (?, ?, ?, ?, (SELECT idLaboratorio FROM laboratorio WHERE numeroLaboratorio = ? AND tipoLaboratorio = ?), ?)
     `;
     // eslint-disable-next-line no-useless-catch
     try {
-        const [result] = await connection.execute(query, [dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo, turma]);
+        const [result] = await connection.execute(query, [formattedDataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo]);
         return { insertId: result.insertId };
     } catch (err) {
         throw err;
     }
 };
 
-const getData = async() =>{
-    const query = "SELECT * FROM reserva";
-    const [marks] = await connection.execute(query);// query sql para pegar todas as reservas
+
+const getData = async(periodo,tipoLaboratorio,numeroLaboratorio) =>{
+    const query = `select dataReserva, periodo, aulaReserva, nome, email, tipoLaboratorio, numeroLaboratorio,svg,motivo, turma FROM reserva
+                        INNER JOIN professor ON reserva.idProfessor = professor.idProfessor
+                        INNER JOIN laboratorio ON reserva.idLaboratorio = laboratorio.idLaboratorio
+                   WHERE periodo = ? AND tipoLaboratorio = ? AND numeroLaboratorio = ?
+                   ORDER BY dataReserva ASC`;
+                        
+    const [marks] = await connection.execute(query,[periodo,tipoLaboratorio,numeroLaboratorio]);// query sql para pegar todas as reservas
     return marks;
 };
 
