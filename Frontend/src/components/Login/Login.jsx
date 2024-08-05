@@ -14,17 +14,21 @@ function Login() {
     e.preventDefault(); // Previne o comportamento padrão do formulário
 
     try {
-      const response = await axios.post('http://localhost:3333/login',
-        JSON.stringify({ "email": email, "senha": senha }),
+      const response = await fetch('http://localhost:3333/login',
         {
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json'
-          }
-        }
-      );
+          },
+          body: JSON.stringify({ "email":email, "senha":senha })
+        }).then(res => res.json()
+        );
+      ;
 
-      if (Array.isArray(response.data) && response.data.length === 1) {
-        sessionStorage.setItem('professor', JSON.stringify(response.data[0]));
+        console.log(response[0])
+
+      if (response[0]) {
+        sessionStorage.setItem('professor', JSON.stringify(response[0]));
         console.log(JSON.parse(sessionStorage.getItem('professor')));
         
         // Remove parâmetros da URL sem recarregar a página
