@@ -17,17 +17,60 @@ O SAL é um sistema projetado para facilitar o agendamento e gerenciamento de la
 ## Estrutura do Projeto
 
 ```
-SAL/
-├── controllers/        # Controladores de rotas
-├── models/             # Definições de modelos do banco de dados
-├── routes/             # Definição de rotas
-├── views/              # Arquivos de interface do usuário (se aplicável)
-├── public/             # Arquivos estáticos como CSS, JS, imagens
-├── config/             # Configurações da aplicação, como conexão com banco de dados
-├── .env.example        # Exemplo de variáveis de ambiente
-├── package.json        # Dependências e scripts do projeto
-├── README.md           # Documentação do projeto
-└── ...                 # Outros arquivos relevantes
+backend/
+├── src/
+│   ├── controllers/        # Controladores de rotas
+│   ├── models/             # Definições de modelos do banco de dados
+│   │   ├── connection/
+│   │   ├── login/
+│   │   ├── labsModels.js
+│   │   ├── markModels.js
+│   │   ├── profModels.js
+│   │   └── reqsModels.js
+│   ├── app.js              # Arquivo principal da aplicação
+│   ├── requisicao.js       # Lógica de requisição
+│   ├── router.js           # Definição de rotas
+│   ├── server.js           # Configuração do servidor
+│   └── verificador-email.js # Verificação de email
+├── .env.exemple            # Exemplo de variáveis de ambiente
+├── eslint.config.mjs       # Configuração do ESLint
+├── package-lock.json       # Arquivo de lock das dependências
+└── package.json            # Dependências e scripts do projeto
+
+frontend/
+├── public/                 # Arquivos estáticos
+│   ├── index.html          # HTML principal
+│   └── logo.svg            # Logo da aplicação
+└── src/
+    ├── assets/             # Recursos como imagens, fontes etc.
+    ├── components/         # Componentes do React
+    │   ├── Carousel/
+    │   ├── Hamburger/
+    │   ├── header/
+    │   ├── Inputs/
+    │   ├── LabsSelect/
+    │   ├── Login/
+    │   ├── Reserva/
+    │   ├── Select/
+    │   └── Table/
+    ├── pages/              # Páginas da aplicação
+    ├── App.css             # Estilos principais da aplicação
+    ├── App.jsx             # Componente principal do React
+    ├── index.css           # Estilos globais
+    └── main.jsx            # Ponto de entrada do React
+├── .eslintrc.cjs           # Configuração do ESLint para o frontend
+├── .gitignore              # Arquivos e pastas a serem ignorados pelo git
+├── package-lock.json       # Arquivo de lock das dependências do frontend
+├── package.json            # Dependências e scripts do frontend
+├── README.md               # Documentação do frontend
+└── vite.config.js          # Configuração do Vite
+
+.gitignore                  # Arquivos e pastas a serem ignorados pelo git (raiz do projeto)
+exemplo-01.md               # Exemplo de documentação
+package-lock.json           # Arquivo de lock das dependências (raiz do projeto)
+package.json                # Dependências e scripts do projeto (raiz do projeto)
+README.md                   # Documentação do projeto (raiz do projeto)
+
 ```
 
 ## Pré-requisitos
@@ -36,8 +79,8 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 
 - [Node.js](https://nodejs.org/) - Versão 14 ou superior
 - [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/) - Gerenciador de pacotes
-- [MySQL](https://www.mysql.com/) - Banco de dados
-
+- [MySQL](https://www.mysql.com/) - Versão 5.7 (Recomendado via docker)
+- 
 ## Instalação
 
 1. **Clone o repositório:**
@@ -50,7 +93,7 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
 2. **Instale as dependências:**
 
    ```bash
-   npm install
+   npm run install:all
    ```
 
 3. **Configuração do banco de dados:**
@@ -65,34 +108,28 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
    DB_NAME=nome-do-banco
    ```
 
-4. **Execute as migrações e seeds (se houver):**
-
-   ```bash
-   npx sequelize-cli db:migrate
-   npx sequelize-cli db:seed:all
-   ```
-
 ## Uso
 
-Para iniciar o servidor, use o comando:
+Para iniciar os servidores em modo de desenvolvimento, use o comando:
 
 ```bash
-npm start
+npm run dev
 ```
 
-O servidor estará disponível em `http://localhost:3000`.
+O servidor backend estará disponível em `http://localhost:3333`.
 
-### Endpoints
+### Endpoints (localhost:3333)
 
-- `GET /api/reservas`: Obtém todas as reservas de laboratórios.
-- `POST /api/reservas`: Cria uma nova reserva de laboratório.
-- `GET /api/professores`: Obtém todos os professores.
-- `GET /api/laboratorios`: Obtém todos os laboratórios.
+- `GET /marks`: Obtém todas as reservas de laboratórios.
+- `POST /marks`: Cria uma nova reserva de laboratório.
+- `GET /prof`: Obtém todos os professores.
+- `GET /labs`: Obtém todos os laboratórios.
+- `GET /reqs`: Obtém todas as requisições.
 - ...
 
 ### Interface
 
-A interface do usuário pode ser acessada em `http://localhost:3000`. Nela, é possível visualizar e agendar laboratórios.
+A interface do usuário pode ser acessada em `http://localhost:5173`. Nela, é possível visualizar e agendar laboratórios.
 
 ## Contribuição
 
