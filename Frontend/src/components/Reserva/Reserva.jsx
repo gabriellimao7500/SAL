@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from './Reserva.module.css';
 import axios from 'axios'
 
-function Reserva({ reserva , onBotaoClique, type, date, aula}) {
+function Reserva({ reserva , onBotaoClique, type, date, aula, pullMarks}) {
   const [visible, setVisible] = useState(true);
   const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')))
   const [motivo, setMotivo] = useState('')
@@ -32,7 +32,10 @@ function Reserva({ reserva , onBotaoClique, type, date, aula}) {
     };
   }, [reservasRef]);
 
-const handleLogin = async() =>{
+const handleLogin = async(e) =>{
+  
+  e.preventDefault()
+  
   if(professor){
       const  data2 = date;
       const periodo2 = localStorage.getItem('periodo');
@@ -70,8 +73,9 @@ const handleLogin = async() =>{
   }else{
     alert('não encontrado')
   }
-
+  pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'))
   onBotaoClique()
+  
 }
 
   return (

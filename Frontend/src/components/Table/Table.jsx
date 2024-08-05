@@ -2,7 +2,19 @@ import React, { useState, useEffect, createElement } from 'react';
 import styles from './Table.module.css';
 import Reserva from '../Reserva/Reserva';
 
-function Table({reserva}) {
+function Table({reserva, pullMarks}) {
+    reserva.push({
+        "dataReserva": "0000-00-00T00:00:00.000Z",
+        "periodo": "",
+        "aulaReserva": 0,
+        "nome": "",
+        "email": "",
+        "tipoLaboratorio": "",
+        "numeroLaboratorio": 0,
+        "svg": "",
+        "motivo": "",
+        "turma": null
+      })
     const date = new Date();
     const dia = date.getDate();
     const ano = date.getFullYear();
@@ -177,7 +189,7 @@ function Table({reserva}) {
 
 
 
-
+    
 
     /*var reserva = [
         {
@@ -253,7 +265,7 @@ function Table({reserva}) {
     var atu = 0
 
     const getClassName = () => {
-        if (idx[atu] === idxAtu) {
+        if (idx.includes(idxAtu)) {
             idxAtu++;
             atu ++
             return 'ocupado';
@@ -336,7 +348,7 @@ function Table({reserva}) {
     
     return (
         <section className={styles.calendar}>
-            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={reserva[targetReserva]} type={type} date={dateReserva} aula={aulaAtu}></Reserva>) : ''}
+            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={reserva[targetReserva]} type={type} date={dateReserva} aula={aulaAtu} pullMarks={pullMarks}></Reserva>) : ''}
             <section className={styles.hours}>
                 <div>{windowWidth > 430 ? '7:00 - 7:50' : '1°'}</div>
                 <div>{windowWidth > 430 ? '7:50 - 8:40' : '2°'}</div>

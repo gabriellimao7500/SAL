@@ -39,7 +39,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
     const[loading, setLoading] =useState(true);
     useEffect(()=>{
         const tipo = localStorage.getItem('typeLab')
-        console.log(tipo)
+        
         const fetchLabs = async()=>{
             try {
                 const response = await axios.get(`http://localhost:3333/labsType/${tipo}`);

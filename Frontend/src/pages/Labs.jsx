@@ -13,7 +13,7 @@ function Labs() {
     const[tipo2, setTipo2] = useState(localStorage.getItem('typeLab'))
     const[num2, setNum2] = useState(localStorage.getItem('numLab'))
 
-    console.log(periodo2, tipo2, num2)
+    
 
     const pullMarks = async (periodo2, tipo2, numLab2) => {
         
@@ -32,6 +32,7 @@ function Labs() {
         );
         setReservas(result.data);
         
+        
     };
 
     useEffect(() => {
@@ -45,7 +46,7 @@ function Labs() {
                 <Select LabAtu={1} Type={"lab"} pullMarks={pullMarks} />
                 <Select Type={"date"} horarioAtu={"Manhã"} pullMarks={pullMarks} />
             </div>
-            <Table reserva={reservas}/>
+            <Table reserva={reservas} pullMarks={pullMarks}/>
         </div>
     );
 }
