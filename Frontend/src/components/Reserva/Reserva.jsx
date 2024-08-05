@@ -49,7 +49,7 @@ const handleLogin = async(e) =>{
         JSON.stringify({
           "dataReserva": date,
           "periodo": periodo2,
-          "aulaReserva":aula2,
+          "aulaReserva":aula,
           "idProfessor": idProf,
           "numeroLaboratorio": numLab2,
           "tipoLaboratorio":tipoLab,
@@ -61,7 +61,6 @@ const handleLogin = async(e) =>{
           }
         }
       )
-
       
 
   }else{

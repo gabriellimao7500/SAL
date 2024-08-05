@@ -35,7 +35,8 @@ function Labs() {
     };
 
     useEffect(() => {
-        console.log(localStorage.getItem('typeLab'))
+        localStorage.setItem("periodo", 'Manhã')
+        localStorage.setItem("numLab", 1)
         pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
     }, []); // Chama pullMarks uma vez quando o componente monta
 

@@ -26,6 +26,8 @@ import axios from 'axios'
 ]*/
 
 function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
+    
+
     const [isOpen, setIsOpen] = useState(false)
     const [selectedLab, setSelectedLab] = useState(LabAtu);
     const [selectedHour, setSelectedHour] = useState(horarioAtu);
