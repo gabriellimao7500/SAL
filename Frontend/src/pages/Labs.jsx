@@ -6,8 +6,7 @@ import axios from "axios";
 import './Labs.css';
 
 function Labs() {
-    localStorage.setItem('periodo', 'Manhã');
-    localStorage.setItem('numLab', 1);
+    
     const [reservas, setReservas] = useState([]);
     const[periodo2, setPeriodo2] = useState(localStorage.getItem('periodo'))
     const[tipo2, setTipo2] = useState(localStorage.getItem('typeLab'))
@@ -36,6 +35,7 @@ function Labs() {
     };
 
     useEffect(() => {
+        console.log(localStorage.getItem('typeLab'))
         pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
     }, []); // Chama pullMarks uma vez quando o componente monta
 

@@ -37,7 +37,7 @@ const handleLogin = async(e) =>{
   e.preventDefault()
   
   if(professor){
-      const  data2 = date;
+      
       const periodo2 = localStorage.getItem('periodo');
       const aula2 = aula;
       const idProf = professor.idProfessor;
@@ -62,13 +62,7 @@ const handleLogin = async(e) =>{
         }
       )
 
-      console.log(professor.idProfessor)
-      console.log(localStorage.getItem('periodo'))
-      console.log(aula)
-      console.log(localStorage.getItem('typeLab'))
-      console.log(localStorage.getItem('numLab'))
-      console.log(date)
-      console.log(motivo)
+      
 
   }else{
     alert('não encontrado')
