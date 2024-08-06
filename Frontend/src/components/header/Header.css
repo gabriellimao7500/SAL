@@ -8,6 +8,14 @@ header{
 
 }
 
+.logo_SAL{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}.logo_beta{
+    margin-bottom: -8px;
+}
+
 .division{
     width: 100%;
     display: flex;

@@ -1,0 +1,53 @@
+
+
+.content{
+    color: #000;
+    font-weight: normal;
+    font-size: 14px;
+    width: 110%;
+    height: 120px;
+    background-color: rgba(255, 255, 255, 0.75);
+    margin-top: 40px;
+    border-radius: 4px;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    padding: 8px;
+}
+.input{
+    width: 98%;
+    height: 90%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+.text{
+    padding-left: 10px;
+    padding-right: 40px;
+    padding-top: 4px;
+    text-align: start;
+}
+
+.input::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+.input::-webkit-scrollbar-track {
+  background: #999;
+  border: 1px solid #666; 
+  border-radius: 50px;
+}
+
+.input::-webkit-scrollbar-thumb {
+  background: #666;
+  border: 1px solid #333;
+  border-radius: 50px;
+}
+
+.motivo{
+    margin-left: 8px;
+    color: #2D2F55;
+    font-size: 16px;
+    font-weight: bold;
+}

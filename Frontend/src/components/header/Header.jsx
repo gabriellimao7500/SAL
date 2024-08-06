@@ -29,8 +29,12 @@ function Header( {Labs}) {
           <div className="deadpool_3"></div>
           <h1>
             <Link to="/">
-              <div>{windowWidth > 430 ? 'S.A.L' : ''}</div>
-              <img src="../../logo.svg" alt="" width={windowWidth > 430 ? '40' : '60'} />
+            <img src="../../logo.svg" alt="" width={windowWidth > 430 ? '40' : '60'} />
+              <div className="logo_SAL">
+                <div className='logo_beta'>{windowWidth > 430 ? 'S.A.L' : ''}</div>
+                {windowWidth > 430 ? (<img  src="../../beta.svg" alt="" width={50}/>) : ''}
+              </div>
+
             </Link>
           </h1>
         </div>

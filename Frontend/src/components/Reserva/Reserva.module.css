@@ -14,9 +14,94 @@
     width: 440px;
     height: 540px;
     border-radius: 8px;
-    background: linear-gradient(to bottom, rgba(100,107,193,0.9),rgba(47,50,91,0.8));
+    background: linear-gradient(to bottom, rgba(100,107,193,0.95),rgba(47,50,91,0.95));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.reservado{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hours{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 20px;
+}
+.periodo{
+    font-weight: 600;
+}
+.time{
+    font-weight: 300;
 }
 
 .submit{
     cursor: pointer;
+}
+.svg{
+    width: 40px;
+    height: 40px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.labinfo{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 80%;
+}
+.labname{
+    font-size: 18px;
+    font-weight: 300;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.Reservado_por{
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+    align-items: start;
+}
+.inforeserva{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline: 10%;
+    padding-top: 60px;
+}
+.img{
+    border-radius: 50%;
+    object-fit: cover;
+}
+.nameProfessor{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.userinfo{
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+.name{
+    font-size: 18px;
+    font-weight: bold;
+}.email{
+    font-size: 14px;
+    font-weight: 100;
 }

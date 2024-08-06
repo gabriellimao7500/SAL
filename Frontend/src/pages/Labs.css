@@ -13,13 +13,16 @@
     min-height: 44px;
     height: 100%;
     width: 100%;
-    border: black 5px solid;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: 200ms ease-in ;
+    transition: 150ms ease-in ;
+    border: 2px solid black;
+    border-radius: 4px;
 }.ocupado:hover{
-    border: black 1px solid;
-    transition: 200ms ease-out;
+    outline: white 1px solid;
+    transition: 150ms ease-out;
+}.ocupado::after{
+    content: 'ocupado';
 }

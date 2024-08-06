@@ -85,6 +85,7 @@ th, td {
     border: black 24px solid;
     display: flex;
     align-items: center;
+    border-radius: 4px;
 }
 
 td:hover .select{
