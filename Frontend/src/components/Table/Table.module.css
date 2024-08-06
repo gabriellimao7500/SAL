@@ -37,7 +37,6 @@ th, td {
     border: 1px solid #6C63FF;
     color: white;
     padding: 10px;
-    cursor: pointer;
     background: none;
     color: #6C63FF;
     width: 50px;
@@ -56,7 +55,7 @@ th, td {
 }
 
 .navigation button:disabled{
-    cursor: not-allowed;
+    cursor: url("../../../public/block.png"),not-allowed !important;
     border: 1px solid #6C63FF;
     color: #6C63FF;
 }
@@ -79,7 +78,6 @@ th, td {
 }
 
 .select{
-    cursor: pointer;
     transition: 150ms ease-in-out;
     height: 40px;
     border: black 24px solid;
@@ -93,6 +91,9 @@ td:hover .select{
     height: 48px;
     background-color: #6C63FF;
     transition: 150ms ease-in-out;
+}
+td{
+    cursor: url("../../../public/hand.png"),not-allowed !important;
 }
 
 .in{

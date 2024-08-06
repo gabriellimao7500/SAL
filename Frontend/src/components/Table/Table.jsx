@@ -337,7 +337,6 @@ function Table({reserva, pullMarks}) {
             
             setAulaAtu(aula)
             
-
         })
         
     })

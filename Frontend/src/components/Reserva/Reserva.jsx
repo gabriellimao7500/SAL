@@ -8,7 +8,7 @@ function Reserva({ reserva , onBotaoClique, type, date, aula, pullMarks}) {
   const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')))
   const [motivo3, setMotivo] = useState('')
   const reservasRef = useRef(null);
-  const { periodo, svg, numeroLaboratorio, tipoLaboratorio, nome, email, motivo, aulaReserva} = reserva
+  const { periodo, svg, numeroLaboratorio, tipoLaboratorio, nome, email, motivo} = reserva
   var dt = new Date(date);
   var d = dt.getUTCDate();
   var m = dt.getUTCMonth() + 1;
@@ -83,7 +83,7 @@ const handleLogin = async(e) =>{
     <section className={visible ? styles.blur : "none"}>
       <section ref={reservasRef} className={styles.reservas}>
         <section className={styles.hours}>
-          <div className={styles.periodo}>{periodo}: {aulaReserva}° aula</div>
+          <div className={styles.periodo}>{periodo}: {aula}° aula</div>
           <div className={styles.time}>{d} / {m} / {a}</div>
         </section>
         {type ? (

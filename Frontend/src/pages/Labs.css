@@ -16,11 +16,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    cursor: url("../public/hand.png"),not-allowed !important;
     transition: 150ms ease-in ;
     border: 2px solid black;
     border-radius: 4px;
 }.ocupado:hover{
+    border: none;
     outline: white 1px solid;
     transition: 150ms ease-out;
 }.ocupado::after{
