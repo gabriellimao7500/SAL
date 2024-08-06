@@ -17,7 +17,7 @@
     background: linear-gradient(to bottom, rgba(100,107,193,0.95),rgba(47,50,91,0.95));
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; 
     padding-top: 20px;
 }
 
@@ -31,7 +31,7 @@
 
 .hours{
     width: 100%;
-    height: 20%;
+    height: 24%;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -45,7 +45,20 @@
 }
 
 .submit{
-    cursor: pointer;
+    font-size: 16px;
+    font-weight: bolder;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.75);
+    width: 105%;
+    height: 40px;
+    color: #333;
+    border: none;
+    cursor: url("../../../public/hand.png"),pointer;
+    transition: 150ms ease-out;
+}.submit:hover{
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.85);
+    transition: 150ms ease-in;
 }
 .svg{
     width: 40px;
@@ -104,4 +117,59 @@
 }.email{
     font-size: 14px;
     font-weight: 100;
+}
+
+.main_input{
+    margin-top: 40px;
+    width: 105%;
+    height: 220px;
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 20px;
+    align-items: start;
+}
+.input{
+    padding: 20px;
+    width: 100%;
+    height: 200%;
+    resize: none;
+    color: black;
+    font-weight: 500;
+    font-size: 18px; 
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.input::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+.input::-webkit-scrollbar-track {
+  background: #999;
+  border: 1px solid #666; 
+  border-radius: 50px;
+}
+
+.input::-webkit-scrollbar-thumb {
+  background: #666;
+  border: 1px solid #333;
+  border-radius: 50px;
+}   
+
+.motivo{
+    margin-left: 8px;
+    color: #2D2F55;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

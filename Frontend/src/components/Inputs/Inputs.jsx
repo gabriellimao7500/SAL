@@ -19,7 +19,7 @@ function Inputs({ text, type, name, value, onChange }) {
                 name={name}
                 value={value}
                 onChange={onChange} 
-                className={value !== '' ? 'not-empty' : ''} 
+                className={value !== '' ? 'not-empty inp' : 'inp'} 
             />
         </div>
     );

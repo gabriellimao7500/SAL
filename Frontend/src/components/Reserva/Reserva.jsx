@@ -86,17 +86,20 @@ const handleLogin = async(e) =>{
           <div className={styles.periodo}>{periodo}: {aula}° aula</div>
           <div className={styles.time}>{d} / {m} / {a}</div>
         </section>
+        <section className={styles.labinfo}>
+            <div dangerouslySetInnerHTML={{ __html: svgWithClass }}></div>
+            <div className={styles.labname}>Laboratório de {tipoLaboratorio} <div/> {numeroLaboratorio}</div>
+        </section>
         {type ? (
-            <form action="" onSubmit={handleLogin}>
-                <input type="text" name="" id="" onChange={(e) => setMotivo(e.target.value)} />
+            <form action="" onSubmit={handleLogin} className={styles.form}>
+                <div className={styles.main_input}>
+                <div className={styles.motivo}>Motivo:</div>
+                <textarea className={styles.input} type="text" name="" id="" onChange={(e) => setMotivo(e.target.value)} />
+                </div>
                 <input className={styles.submit}  type="submit" value="Reservar"/>
             </form>
         ): (
           <section className={styles.reservado}>
-            <section className={styles.labinfo}>
-            <div dangerouslySetInnerHTML={{ __html: svgWithClass }}></div>
-            <div className={styles.labname}>Laboratório de {tipoLaboratorio} <div/> {numeroLaboratorio}</div>
-            </section>
             <section className={styles.inforeserva}>
               <div className={styles.Reservado_por}><div>Reservado por:</div></div>
               <section className={styles.userinfo}>
