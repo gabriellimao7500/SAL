@@ -3,6 +3,7 @@ body{
   cursor: url("../public/normal.png"), auto;
 }
 
+
 a, button, .pointer, .info div, .duvidas, .user, .hamburguer {
   cursor: url("../public/hand.png"),auto !important;
 }
