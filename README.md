@@ -102,10 +102,10 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
    - Copie o arquivo `.env.example` para `.env` e preencha com suas informações de banco de dados:
 
    ```bash
-   DB_HOST=localhost
-   DB_USER=root
-   DB_PASS=sua-senha
-   DB_NAME=nome-do-banco
+   HOST=localhost
+   USER=root
+   PASS=sua-senha
+   NAME=nome-do-banco
    ```
 
 ## Uso
