@@ -24,7 +24,9 @@ const getAll = async() =>{
 FROM 
     laboratorio
 GROUP BY 
-    tipoLaboratorio;
+    tipoLaboratorio
+ORDER BY tipoLaboratorio ASC
+;
 `;
     const [labs] = await connection.execute(query);// query sql para pegar todas as reservas
     return labs;
