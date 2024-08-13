@@ -178,7 +178,7 @@ function Table({reserva, pullMarks}) {
 
 
 
-    var reserva = [
+    /*var reserva = [
         {
           idReserva: 1,
           dataReserva: "2024-08-01T03:00:00.000Z",
@@ -230,7 +230,7 @@ function Table({reserva, pullMarks}) {
             motivo: "Experimento de química",
             turma: "Turma A"
           }
-    ]
+    ]*/
 
     var idx = []
     reserva.map((reserva, id) => {
@@ -337,6 +337,7 @@ function Table({reserva, pullMarks}) {
             
             setAulaAtu(aula)
             
+
         })
         
     })
