@@ -24,9 +24,9 @@ function Header( {Labs}) {
     <header>
       <Hamburguer />
       <section className="division">
-        <div className="deadpool_2"></div>
+        <div className="spacing_2"></div>
         <div>
-          <div className="deadpool_3"></div>
+          <div className="spacing_3"></div>
           <h1>
             <Link to="/">
             <img src="../../logo.svg" alt="" width={windowWidth > 430 ? '40' : '60'} />
@@ -39,7 +39,7 @@ function Header( {Labs}) {
           </h1>
         </div>
         <section className="info">
-          <div>About us</div>
+          <Link to="/AboutUs"><div className='About_Us_Link'>About us</div></Link>
           <div>Docs</div>
           <div>Help</div>
         </section>

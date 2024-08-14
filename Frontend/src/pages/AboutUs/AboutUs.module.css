@@ -1,0 +1,98 @@
+
+
+.main{
+    width: 100vw;
+    height: 80vh;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    gap: 10px;
+    overflow: hidden;
+    padding-left: 40px;
+}
+
+.info{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.project_info{
+    text-align: left;
+    font-size: 18px;
+    line-height: 1.6em;
+}
+
+
+.buttons{
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    z-index: 8;
+}
+
+.flip_container {
+    perspective: 1500px; /* Define a perspectiva para o efeito 3D */
+}
+
+.flip_card {
+  width: 800px;
+  height: 380px;
+  position: relative;
+  transform-style: preserve-3d; /* Preserva o estilo 3D dos filhos */
+  transition: transform 0.6s; /* Tempo de transição para a rotação */
+}
+
+.flip_card_inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d; /* Preserva o estilo 3D dos filhos */
+}
+
+.flip_in {
+  transform: rotateY(-180deg); /* Rotaciona o cartão quando hoverado */
+}
+.flip_off {
+    transform: rotateY(0deg); /* Rotaciona o cartão quando hoverado */
+}
+.flip_card_front, .flip_card_back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* Oculta o verso da face quando girado */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flip_card_front {
+  background-color: black;
+}
+
+.flip_card_back {
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    background-color: black;
+    transform: rotateY(180deg); /* Gira a parte de trás para que fique atrás da frente */
+}
+
+.logo{
+    animation: float 4s infinite ease-in-out;
+}
+@keyframes float {
+    0% {
+        transform: translateY(0) rotateY(-20deg);
+      }
+      50% {
+        transform: translateY(-40px) rotateY(20deg);
+      }
+      100% {
+        transform: translateY(0) rotateY(-20deg);
+      }
+}

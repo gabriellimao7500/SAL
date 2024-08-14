@@ -98,8 +98,16 @@ header{
     min-width: 15%;
 }
 
-.deadpool_2 {
+.spacing_2 {
     position: fixed;
+}
+
+.About_Us_Link{
+    color: #888;   
+    transition: 150ms ease-in;
+}.About_Us_Link:hover{
+    color: #f7f7f7;
+    transition: 150ms ease-in;
 }
 
 @media  (max-width: 430px) {
@@ -109,10 +117,10 @@ header{
     .duvidas {
         display: none;
     }
-    .deadpool_3{
+    .spacing_3{
         display: none;
     }
-    .deadpool_2{
+    .spacing_2{
         position: relative;
         width: 50px;
         height: 50px;
@@ -130,10 +138,10 @@ header{
     .duvidas {
         display: none;
     }
-    .deadpool_3{
+    .spacing_3{
         display: none;
     }
-    .deadpool_2{
+    .spacing_2{
         position: relative;
         width: 50px;
         height: 50px;

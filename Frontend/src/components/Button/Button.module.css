@@ -1,0 +1,36 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}.main:hover{
+    cursor: url("/hand.png"),not-allowed !important;
+}
+
+.ball{
+    border-radius: 50%;
+    border: solid 1px #E2E2E2;
+}
+
+.ball_in{
+    width: 26px;
+    height: 26px;
+    background-color: #fff;
+    transition: 0.3s ease-out;
+}
+.ball_off{
+    width: 18px;
+    height: 18px;
+    background: none;
+    transition: 0.3s ease-in;
+}
+
+.in{
+    color: #fff;
+    font-size: 30px;
+    transition: 0.3s ease-out;
+}
+.off{
+    font-weight: 100;
+    font-size: 18px;
+    transition: 0.3s ease-in;
+}
