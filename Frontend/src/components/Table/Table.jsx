@@ -2,7 +2,12 @@ import React, { useState, useEffect, createElement } from 'react';
 import styles from './Table.module.css';
 import Reserva from '../Reserva/Reserva';
 
+
+
 function Table({reserva, pullMarks}) {
+    
+    
+
     reserva.push(
         {
             "idReserva": 0,
@@ -83,6 +88,8 @@ function Table({reserva, pullMarks}) {
     }
 
     useEffect(() => {
+        
+
         setPrevDisabled(currentWeek === 0);
         setNextDisabled(currentWeek === weeks.length - 1);
     }, [currentWeek, weeks.length]);

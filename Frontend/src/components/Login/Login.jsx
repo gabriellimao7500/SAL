@@ -33,6 +33,7 @@ function Login() {
         
         // Redireciona para a página Labs
         navigate('/SelectLab');
+        navigate(-1)
       } else {
         setIncorrect(true);
         setTimeout(() => setIncorrect(false), 2000);

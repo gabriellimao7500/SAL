@@ -73,7 +73,7 @@ const handleLogin = async(e) =>{
       
 
   }else{
-    alert('não encontrado')
+    alert('Professor não reconhecido. Por favor, faça o login para reservar um horário')
   }
   pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
   onBotaoClique()
