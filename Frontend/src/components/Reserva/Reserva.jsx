@@ -36,25 +36,33 @@ function Reserva({ reserva , onBotaoClique, type, date, aula, pullMarks}) {
 const handleLogin = async(e) =>{
   
   e.preventDefault()
+ 
   
   if(professor){
+
+    console.log(date)
+    console.log(aula)
+    console.log(motivo3)
+    console.log(professor)
+    console.log(localStorage.getItem('typeLab'))
+    console.log(localStorage.getItem('numLab'))
+    console.log(localStorage.getItem('periodo'))
+    
+
+
+
       
-      const periodo2 = localStorage.getItem('periodo');
-      const aula2 = aula;
-      const idProf = professor.idProfessor;
-      const numLab2 = localStorage.getItem('numLab');
-      const tipoLab = localStorage.getItem('typeLab');
-      const motivo2 = motivo3;
+      
 
       const result = await axios.post('http://localhost:3333/createMarks',
         JSON.stringify({
           "dataReserva": date,
-          "periodo": periodo2,
+          "periodo": localStorage.getItem('periodo'),
           "aulaReserva":aula,
-          "idProfessor": idProf,
-          "numeroLaboratorio": numLab2,
-          "tipoLaboratorio":tipoLab,
-          "motivo":motivo2
+          "idProfessor": professor.idProfessor,
+          "numeroLaboratorio": localStorage.getItem('numLab'),
+          "tipoLaboratorio":localStorage.getItem('typeLab'),
+          "motivo":motivo3
         }),
         {
           headers: {
@@ -67,7 +75,7 @@ const handleLogin = async(e) =>{
   }else{
     alert('não encontrado')
   }
-  pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'))
+  pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
   onBotaoClique()
   
 }
@@ -83,12 +91,12 @@ const handleLogin = async(e) =>{
     <section className={visible ? styles.blur : "none"}>
       <section ref={reservasRef} className={styles.reservas}>
         <section className={styles.hours}>
-          <div className={styles.periodo}>{periodo}: {aula}° aula</div>
+          <div className={styles.periodo}>{localStorage.getItem('periodo')}: {aula}° aula</div>
           <div className={styles.time}>{d} / {m} / {a}</div>
         </section>
         <section className={styles.labinfo}>
             <div dangerouslySetInnerHTML={{ __html: svgWithClass }}></div>
-            <div className={styles.labname}>Laboratório de {tipoLaboratorio} <div/> {numeroLaboratorio}</div>
+            <div className={styles.labname}>Laboratório de {localStorage.getItem('typeLab')} <div/> {localStorage.getItem('numLab')}</div>
         </section>
         {type ? (
             <form action="" onSubmit={handleLogin} className={styles.form}>

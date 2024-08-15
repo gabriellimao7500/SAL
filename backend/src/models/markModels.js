@@ -21,7 +21,7 @@ const createReserva = async (reservaData) => {
 
 
 const getData = async(periodo,tipoLaboratorio,numeroLaboratorio) =>{
-    const query = `select dataReserva, periodo, aulaReserva, nome, email, tipoLaboratorio, numeroLaboratorio,svg,motivo, turma FROM reserva
+    const query = `select idReserva, dataReserva, periodo, aulaReserva, nome, email, tipoLaboratorio, numeroLaboratorio,svg,motivo FROM reserva
                         INNER JOIN professor ON reserva.idProfessor = professor.idProfessor
                         INNER JOIN laboratorio ON reserva.idLaboratorio = laboratorio.idLaboratorio
                    WHERE periodo = ? AND tipoLaboratorio = ? AND numeroLaboratorio = ?
