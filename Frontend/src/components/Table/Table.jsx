@@ -7,21 +7,21 @@ import Reserva from '../Reserva/Reserva';
 function Table({reserva, pullMarks}) {
     
     
-
-    reserva.push(
-        {
-            "idReserva": 0,
-            "dataReserva": "0000-00-00T00:00:00.000Z",
-            "periodo": "",
-            "aulaReserva": 0,
-            "nome": "",
-            "email": "",
-            "tipoLaboratorio": "",
-            "numeroLaboratorio": 0,
-            "svg": "",
-            "motivo": ""
-        }
-    )
+if(reserva.length === 0){reserva.push(
+    {
+        "idReserva": 0,
+        "dataReserva": "0000-00-00T00:00:00.000Z",
+        "periodo": "",
+        "aulaReserva": 0,
+        "nome": "",
+        "email": "",
+        "tipoLaboratorio": "",
+        "numeroLaboratorio": 0,
+        "svg": "",
+        "motivo": ""
+    }
+)}
+    
     const date = new Date();
     const dia = date.getDate();
     const ano = date.getFullYear();
