@@ -26,6 +26,13 @@ function AboutUs(){
 
     const devs = [
         {
+            name : "Yan Carlos Camargo",
+            github: "https://github.com/YanCarlosCamargo",
+            insta: "https://www.instagram.com/yan.carlos.7/",
+            linkedin: "#"
+
+        },
+        {
             name: "Anderson Reis",
             github: "https://github.com/EuAndersonDev",
             insta: "https://www.instagram.com/anderson_reis04/",
@@ -54,7 +61,8 @@ function AboutUs(){
             github: "https://github.com/matheusviniciusbrito",
             insta: "https://www.instagram.com/mavinous/",
             linkedin: "https://www.linkedin.com/in/matheus-vinicius-rodrigues-brito-100620246/"
-        },
+        }
+        
         
     ]
 
