@@ -25,7 +25,7 @@ const getData = async(periodo,tipoLaboratorio,numeroLaboratorio) =>{
                         INNER JOIN professor ON reserva.idProfessor = professor.idProfessor
                         INNER JOIN laboratorio ON reserva.idLaboratorio = laboratorio.idLaboratorio
                    WHERE periodo = ? AND tipoLaboratorio = ? AND numeroLaboratorio = ?
-                   ORDER BY dataReserva ASC`;
+                   ORDER BY aulaReserva ASC, dataReserva ASC`;
                         
     const [marks] = await connection.execute(query,[periodo,tipoLaboratorio,numeroLaboratorio]);// query sql para pegar todas as reservas
     return marks;

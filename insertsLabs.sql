@@ -1,3 +1,4 @@
+-- Active: 1724677433889@@127.0.0.1@3306@sal
 alter table laboratorio MODIFY COLUMN tipoLaboratorio VARCHAR(70) NOT NULL
 
 
@@ -45,6 +46,12 @@ insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
 ('Auditório', 1 , "")
 
+select * from laboratorio
 
+
+insert into professor (nome, email, senha) VALUES
+('Prof A', 'prof.a@example.com', '123')
+
+select * from professor
 
 
