@@ -1,6 +1,7 @@
 import styles from './Select.module.css'
 import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
+import config from '../../../config';
 
 /*var labs = [
     {
@@ -44,7 +45,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
         
         const fetchLabs = async()=>{
             try {
-                const response = await axios.get(`http://localhost:3333/labsType/${tipo}`);
+                const response = await axios.get(`${config.apiUrl}/labsType/${tipo}`);
                 setLabs(response.data);
             } catch (error) {
                 console.log('erro', error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Carousel.module.css'
 import LabsSelect from '../LabsSelect/LabsSelect';
 import axios from 'axios'
+import config from '../../../config';
 
 import { Swiper, SwiperSlide} from 'swiper/react'
 
@@ -14,8 +15,10 @@ function Carousel(){
     const[loading, setLoading] =useState(true);
     useEffect(()=>{
         const fetchLabs = async()=>{
+            var url = config.apiUrl;
+            
             try {
-                const response = await axios.get('http://localhost:3333/labs');
+                const response = await axios.get(`${url}/labs`);
                 setLabs(response.data);
             } catch (error) {
                 console.log('erro', error);

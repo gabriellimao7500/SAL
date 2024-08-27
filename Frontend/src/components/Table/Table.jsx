@@ -244,6 +244,7 @@ if(reserva.length === 0){reserva.push(
     }
     function reservasOff() {
         setOnReserva(false)
+        pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
     }
     
     const obj = document.querySelectorAll(".ocupado")
@@ -302,7 +303,7 @@ if(reserva.length === 0){reserva.push(
     
     return (
         <section className={styles.calendar}>
-            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={reserva[targetReserva]} type={type} date={dateReserva} aula={aulaAtu} pullMarks={pullMarks}></Reserva>) : ''}
+            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={reserva[targetReserva]} type={type} date={dateReserva} aula={aulaAtu}></Reserva>) : ''}
             <section className={styles.hours}>
                 <div>{windowWidth > 430 ? '7:00 - 7:50' : '1°'}</div>
                 <div>{windowWidth > 430 ? '7:50 - 8:40' : '2°'}</div>

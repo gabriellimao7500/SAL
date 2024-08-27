@@ -3,6 +3,7 @@ import axios from 'axios';
 import './Login.css';
 import Inputs from '../Inputs/Inputs';
 import { useNavigate } from 'react-router-dom';
+import config from '../../../config';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -11,10 +12,9 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Previne o comportamento padrão do formulário
 
     try {
-      const response = await axios.post('http://localhost:3333/login',
+      const response = await axios.post(`${config.apiUrl}/login`,
         JSON.stringify({ "email": email, "senha": senha }),
         {
           headers: {

@@ -3,7 +3,7 @@ import styles from './Reserva.module.css';
 import axios from 'axios'
 import InputText from './InputText/InputText';
 
-function Reserva({ reserva , onBotaoClique, type, date, aula, pullMarks}) {
+function Reserva({ reserva , onBotaoClique, type, date, aula}) {
   const [visible, setVisible] = useState(true);
   const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')))
   const [motivo3, setMotivo] = useState('')
@@ -75,7 +75,7 @@ const handleLogin = async(e) =>{
   }else{
     alert('Professor não reconhecido. Por favor, faça o login para reservar um horário')
   }
-  pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+  
   onBotaoClique()
   
 }
