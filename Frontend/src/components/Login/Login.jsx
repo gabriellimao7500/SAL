@@ -32,7 +32,7 @@ function Login() {
         window.history.replaceState({}, document.title, cleanUrl);
         
         // Redireciona para a página Labs
-        navigate('/SelectLab');
+        navigate('/Labs');
         navigate(-1)
       } else {
         setIncorrect(true);
