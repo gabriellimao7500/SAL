@@ -1,11 +1,17 @@
-body{
+body {
   background-color: #000;
   cursor: url("../public/normal.png"), auto;
 }
 
 
-a, button, .pointer, .info div, .duvidas, .user, .hamburguer {
-  cursor: url("../public/hand.png"),auto !important;
+a,
+button,
+.pointer,
+.info div,
+.duvidas,
+.user,
+.hamburguer {
+  cursor: url("../public/hand.png"), auto !important;
 }
 
 #root {
@@ -15,7 +21,7 @@ a, button, .pointer, .info div, .duvidas, .user, .hamburguer {
   text-align: center;
   display: flex;
   flex-direction: column;
-
+  color: #FFF
 }
 
 
@@ -32,4 +38,3 @@ a, button, .pointer, .info div, .duvidas, .user, .hamburguer {
 .read-the-docs {
   color: #888;
 }
-

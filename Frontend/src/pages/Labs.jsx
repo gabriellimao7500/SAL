@@ -6,17 +6,17 @@ import axios from "axios";
 import './Labs.css';
 
 function Labs() {
-    
-    const [reservas, setReservas] = useState([]);
-    const[periodo2, setPeriodo2] = useState(localStorage.getItem('periodo'))
-    const[tipo2, setTipo2] = useState(localStorage.getItem('typeLab'))
-    const[num2, setNum2] = useState(localStorage.getItem('numLab'))
 
-    
+    const [reservas, setReservas] = useState([]);
+    const [periodo2, setPeriodo2] = useState(localStorage.getItem('periodo'))
+    const [tipo2, setTipo2] = useState(localStorage.getItem('typeLab'))
+    const [num2, setNum2] = useState(localStorage.getItem('numLab'))
+
+
 
     const pullMarks = async (periodo2, tipo2, numLab2) => {
-        
-        const result = await axios.post('http://localhost:3333/Marks',
+
+        const result = await axios.post('http://192.168.1.40:3333/Marks',
             JSON.stringify({
                 "periodo": periodo2,
                 "tipoLaboratorio": tipo2,
@@ -30,12 +30,12 @@ function Labs() {
 
         );
         setReservas(result.data);
-        
-        
+
+
     };
 
     useEffect(() => {
-        
+
         localStorage.setItem("periodo", 'Manhã')
         localStorage.setItem("numLab", 1)
         pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
@@ -43,18 +43,18 @@ function Labs() {
 
     /*var reserva = [
         {
-		"idReserva": 14,
-		"dataReserva": "2024-08-15T03:00:00.000Z",
-		"periodo": "Manhã",
-		"aulaReserva": 2,
-		"nome": "prof a",
-		"email": "prof.a@example.com",
-		"tipoLaboratorio": "Auditório",
-		"numeroLaboratorio": 1,
-		"svg": "bb",
-		"motivo": "hsvjdfvkasjvda",
-		"turma": ""
-	}
+        "idReserva": 14,
+        "dataReserva": "2024-08-15T03:00:00.000Z",
+        "periodo": "Manhã",
+        "aulaReserva": 2,
+        "nome": "prof a",
+        "email": "prof.a@example.com",
+        "tipoLaboratorio": "Auditório",
+        "numeroLaboratorio": 1,
+        "svg": "bb",
+        "motivo": "hsvjdfvkasjvda",
+        "turma": ""
+    }
     ]*/
     console.log(reservas)
 
@@ -65,8 +65,8 @@ function Labs() {
                 <Select LabAtu={1} Type={"lab"} pullMarks={pullMarks} />
                 <Select Type={"date"} horarioAtu={"Manhã"} pullMarks={pullMarks} />
             </div>
-            
-            <Table reserva={reservas} pullMarks = {pullMarks}/>
+
+            <Table reserva={reservas} pullMarks={pullMarks} />
         </div>
     );
 }

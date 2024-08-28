@@ -102,7 +102,7 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas:
    - Copie o arquivo `.env.example` para `.env` e preencha com suas informações de banco de dados:
 
    ```bash
-   HOST=localhost
+   HOST=192.168.1.40
    USER=root
    PASS=sua-senha
    NAME=nome-do-banco
@@ -116,9 +116,9 @@ Para iniciar os servidores em modo de desenvolvimento, use o comando:
 npm run dev
 ```
 
-O servidor backend estará disponível em `http://localhost:3333`.
+O servidor backend estará disponível em `http://192.168.1.40:3333`.
 
-### Endpoints (localhost:3333)
+### Endpoints (192.168.1.40:3333)
 
 - `GET /marks`: Obtém todas as reservas de laboratórios.
 - `POST /marks`: Cria uma nova reserva de laboratório.
@@ -129,7 +129,7 @@ O servidor backend estará disponível em `http://localhost:3333`.
 
 ### Interface
 
-A interface do usuário pode ser acessada em `http://localhost:5173`. Nela, é possível visualizar e agendar laboratórios.
+A interface do usuário pode ser acessada em `http://192.168.1.40:5173`. Nela, é possível visualizar e agendar laboratórios.
 
 ## Contribuição
 

@@ -3,20 +3,20 @@ import styles from './Reserva.module.css';
 import axios from 'axios'
 import InputText from './InputText/InputText';
 
-function Reserva({ reserva , onBotaoClique, type, date, aula}) {
+function Reserva({ reserva, onBotaoClique, type, date, aula }) {
   const [visible, setVisible] = useState(true);
   const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')))
   const [motivo3, setMotivo] = useState('')
   const reservasRef = useRef(null);
-  const { periodo, svg, numeroLaboratorio, tipoLaboratorio, nome, email, motivo} = reserva
+  const { periodo, svg, numeroLaboratorio, tipoLaboratorio, nome, email, motivo } = reserva
   var dt = new Date(date);
   var d = dt.getUTCDate();
   var m = dt.getUTCMonth() + 1;
   var a = dt.getUTCFullYear();
-  if(d < 10){
+  if (d < 10) {
     d = "0" + d
   }
-  if(m < 10){
+  if (m < 10) {
     m = "0" + m
   }
   useEffect(() => {
@@ -33,36 +33,36 @@ function Reserva({ reserva , onBotaoClique, type, date, aula}) {
     };
   }, [reservasRef]);
 
-const handleLogin = async(e) =>{
-  
-  e.preventDefault()
- 
-  
-  if(professor){
+  const handleLogin = async (e) => {
 
-    console.log(date)
-    console.log(aula)
-    console.log(motivo3)
-    console.log(professor)
-    console.log(localStorage.getItem('typeLab'))
-    console.log(localStorage.getItem('numLab'))
-    console.log(localStorage.getItem('periodo'))
-    
+    e.preventDefault()
 
 
+    if (professor) {
 
-      
-      
+      console.log(date)
+      console.log(aula)
+      console.log(motivo3)
+      console.log(professor)
+      console.log(localStorage.getItem('typeLab'))
+      console.log(localStorage.getItem('numLab'))
+      console.log(localStorage.getItem('periodo'))
 
-      const result = await axios.post('http://localhost:3333/createMarks',
+
+
+
+
+
+
+      const result = await axios.post('http://192.168.1.40:3333/createMarks',
         JSON.stringify({
           "dataReserva": date,
           "periodo": localStorage.getItem('periodo'),
-          "aulaReserva":aula,
+          "aulaReserva": aula,
           "idProfessor": professor.idProfessor,
           "numeroLaboratorio": localStorage.getItem('numLab'),
-          "tipoLaboratorio":localStorage.getItem('typeLab'),
-          "motivo":motivo3
+          "tipoLaboratorio": localStorage.getItem('typeLab'),
+          "motivo": motivo3
         }),
         {
           headers: {
@@ -70,15 +70,15 @@ const handleLogin = async(e) =>{
           }
         }
       )
-      
 
-  }else{
-    alert('Professor não reconhecido. Por favor, faça o login para reservar um horário')
+
+    } else {
+      alert('Professor não reconhecido. Por favor, faça o login para reservar um horário')
+    }
+
+    onBotaoClique()
+
   }
-  
-  onBotaoClique()
-  
-}
 
   const [svgWithClass, setSvgWithClass] = useState('');
 
@@ -95,29 +95,29 @@ const handleLogin = async(e) =>{
           <div className={styles.time}>{d} / {m} / {a}</div>
         </section>
         <section className={styles.labinfo}>
-            <div dangerouslySetInnerHTML={{ __html: svgWithClass }}></div>
-            <div className={styles.labname}>Laboratório de {localStorage.getItem('typeLab')} <div/> {localStorage.getItem('numLab')}</div>
+          <div dangerouslySetInnerHTML={{ __html: svgWithClass }}></div>
+          <div className={styles.labname}>Laboratório de {localStorage.getItem('typeLab')} <div /> {localStorage.getItem('numLab')}</div>
         </section>
         {type ? (
-            <form action="" onSubmit={handleLogin} className={styles.form}>
-                <div className={styles.main_input}>
-                <div className={styles.motivo}>Motivo:</div>
-                <textarea className={styles.input} type="text" name="" id="" onChange={(e) => setMotivo(e.target.value)} />
-                </div>
-                <input className={styles.submit}  type="submit" value="Reservar"/>
-            </form>
-        ): (
+          <form action="" onSubmit={handleLogin} className={styles.form}>
+            <div className={styles.main_input}>
+              <div className={styles.motivo}>Motivo:</div>
+              <textarea className={styles.input} type="text" name="" id="" onChange={(e) => setMotivo(e.target.value)} />
+            </div>
+            <input className={styles.submit} type="submit" value="Reservar" />
+          </form>
+        ) : (
           <section className={styles.reservado}>
             <section className={styles.inforeserva}>
               <div className={styles.Reservado_por}><div>Reservado por:</div></div>
               <section className={styles.userinfo}>
-                <img className={styles.img} src="../../../../generic.jpg" alt="" width={60} height={60}/>
+                <img className={styles.img} src="../../../../generic.jpg" alt="" width={60} height={60} />
                 <section className={styles.nameProfessor}>
                   <div className={styles.name}>{nome}</div>
                   <div className={styles.email}>{email}</div>
                 </section>
               </section>
-              <InputText motivo={motivo}/>
+              <InputText motivo={motivo} />
             </section>
           </section>
         )}
