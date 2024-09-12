@@ -46,7 +46,7 @@ function Home(){
                         filter: isSibling1Hovered ? 'blur(1.3px)' : 'none',
                         transition: '300ms ease-in-out'
                     }}>
-                    Start to use
+                    Comece a utilizar
                 </Link>
                 
                 <Link to="/Help"
@@ -57,7 +57,7 @@ function Home(){
                     filter: isSibling2Hovered ? 'blur(1.3px)' : 'none', 
                     transition: '300ms ease-in-out'
                 }}>
-                    How to use
+                    Como usar
                 </Link>
                 </div>
                 <div className='line2'></div>
