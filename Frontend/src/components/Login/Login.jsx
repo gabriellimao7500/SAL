@@ -12,7 +12,7 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-
+    
     try {
       const response = await axios.post(`${config.apiUrl}/login`,
         JSON.stringify({ "email": email, "senha": senha }),
@@ -22,25 +22,27 @@ function Login() {
           }
         }
       );
+      console.log(response.data);
 
       if (Array.isArray(response.data) && response.data.length === 1) {
-        sessionStorage.setItem('professor', JSON.stringify(response.data[0]));
+        sessionStorage.setItem('professor', JSON.stringify(response.data));
         console.log(JSON.parse(sessionStorage.getItem('professor')));
-        
-        // Remove parâmetros da URL sem recarregar a página
+
+        // Limpar os parâmetros da URL sem recarregar a página
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
-        
-        // Redireciona para a página Labs
-        navigate('/Labs');
-        navigate(-1)
+
+        // Navega para a página /labs e depois volta para a anterior
+        navigate('/labs');
+        navigate(-1);
+
       } else {
         setIncorrect(true);
         setTimeout(() => setIncorrect(false), 2000);
       }
     } catch (error) {
       if (!error?.response) {
-        console.log('erro ao acessar o servidor');
+        console.log('Erro ao acessar o servidor');
       } else if (error.response.status === 401) {
         setIncorrect(true);
         setTimeout(() => setIncorrect(false), 2000);
@@ -48,9 +50,15 @@ function Login() {
     }
   };
 
+  const handleLogout = () => {
+    // Remove a sessão e redireciona para a página /home
+    sessionStorage.removeItem('professor');
+    navigate('/home');
+  };
+
   return (
     <>
-      <div className={incorrect ? "incorrect error" : "incorrect"}>usuário ou senha inválidos</div>
+      <div className={incorrect ? "incorrect error" : "incorrect"}>Usuário ou senha inválidos</div>
       <section className="login">
         <h1>Login</h1>
         <form className='inputs' onSubmit={handleLogin}>
@@ -73,6 +81,7 @@ function Login() {
           <button className='enviar' type='submit'>Login</button>
         </form>
       </section>
+      <button onClick={handleLogout}>Logout</button>
     </>
   );
 }

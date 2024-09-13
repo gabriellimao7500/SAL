@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './Reserva.module.css';
 import axios from 'axios'
+import config from '../../../config';
 import InputText from './InputText/InputText';
 
 function Reserva({ reserva, onBotaoClique, type, date, aula }) {
@@ -54,7 +55,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
 
 
 
-      const result = await axios.post('http://192.168.1.40:3333/createMarks',
+      const result = await axios.post(`${config.apiUrl}/createMarks`,
         JSON.stringify({
           "dataReserva": date,
           "periodo": localStorage.getItem('periodo'),

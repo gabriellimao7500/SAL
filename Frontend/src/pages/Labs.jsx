@@ -1,6 +1,7 @@
 import Header from "../components/header/Header";
 import Table from "../components/Table/Table";
 import Select from "../components/Select/Select";
+import config from "../../config";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import './Labs.css';
@@ -16,7 +17,7 @@ function Labs() {
 
     const pullMarks = async (periodo2, tipo2, numLab2) => {
 
-        const result = await axios.post('http://192.168.1.40:3333/Marks',
+        const result = await axios.post(`${config.apiUrl}/Marks`,
             JSON.stringify({
                 "periodo": periodo2,
                 "tipoLaboratorio": tipo2,
