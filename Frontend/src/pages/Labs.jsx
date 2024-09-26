@@ -79,11 +79,13 @@ function Labs() {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
         async function applyChanges() {
-            for (var i = 0; i < getWeeksPassed(2024, 7, 1); i++) {
-                const botao = document.getElementById("penis")
+            for (var i = 0; i < Math.ceil(weeksPass + 2); i++) {
+                const botao = document.getElementById("ir")
                 botao.click()
-                await sleep(1000); // Delay de 1 segundo (1000 milissegundos)
+                await sleep(10); // Delay de 1 segundo (1000 milissegundos)
             }
+            const voltar = document.getElementById("voltar")
+            voltar.click()
         }
     
         applyChanges();
@@ -139,8 +141,8 @@ function Labs() {
                     </div>
                 </div>
                 <div className="navigation">
-                    <button id="penis" onClick={() => changeWeek(1)} disabled={nextDisabled}><span className="material-symbols-outlined">chevron_right</span></button>
-                    <button onClick={() => changeWeek(-1)} disabled={prevDisabled}><span className="material-symbols-outlined">chevron_left</span></button>
+                    <button id="ir" onClick={() => changeWeek(1)} disabled={nextDisabled}><span className="material-symbols-outlined">chevron_right</span></button>
+                    <button id="voltar" onClick={() => changeWeek(-1)} disabled={prevDisabled}><span className="material-symbols-outlined">chevron_left</span></button>
                     
                 </div>
             </section>
