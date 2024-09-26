@@ -48,7 +48,7 @@ function Labs() {
 
 
     // QUANTIDADE DE SEMANAS A FRENTE DA ATUAL
-    for (let i = 0; i < weeksPass + 20; i++) {
+    for (let i = 0; i < weeksPass + 2; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
@@ -59,6 +59,7 @@ function Labs() {
         setNextDisabled(currentWeek === weeks.length - 1);
     }, [currentWeek, weeks.length]);
     const changeWeek = (direction) => {
+        console.log(currentWeek)
         setCurrentWeek((prevWeek) => {
             const newWeek = prevWeek + direction;
             if (newWeek < 0 || newWeek >= weeks.length) {
@@ -74,10 +75,20 @@ function Labs() {
         });
     };
     window.addEventListener('load', function() {
-        for(var i = 0; i < getWeeksPassed(2024, 7, 1); i++){
-            changeWeek(1)
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
+        async function applyChanges() {
+            for (var i = 0; i < getWeeksPassed(2024, 7, 1); i++) {
+                const botao = document.getElementById("penis")
+                botao.click()
+                await sleep(1000); // Delay de 1 segundo (1000 milissegundos)
+            }
+        }
+    
+        applyChanges();
     });
+    
 
     const monthLabels = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
 
@@ -128,7 +139,7 @@ function Labs() {
                     </div>
                 </div>
                 <div className="navigation">
-                    <button onClick={() => changeWeek(1)} disabled={nextDisabled}><span className="material-symbols-outlined">chevron_right</span></button>
+                    <button id="penis" onClick={() => changeWeek(1)} disabled={nextDisabled}><span className="material-symbols-outlined">chevron_right</span></button>
                     <button onClick={() => changeWeek(-1)} disabled={prevDisabled}><span className="material-symbols-outlined">chevron_left</span></button>
                     
                 </div>
