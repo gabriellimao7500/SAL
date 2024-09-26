@@ -46,7 +46,9 @@ function Labs() {
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < weeksPass + 7; i++) {
+
+    // QUANTIDADE DE SEMANAS A FRENTE DA ATUAL
+    for (let i = 0; i < weeksPass + 20; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
@@ -56,15 +58,11 @@ function Labs() {
         setPrevDisabled(currentWeek === 0);
         setNextDisabled(currentWeek === weeks.length - 1);
     }, [currentWeek, weeks.length]);
-
     const changeWeek = (direction) => {
         setCurrentWeek((prevWeek) => {
             const newWeek = prevWeek + direction;
             if (newWeek < 0 || newWeek >= weeks.length) {
                 return prevWeek;
-            }
-            if (newWeek === 0) {
-                setCurrentMes(mesatu);
             }
             if (newWeek > prevWeek && (newWeek === 5 || newWeek  === 9 || newWeek  === 14 || newWeek  === 18 || newWeek  === 23 || newWeek  === 27 || newWeek  === 32 || newWeek  === 36 || newWeek === 41 || newWeek  === 45 || newWeek === 50 || newWeek  === 0)) {
                 setCurrentMes((currentMes + 1));
@@ -75,6 +73,11 @@ function Labs() {
             return newWeek;
         });
     };
+    window.addEventListener('load', function() {
+        for(var i = 0; i < getWeeksPassed(2024, 7, 1); i++){
+            changeWeek(1)
+        }
+    });
 
     const monthLabels = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
 
@@ -97,7 +100,8 @@ function Labs() {
                                 <thead>
                                     <tr>
                                         {week.map((day, idx) => (
-                                            <th key={idx} className={day === dia && currentMes === mesatu ? "in" : ""}>
+                                            <th key={idx} 
+                                            className={day === dia && currentMes === mesatu ? "in" : ""}>
                                                 {['Seg', 'Ter', 'Qua', 'Qui', 'Sex'][idx]}
                                                 <br />
                                                 <span className='day'>{day}</span>

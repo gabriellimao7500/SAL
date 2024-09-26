@@ -114,4 +114,5 @@ th, td {
 
 .footer div{
     letter-spacing: 40px;
+    position: fixed;
 }
