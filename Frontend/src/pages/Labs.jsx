@@ -50,19 +50,7 @@ function Labs() {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
-    function reorganizeArray(arr, newIndex) {
-        const len = arr.length;
-        if (newIndex < 0 || newIndex >= len) {
-            throw new Error('newIndex must be within the array length');
-        }
-        const adjustedIndex = (len - newIndex) % len;
-        const firstPart = arr.slice(adjustedIndex);
-        const secondPart = arr.slice(0, adjustedIndex);
-        return firstPart.concat(secondPart);
-    }
-
-    var somas = [5, 9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 0];
-    var somas1 = reorganizeArray(somas, mesatu);
+    
 
     useEffect(() => {
         setPrevDisabled(currentWeek === 0);
@@ -78,7 +66,7 @@ function Labs() {
             if (newWeek === 0) {
                 setCurrentMes(mesatu);
             }
-            if (newWeek > prevWeek && newWeek === somas1[currentMes % 12]) {
+            if (newWeek > prevWeek && (newWeek === 5 || newWeek  === 9 || newWeek  === 14 || newWeek  === 18 || newWeek  === 23 || newWeek  === 27 || newWeek  === 32 || newWeek  === 36 || newWeek === 41 || newWeek  === 45 || newWeek === 50 || newWeek  === 0)) {
                 setCurrentMes((currentMes + 1));
             }
             if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 23 || newWeek + 1 === 27 || newWeek + 1 === 32 || newWeek + 1 === 36 || newWeek + 1 === 41 || newWeek + 1 === 45 || newWeek + 1 === 50 || newWeek + 1 === 0)) {
