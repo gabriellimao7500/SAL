@@ -64,24 +64,22 @@ function Labs() {
     const changeWeek = (direction) => {
         setCurrentWeek((prevWeek) => {
             var newWeek = prevWeek + direction;
-            if (currentMes > 11) {
-                setCurrentMes(0)
-                setCurrentAno(ano+1)
-                
-            }
+            console.log(currentMes)
             if (newWeek < 0 || newWeek >= weeks.length) {
                 return prevWeek;
             }
             if (newWeek > prevWeek && (newWeek === 5 || newWeek  === 9 || newWeek  === 14 || newWeek  === 18 || newWeek  === 22 || newWeek  === 26 || newWeek  === 31 || newWeek  === 35 || newWeek === 40 || newWeek  === 44 || newWeek === 49 || newWeek  === 0)) {
                 setCurrentMes((currentMes + 1));
+                if(currentMes == 11){
+                    setCurrentAno(currentAno+1)
+                }
             }
             if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 22 || newWeek + 1 === 26 || newWeek + 1 === 31 || newWeek + 1 === 35 || newWeek + 1 === 40 || newWeek + 1 === 44 || newWeek + 1 === 49 || newWeek + 1 === 0)) {
                 setCurrentMes((currentMes - 1));
-                if (currentMes <= 0) {
-                    setCurrentMes(11)
-                    setCurrentAno(ano-1)
-                    
+                if(currentMes == 12){
+                    setCurrentAno(currentAno-1)
                 }
+                
             }
             return newWeek;
         });
