@@ -159,7 +159,7 @@ if(reserva.length === 0){reserva.push(
         const isMonthTransition = week.some(day => day === 1);
     
         if (currentWeek !== 0 && isMonthTransition) {
-            // Se a semana não for a primeira e há transição de mês
+            
             const nextMonth = (currentMes + 1) % 12;
             return (
                 <div>
@@ -167,7 +167,7 @@ if(reserva.length === 0){reserva.push(
                 </div>
             );
         } else {
-            // Caso contrário, apenas exibe o mês atual
+            
             return (
                 <div>
                     {monthLabels[currentMes % 12]}

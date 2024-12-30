@@ -12,7 +12,7 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-
+    e.preventDefault()
     try {
       const response = await axios.post(`${config.apiUrl}/login`,
         JSON.stringify({ "email": email, "senha": senha }),

@@ -18,7 +18,7 @@ const getDataFromType = async (tipoLaboratorio) => {
 
 
 const getAll = async() =>{
-    const query = `SELECT 
+    const query = `SELECT
     tipoLaboratorio,
     GROUP_CONCAT(DISTINCT svg) AS svg
 FROM 
