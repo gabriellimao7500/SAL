@@ -24,18 +24,19 @@ if(reserva.length === 0){reserva.push(
     
     const date = new Date();
     const dia = date.getDate();
-    const ano = date.getFullYear();
+    
     const mesatu = date.getMonth();
-    let mes = 6;
-    let day = 1;
 
-    const mes2 = 7;
-    const day2 = 1;
-    const year2 = 2024;
 
-    const primeiroDiaMesSeguinte = new Date(ano, mes + 1, 1);
-    const ultimoDiaMesAtual = new Date(primeiroDiaMesSeguinte - 1);
-    const diasNoMes = ultimoDiaMesAtual.getDate();
+    const ano = 2025;
+    let mes = 1 -1;
+    let day = 30;
+
+    const mes2 = mes;
+    const day2 = day;
+    const year2 = ano;
+
+    
 
     const [currentWeek, setCurrentWeek] = useState(0);
     const [currentMes, setCurrentMes] = useState(mes);
@@ -50,6 +51,8 @@ if(reserva.length === 0){reserva.push(
         const msInAWeek = 1000 * 60 * 60 * 24 * 7;
         const weeksPassed = diffInMs / msInAWeek;
         return Math.floor(weeksPassed);
+
+        
     }
 
    function getWeeksPassed2(initialYear, initialMonth, initialDay, endYear, endMonth, endDay) {
@@ -59,16 +62,19 @@ if(reserva.length === 0){reserva.push(
         const msInAWeek = 1000 * 60 * 60 * 24 * 7;
         const weeksPassed = diffInMs / msInAWeek;
         return Math.floor(weeksPassed);
+        
     }
 
     
 
-    const weeksPass = getWeeksPassed(2024, 7, 1);
+    const weeksPass = getWeeksPassed(ano, mes, day);
 
-    const DiasDoMes = [31, ano % 4 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const DiasDoMes = [31, 31 , ano % 4 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     const verify = (day, temp) => {
         day += temp;
+        
+        
         if (mes > 11) {
             mes = 0;
         }
@@ -83,7 +89,7 @@ if(reserva.length === 0){reserva.push(
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < weeksPass + 2; i++) {
+    for (let i = 0; i < weeksPass + 10; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
@@ -95,6 +101,7 @@ if(reserva.length === 0){reserva.push(
     }, [currentWeek, weeks.length]);
 
     const changeWeek = (direction) => {
+        console.log(currentMes)
         setCurrentWeek((prevWeek) => {
             const newWeek = prevWeek + direction;
             if (newWeek < 0 || newWeek >= weeks.length) {

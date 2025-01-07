@@ -57,7 +57,7 @@ function Labs() {
         "turma": ""
     }
     ]*/
-    console.log(reservas)
+    
 
     return (
         <div className="App">
