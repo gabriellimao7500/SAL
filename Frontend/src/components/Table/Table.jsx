@@ -36,6 +36,8 @@ if(reserva.length === 0){reserva.push(
     const day2 = day;
     const year2 = ano;
 
+
+    const semanasPraMais = 2;
     
 
     const [currentWeek, setCurrentWeek] = useState(0);
@@ -61,6 +63,7 @@ if(reserva.length === 0){reserva.push(
         const diffInMs = endDate - initialDate;
         const msInAWeek = 1000 * 60 * 60 * 24 * 7;
         const weeksPassed = diffInMs / msInAWeek;
+
         return Math.floor(weeksPassed);
         
     }
@@ -89,7 +92,7 @@ if(reserva.length === 0){reserva.push(
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < weeksPass + 10; i++) {
+    for (let i = 0; i < weeksPass + semanasPraMais; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
@@ -101,22 +104,25 @@ if(reserva.length === 0){reserva.push(
     }, [currentWeek, weeks.length]);
 
     const changeWeek = (direction) => {
-        console.log(currentMes)
+        
         setCurrentWeek((prevWeek) => {
-            const newWeek = prevWeek + direction;
+            
+            var newWeek = prevWeek + direction;
             if (newWeek < 0 || newWeek >= weeks.length) {
                 return prevWeek;
             }
-            if (newWeek > prevWeek && (newWeek === 5 || newWeek === 9 || newWeek === 14 || newWeek === 18 || newWeek === 22 || newWeek === 26 || newWeek === 31 || newWeek === 35 || newWeek === 40 || newWeek === 44 || newWeek === 49 || newWeek === 0)) {
+            if (newWeek > prevWeek && (newWeek === 5 || newWeek === 9 || newWeek === 14 || newWeek === 18 || newWeek === 22 || newWeek === 26 || newWeek === 31 || newWeek === 35 || newWeek === 40 || newWeek === 44 || newWeek === 49 || newWeek === 53)) {
                 setCurrentMes((currentMes + 1));
                 if (currentMes === 11) {
                     setCurrentAno(currentAno + 1);
+                    
                 }
             }
-            if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 22 || newWeek + 1 === 26 || newWeek + 1 === 31 || newWeek + 1 === 35 || newWeek + 1 === 40 || newWeek + 1 === 44 || newWeek + 1 === 49 || newWeek + 1 === 0)) {
+            if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 22 || newWeek + 1 === 26 || newWeek + 1 === 31 || newWeek + 1 === 35 || newWeek + 1 === 40 || newWeek + 1 === 44 || newWeek + 1 === 49 || newWeek + 1 === 53)) {
                 setCurrentMes((currentMes - 1));
                 if (currentMes === 12) {
                     setCurrentAno(currentAno - 1);
+                    
                 }
             }
             return newWeek;
@@ -129,7 +135,7 @@ if(reserva.length === 0){reserva.push(
         }
 
         async function applyChanges() {
-            for (let i = 0; i < Math.ceil(weeksPass + 2); i++) {
+            for (let i = 0; i < Math.ceil(weeksPass + semanasPraMais); i++) {
                 const botao = document.getElementById("ir");
                 if (botao) {
                     botao.click();
@@ -307,7 +313,7 @@ if(reserva.length === 0){reserva.push(
         
     })
 
-    
+   
     return (
         <section className={styles.calendar}>
             {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={reserva[targetReserva]} type={type} date={dateReserva} aula={aulaAtu}></Reserva>) : ''}
