@@ -24,27 +24,50 @@ if(reserva.length === 0){reserva.push(
     
     const date = new Date();
     const dia = date.getDate();
-    
     const mesatu = date.getMonth();
 
-
+    //data inicial
+    //ano inicial
     const ano = 2025;
-    let mes = 1 -1;
-    let day = 30;
+    //mes inicial
+    let mes = 1;
+    mes --;
+    //dia inicial
+    let day =6;
+
+
+
+    const a = ano;
+    const m = mes+1;
+    const d = day;
+
+    //data de referencia
+    //ano de referencia
+    const anoR = 2024
+    const mesR = 1
+    const diaR = 1
+
+
+    
+
 
     const mes2 = mes;
     const day2 = day;
     const year2 = ano;
 
-
     const semanasPraMais = 2;
+    const ebb = getWeeksPassed(a,m,d);
+    const yearPlus = getYearsPassed(a, m , d, ebb);
     
-
-    const [currentWeek, setCurrentWeek] = useState(0);
-    const [currentMes, setCurrentMes] = useState(mes);
-    const [currentAno, setCurrentAno] = useState(ano);
+    const [wp, setWp]= useState(getWeeksPassed2(anoR, mesR, diaR, a, m, d));
+    const [realWeek, setRealWeek] = useState(wp);
+    const [currentWeek, setCurrentWeek] = useState(ebb);
+    const [isTransition, setIsTransition] = useState(m === 12 ? false : true);
+    const [currentMes, setCurrentMes] = useState(currentWeek%52 >= 48 ? 11 : currentWeek%52 >=44 ? 10 :currentWeek%52 >=40 ? 9 : currentWeek%52 >=35 ? 8 : currentWeek%52 >=31 ? 7 : currentWeek%52 >= 26 ? 6: currentWeek%52 >=22 ? 5 : currentWeek%52 >=18 ? 4: currentWeek%52 >=13 ? 3 : currentWeek%52 >= 9 ? 2 : currentWeek%52 >=5 ? 1 : currentWeek%52 === 0 && !isTransition ? 11 : 0 );
+    const [currentAno, setCurrentAno] = useState(ano + yearPlus);
     const [prevDisabled, setPrevDisabled] = useState(true);
     const [nextDisabled, setNextDisabled] = useState(false);
+    
 
     function getWeeksPassed(initialYear, initialMonth, initialDay) {
         const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
@@ -53,8 +76,6 @@ if(reserva.length === 0){reserva.push(
         const msInAWeek = 1000 * 60 * 60 * 24 * 7;
         const weeksPassed = diffInMs / msInAWeek;
         return Math.floor(weeksPassed);
-
-        
     }
 
    function getWeeksPassed2(initialYear, initialMonth, initialDay, endYear, endMonth, endDay) {
@@ -63,17 +84,28 @@ if(reserva.length === 0){reserva.push(
         const diffInMs = endDate - initialDate;
         const msInAWeek = 1000 * 60 * 60 * 24 * 7;
         const weeksPassed = diffInMs / msInAWeek;
-
         return Math.floor(weeksPassed);
         
+    }
+    function getYearsPassed(initialYear, initialMonth, initialDay, weeks) {
+        
+        const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
+    
+        
+        const daysToAdd = weeks * 7;
+    
+        
+        const finalDate = new Date(initialDate);
+        finalDate.setDate(finalDate.getDate() + daysToAdd);
+        return finalDate.getFullYear() - initialDate.getFullYear();
     }
 
     
 
-    const weeksPass = getWeeksPassed(ano, mes, day);
+    const weeksPass = ebb;
 
-    const DiasDoMes = [31, 31 , ano % 4 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
+    const DiasDoMes = [31 , currentAno%4 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    
     const verify = (day, temp) => {
         day += temp;
         
@@ -92,7 +124,7 @@ if(reserva.length === 0){reserva.push(
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < weeksPass + semanasPraMais; i++) {
+    for (let i = 0; i < weeksPass + 50; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
@@ -103,59 +135,71 @@ if(reserva.length === 0){reserva.push(
         setNextDisabled(currentWeek === weeks.length - 1);
     }, [currentWeek, weeks.length]);
 
+
+        const week = weeks[currentWeek];
+        const isMonthTransition = week.includes(1) && week.some(day => [28, 29,30,31].includes(day));
+        const isYearTransition = isMonthTransition && currentWeek%52 === 0;
+        
+        
+        
+
     const changeWeek = (direction) => {
         
-        setCurrentWeek((prevWeek) => {
+        if(isMonthTransition){
+            setIsTransition(true)
+        }else{
+            setIsTransition(false)
+        }
+
+        setRealWeek((prevWeek) => {
+            
+            
             
             var newWeek = prevWeek + direction;
-            if (newWeek < 0 || newWeek >= weeks.length) {
-                return prevWeek;
-            }
-            if (newWeek > prevWeek && (newWeek === 5 || newWeek === 9 || newWeek === 14 || newWeek === 18 || newWeek === 22 || newWeek === 26 || newWeek === 31 || newWeek === 35 || newWeek === 40 || newWeek === 44 || newWeek === 49 || newWeek === 53)) {
-                setCurrentMes((currentMes + 1));
-                if (currentMes === 11) {
-                    setCurrentAno(currentAno + 1);
-                    
+            var bool = (newWeek + ebb) % 52;
+            
+            
+
+
+            if (newWeek > prevWeek && ( bool === 1 ||bool === 5 || bool === 9 || bool === 13 || bool === 18 || bool === 22 || bool === 26 || bool === 31 || bool === 35 || bool === 40 || bool === 44 || bool === 48)) {
+                if(bool === 1 && (newWeek+ebb) != 1){
+                    setCurrentAno(currentAno+1);
+                    setCurrentMes(currentMes+1);
+                }else if(newWeek + ebb != 1){
+                    setCurrentMes(currentMes+1);
+                }
+            }else if (newWeek < prevWeek && ((bool+1) === 1 ||(bool+1) === 5 || (bool+1) === 9 || (bool+1) === 13 || (bool+1) === 18 || (bool+1) === 22 || (bool+1) === 26 || (bool+1) === 31 || (bool+1) === 35 || (bool+1) === 40 || (bool+1) === 44 || (bool+1) === 48)) {
+                
+                if((bool+1)=== 1 && (newWeek+ebb) != 1){
+                    setCurrentAno(currentAno-1);
+                    if(currentMes <= 0){
+                        setCurrentMes(0);
+                    }else{
+                        setCurrentMes(currentMes-1);
+                    }
+                }else if(newWeek + ebb != 1){
+                    setCurrentMes(currentMes-1);
                 }
             }
-            if (newWeek < prevWeek && (newWeek + 1 === 5 || newWeek + 1 === 9 || newWeek + 1 === 14 || newWeek + 1 === 18 || newWeek + 1 === 22 || newWeek + 1 === 26 || newWeek + 1 === 31 || newWeek + 1 === 35 || newWeek + 1 === 40 || newWeek + 1 === 44 || newWeek + 1 === 49 || newWeek + 1 === 53)) {
-                setCurrentMes((currentMes - 1));
-                if (currentMes === 12) {
-                    setCurrentAno(currentAno - 1);
-                    
-                }
+            if(newWeek > prevWeek){
+                setCurrentWeek(currentWeek+1);
+            }else if(currentWeek <= 0){
+                setCurrentWeek(0);
+            }else{
+                setCurrentWeek(currentWeek-1)
             }
             return newWeek;
         });
+        
+        
     };
-
-    useEffect(() => {
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        async function applyChanges() {
-            for (let i = 0; i < Math.ceil(weeksPass + semanasPraMais); i++) {
-                const botao = document.getElementById("ir");
-                if (botao) {
-                    botao.click();
-                    await sleep(4);
-                }
-            }
-            const voltar = document.getElementById("voltar");
-            if (voltar) {
-                voltar.click();
-            }
-        }
-
-        applyChanges();
-    }, []);
 
     const monthLabels = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
+        
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
@@ -166,24 +210,62 @@ if(reserva.length === 0){reserva.push(
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+    
+    
+        
+    
+
+    
+    
+
 
     const renderMonthLabel = () => {
-        const week = weeks[currentWeek];
-        const isMonthTransition = week.some(day => day === 1);
-    
+        
+        
+        
+        
+
+
         if (currentWeek !== 0 && isMonthTransition) {
             
             const nextMonth = (currentMes + 1) % 12;
             return (
                 <div>
-                    {monthLabels[currentMes % 12]} - {monthLabels[nextMonth]}
+                    {monthLabels[currentMes % 12]} - {monthLabels[nextMonth % 12]}
                 </div>
             );
-        } else {
+        }else if(currentWeek === 0 && isMonthTransition){
+            const nextMonth = (currentMes + 1) % 12;
+            return (
+                <div>
+                    {monthLabels[currentMes%12]} - {monthLabels[nextMonth%12]}
+                </div>
+            );
+        }else {
             
             return (
                 <div>
                     {monthLabels[currentMes % 12]}
+                </div>
+            );
+        }
+    };
+
+    
+    const renderYearLabel = () => {
+        if (isYearTransition) {
+            
+            return (
+                <div>
+                    {currentAno} - {currentAno+1}
+                </div>
+            );
+        }else{
+            
+
+            return (
+                <div>
+                    {currentAno}
                 </div>
             );
         }
@@ -235,26 +317,7 @@ if(reserva.length === 0){reserva.push(
     const [onReserva, setOnReserva] = useState(false);
     const [type, setType] = useState(false);
     const [targetReserva, setTargetReserva] = useState(0);
-    function reser(event) {
-        const target = event.target;
-        const dt2 = new Date(dateReserva);
-        const data2 = date
-        data2.setUTCHours(0);
-        data2.setUTCMinutes(0);
-        data2.setUTCSeconds(0);
-        data2.setUTCMilliseconds(0);
-        if (target.classList.contains('ocupado')) {
-            setType(false)
-            setOnReserva(true)
-        } else {
-            if(dt2 >= data2){
-                setType(true)
-                setOnReserva(true)
-            }
-        }
-        
-
-    }
+    
     function reservasOff() {
         setOnReserva(false)
         pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
@@ -286,32 +349,53 @@ if(reserva.length === 0){reserva.push(
 
         return dateReserva;
     }
-    var indie = 0
+
+    
     const [aulaAtu, setAulaAtu] = useState(1)
     const [dateReserva,setDateReserva] = useState('')
+    
 
-    const allButtons = document.querySelectorAll(".indice")
-    allButtons.forEach((element, index) => {
-        element.addEventListener('click', () => {
-            indie = index
+    
+
+    const onReser = async(rowIndex, colIndex, event)=>{
+        
+        const index = rowIndex*5 + colIndex
+        var indie = index
             let aula = Math.floor(indie / 5) + 1;
             let diaSem = (indie % 5) + 1;
             
-            let wp = 0;
+            let wp = currentWeek;
             while (aula > 6) {
                 aula -= 6;
                 wp++;
             }
-            let temp = calculateDate( day2, mes2, year2, wp, diaSem)
+            let temp = calculateDate( d, m, a, wp, diaSem)
             var formatoISO = temp.toISOString();
-            setDateReserva(formatoISO);
             
-            setAulaAtu(aula)
-            
+        setDateReserva(formatoISO)
+        setAulaAtu(aula)
 
-        })
+        const target = event.target;
+        const dt2 = new Date(dateReserva);
+        const data2 = date;
+        dt2.setHours(0, 0, 0, 0);
+        data2.setHours(0, 0, 0, 0);
+
+        if (target.classList.contains('ocupado')) {
+            setType(false)
+            setOnReserva(true)
+        } else {
+            if(dt2 >= data2){
+                setType(true)
+                setOnReserva(true)   
+            }
+        }
+
+
+
         
-    })
+        
+    }
 
    
     return (
@@ -346,7 +430,7 @@ if(reserva.length === 0){reserva.push(
                                     <tr key={rowIndex}>
                                         {Array(5).fill().map((_, colIndex) => (
                                             <td key={colIndex}>
-                                                <div className={`${getClassName()} indice`} onClick={reser} type={type}/>
+                                                <div className={`${getClassName()} indice`} onClick={()=>onReser(rowIndex, colIndex, event)} type={type}/>
                                             </td>
                                         ))}
                                     </tr>
@@ -357,7 +441,7 @@ if(reserva.length === 0){reserva.push(
                 </div>
                 <div className={styles.month}>
                     {renderMonthLabel()}
-                    <div>{currentAno}</div>
+                    <div>{renderYearLabel()}</div>
                 </div>
             </div>
             <div className={styles.navigation}>
