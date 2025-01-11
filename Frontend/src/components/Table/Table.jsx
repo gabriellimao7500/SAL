@@ -124,7 +124,7 @@ reserva.push(
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < weeksPass + semanasPraMais; i++) {
+    for (let i = 0; i < weeksPass + 50; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
@@ -287,25 +287,25 @@ reserva.push(
     var idx = []
     reserva.map((reserva, id) => {
         var dt = new Date(reserva.dataReserva);
-        let wp = currentWeek;
+        var dia = dt.getUTCDate();      
+        var mes = dt.getUTCMonth() + 1;      
+        var ano = dt.getUTCFullYear();
+        let wp = getWeeksPassed2(a,m,d,ano,mes,dia);
         var multi = 5 * wp;
         var aula = (wp * 7) + reserva.aulaReserva;
         var sem = getDayOfWeek(dt);
   
-      var indice = (((aula-1)*5+sem-1) - multi)+ 30*currentWeek;
+      var indice = ((aula-1)*5+sem-1) - multi;
       idx.push(indice)
     });
       
-    var idxAtu = 0
-    var atu = 0
+    
 
-    const getClassName = () => {
-        if (idx.includes(idxAtu)) {
-            idxAtu++;
-            atu ++
+    const getClassName = (index) => {
+
+        if (idx.includes(index)) {
             return 'ocupado';
         } else {
-            idxAtu++;
             return styles.select;
         }
     };
@@ -317,6 +317,8 @@ reserva.push(
     function reservasOff() {
         setOnReserva(false)
         pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+        
+        
     }
     
     const obj = document.querySelectorAll(".ocupado")
@@ -424,7 +426,7 @@ reserva.push(
                                     <tr key={rowIndex}>
                                         {Array(5).fill().map((_, colIndex) => (
                                             <td key={colIndex}>
-                                                <div className={`${getClassName()} indice`} onClick={()=>onReser(rowIndex, colIndex, event)} type={type}/>
+                                                <div className={`${getClassName((rowIndex*5 + colIndex)+ 30 * currentWeek)} indice`} onClick={()=>onReser(rowIndex, colIndex, event)} type={type}/>
                                             </td>
                                         ))}
                                     </tr>
