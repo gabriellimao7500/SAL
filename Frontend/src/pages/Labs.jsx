@@ -16,7 +16,7 @@ function Labs() {
 
 
     const pullMarks = async (periodo2, tipo2, numLab2) => {
-
+        
         const result = await axios.post(`${config.apiUrl}/Marks`,
             JSON.stringify({
                 "periodo": periodo2,
@@ -57,6 +57,21 @@ function Labs() {
         "turma": ""
     }
     ]*/
+
+    var re = [
+        {
+            "idReserva": 65,
+            "dataReserva": "2025-01-10T03:00:00.000Z",
+            "periodo": "Manhã",
+            "aulaReserva": 1,
+            "nome": "teste",
+            "email": "teste@1",
+            "tipoLaboratorio": "Informática",
+            "numeroLaboratorio": 1,
+            "svg": "",
+            "motivo": "pq sim"
+        }
+    ]
     
 
     return (

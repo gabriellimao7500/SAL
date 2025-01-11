@@ -7,7 +7,7 @@ import Reserva from '../Reserva/Reserva';
 function Table({reserva, pullMarks}) {
     
     
-if(reserva.length === 0){reserva.push(
+reserva.push(
     {
         "idReserva": 0,
         "dataReserva": "0000-00-00T00:00:00.000Z",
@@ -20,7 +20,7 @@ if(reserva.length === 0){reserva.push(
         "svg": "",
         "motivo": ""
     }
-)}
+)
     
     const date = new Date();
     const dia = date.getDate();
@@ -287,16 +287,12 @@ if(reserva.length === 0){reserva.push(
     var idx = []
     reserva.map((reserva, id) => {
         var dt = new Date(reserva.dataReserva);
-        var d = dt.getUTCDate();
-        var m = dt.getUTCMonth() + 1;
-        var a = dt.getUTCFullYear();
-        let wp = getWeeksPassed2(year2,mes2,day2,a,m,d)
-        var multi = 5 * wp
-        var aula = (wp * 7) + reserva.aulaReserva
-        var sem = getDayOfWeek(dt)
+        let wp = currentWeek;
+        var multi = 5 * wp;
+        var aula = (wp * 7) + reserva.aulaReserva;
+        var sem = getDayOfWeek(dt);
   
-      var indice = ((aula-1)*5+sem-1) - multi
-
+      var indice = (((aula-1)*5+sem-1) - multi)+ 30*currentWeek;
       idx.push(indice)
     });
       
