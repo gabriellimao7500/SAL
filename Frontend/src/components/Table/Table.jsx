@@ -124,7 +124,7 @@ if(reserva.length === 0){reserva.push(
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < weeksPass + 50; i++) {
+    for (let i = 0; i < weeksPass + semanasPraMais; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
@@ -376,25 +376,23 @@ if(reserva.length === 0){reserva.push(
         setAulaAtu(aula)
 
         const target = event.target;
-        const dt2 = new Date(dateReserva);
-        const data2 = date;
-        dt2.setHours(0, 0, 0, 0);
+        var data2 = date;
         data2.setHours(0, 0, 0, 0);
+        data2 = data2.toISOString();
 
+
+        
         if (target.classList.contains('ocupado')) {
             setType(false)
             setOnReserva(true)
+            
         } else {
-            if(dt2 >= data2){
+            if(formatoISO >= data2){
                 setType(true)
-                setOnReserva(true)   
+                setOnReserva(true)
             }
         }
 
-
-
-        
-        
     }
 
    
