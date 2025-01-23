@@ -1,6 +1,7 @@
 import './User.css';
 import { useState, useEffect, useRef } from 'react';
 import Login from '../../Login/Login';
+import Swal from 'sweetalert2';
 
 function User() {
     const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')));
@@ -35,10 +36,28 @@ function User() {
     }
 
     function handleLogout() {
-        sessionStorage.removeItem('professor');
-        setProfessor(null);
-        setSession(false);
-        setLogin(false);
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Você realmente deseja sair?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, sair',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                sessionStorage.removeItem('professor');
+                setProfessor(null);
+                setSession(false);
+                setLogin(false);
+                Swal.fire(
+                    'Desconectado!',
+                    'Você foi desconectado com sucesso.',
+                    'success'
+                );
+            }
+        });
     }
 
     useEffect(() => {

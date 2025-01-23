@@ -1,4 +1,4 @@
--- Active: 1724677433889@@127.0.0.1@3306@sal
+USE sal
 alter table laboratorio MODIFY COLUMN tipoLaboratorio VARCHAR(70) NOT NULL
 
 

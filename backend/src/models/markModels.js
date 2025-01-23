@@ -1,10 +1,30 @@
 const connection = require('./connection/connection');
-const { format } = require('date-fns');
+const { format, startOfWeek, endOfWeek } = require('date-fns');
+
+const countWeeklyReservations = async (idProfessor, dataReserva) => {
+    const startOfWeekDate = format(startOfWeek(new Date(dataReserva)), 'yyyy-MM-dd');
+    const endOfWeekDate = format(endOfWeek(new Date(dataReserva)), 'yyyy-MM-dd');
+
+    const query = `
+        SELECT COUNT(*) as count
+        FROM reserva
+        WHERE idProfessor = ? AND dataReserva BETWEEN ? AND ?
+    `;
+
+    const [rows] = await connection.execute(query, [idProfessor, startOfWeekDate, endOfWeekDate]);
+    return rows[0].count;
+};
 
 const createReserva = async (reservaData) => {
     const { dataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo } = reservaData;
 
     const formattedDataReserva = format(new Date(dataReserva), 'yyyy-MM-dd');
+
+    // Verificar se o professor já fez 4 agendamentos na semana
+    const reservationCount = await countWeeklyReservations(idProfessor, formattedDataReserva);
+    if (reservationCount >= 4) {
+        return { error: 'Você já fez 4 agendamentos nesta semana.' };
+    }
 
     const query = `
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
@@ -88,5 +108,6 @@ module.exports = {
     getData, 
     deleteReserva, 
     getDataFromDate,
-    updateReserva
+    updateReserva,
+    countWeeklyReservations
 };

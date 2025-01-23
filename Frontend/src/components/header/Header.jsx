@@ -39,9 +39,9 @@ function Header( {Labs}) {
           </h1>
         </div>
         <section className="info">
-          <Link to="/AboutUs"><div className='About_Us_Link'>About us</div></Link>
+          <Link to="/AboutUs"><div className='About_Us_Link'>Sobre nós</div></Link>
           <div>Docs</div>
-          <div>Help</div>
+          <div>Ajuda</div>
         </section>
         <div className="duvidas">
           <div>duvidas</div>
