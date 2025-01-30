@@ -22,7 +22,7 @@ const createReserva = async (reservaData) => {
 
     const reservationCount = await countWeeklyReservations(idProfessor, formattedDataReserva);
     if (reservationCount >= 4) {
-        return { error: 'Você já fez 4 agendamentos nesta semana.', reservationCount };
+        return { error: 'Você já fez 4 agendamentos nesta semana. Você só pode fazer novos agendamentos na próxima semana.', reservationCount };
     }
 
     const query = `
@@ -33,10 +33,10 @@ const createReserva = async (reservaData) => {
         const [result] = await connection.execute(query, [formattedDataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo]);
         return { insertId: result.insertId, reservationCount };
     } catch (err) {
-        throw err;
+        console.error('Erro ao criar a reserva no banco de dados:', err.message);
+        return { error: 'Erro ao criar a reserva no banco de dados.', details: err.message };
     }
 };
-
 
 const getData = async(periodo,tipoLaboratorio,numeroLaboratorio) =>{
     const query = `select idReserva, dataReserva, periodo, aulaReserva, nome, email, tipoLaboratorio, numeroLaboratorio,svg,motivo FROM reserva

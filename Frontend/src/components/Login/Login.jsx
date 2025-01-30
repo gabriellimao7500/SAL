@@ -4,6 +4,7 @@ import './Login.css';
 import Inputs from '../Inputs/Inputs';
 import { useNavigate } from 'react-router-dom';
 import config from '../../../config';
+import Swal from 'sweetalert2'; // Importando o SweetAlert2
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -30,10 +31,17 @@ function Login() {
         // Remove parâmetros da URL sem recarregar a página
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
-        
-        // Redireciona para a página Labs
-        navigate('/Labs');
-        navigate(-1)
+
+        // Exibe o SweetAlert de sucesso
+        Swal.fire({
+          title: 'Login realizado com sucesso!',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          // Após o alerta ser fechado, redireciona para a página Labs
+          navigate('/SelectLab');
+        });
+
       } else {
         setIncorrect(true);
         setTimeout(() => setIncorrect(false), 2000);

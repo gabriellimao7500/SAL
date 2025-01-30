@@ -1,14 +1,35 @@
 const markModels = require('../models/markModels');
 
+const countWeeklyReservationsMiddleware = async (req, res, next) => {
+    try {
+        const { idProfessor, dataReserva } = req.body;
+
+        if (!idProfessor || !dataReserva) {
+            return res.status(400).json({ error: 'Dados insuficientes para contar as reservas semanais.' });
+        }
+
+        const currentWeekReservations = await markModels.countWeeklyReservations(idProfessor, dataReserva);
+        console.log('Reservas atuais da semana:', currentWeekReservations);
+
+        if (currentWeekReservations >= 4) {
+            return res.status(400).json({ error: 'Limite de agendamentos atingido para esta semana.', type: 'reservation_limit' });
+        }
+
+        next();
+    } catch (err) {
+        console.error('Erro ao contar as reservas semanais:', err);
+        return res.status(500).json({ error: 'Erro ao contar as reservas semanais.', type: 'server_error', details: err.message });
+    }
+};
+
 const createMark = async (req, res) => {
     try {
-        
-        const { dataReserva, periodo, aulaReserva, idProfessor,numeroLaboratorio,tipoLaboratorio, motivo} = req.body;
+        const { dataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo } = req.body;
 
-
-        if (!dataReserva || !aulaReserva || !idProfessor || !numeroLaboratorio||!tipoLaboratorio || !motivo) {
+        if (!dataReserva || !aulaReserva || !idProfessor || !numeroLaboratorio || !tipoLaboratorio || !motivo) {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
         }
+
         const reservaData = {
             dataReserva,
             periodo,
@@ -18,14 +39,19 @@ const createMark = async (req, res) => {
             tipoLaboratorio,
             motivo
         };
+
         const createdReserva = await markModels.createReserva(reservaData);
+        if (createdReserva.error) {
+            return res.status(400).json({ error: createdReserva.error, type: 'reservation_limit' });
+        }
+
         return res.status(201).json({
             message: 'Reserva criada com sucesso.',
             reserva: createdReserva
         });
     } catch (err) {
         console.error('Erro ao criar a reserva:', err);
-        return res.status(500).json({ error: 'Erro ao criar a reserva.' });
+        return res.status(500).json({ error: 'Erro ao criar a reserva.', type: 'server_error', details: err.message });
     }
 };
 
@@ -97,13 +123,11 @@ const updateReserva = async (req, res) => {
     }
 };
 
-
-
-
 module.exports = {
     createMark,
     getData,
     deleteMark,
     getDataFromId,
     updateReserva,
+    countWeeklyReservationsMiddleware,
 }
