@@ -56,6 +56,7 @@ function User() {
                     'Você foi desconectado com sucesso.',
                     'success'
                 );
+                window.location.href = '/';
             }
         });
     }
@@ -64,13 +65,14 @@ function User() {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
+            
         };
     }, []);
 
     return (
         <>
             <div onClick={session ? handleLogout : toggleLogin} className='user'>
-                <div>{session ? 'Logout' : 'Login'}</div>
+                <div>{session ? 'Clique para sair' : 'Entrar'}</div>
                 <img className='userImage' src={imageSrc} alt="User" />
             </div>
 

@@ -3,6 +3,7 @@ import styles from './Reserva.module.css';
 import axios from 'axios'
 import InputText from './InputText/InputText';
 import config from '../../../config';
+import Swal from 'sweetalert2';
 
 function Reserva({ reserva, onBotaoClique, type, date, aula }) {
   const [visible, setVisible] = useState(true);
@@ -49,34 +50,57 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
       console.log(localStorage.getItem('numLab'))
       console.log(localStorage.getItem('periodo'))
 
+      try {
 
-
-
-
-
-
-      const result = await axios.post(`${config.apiUrl}/createMarks`,
-        JSON.stringify({
-          "dataReserva": date,
-          "periodo": localStorage.getItem('periodo'),
-          "aulaReserva": aula,
-          "idProfessor": professor.idProfessor,
-          "numeroLaboratorio": localStorage.getItem('numLab'),
-          "tipoLaboratorio": localStorage.getItem('typeLab'),
-          "motivo": motivo3
-        }),
-        {
-          headers: {
-            'Content-Type': 'application/json'
+        const result = await axios.post(`${config.apiUrl}/createMarks`,
+          JSON.stringify({
+            "dataReserva": date,
+            "periodo": localStorage.getItem('periodo'),
+            "aulaReserva": aula,
+            "idProfessor": professor.idProfessor,
+            "numeroLaboratorio": localStorage.getItem('numLab'),
+            "tipoLaboratorio": localStorage.getItem('typeLab'),
+            "motivo": motivo3
+          }),
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
           }
+        );
+
+        if (result.data.error) {
+          Swal.fire({
+            title: 'Limite de Agendamentos Atingido',
+            text: 'Você já fez 4 agendamentos nesta semana. Você só pode fazer novos agendamentos na próxima semana.',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          });
+        } else {
+          Swal.fire({
+            title: 'Reserva Criada',
+            text: 'Sua reserva foi criada com sucesso!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          });
         }
-      )
-
-
+      } catch (error) {
+        console.error('Erro ao criar reserva:', error);
+        Swal.fire({
+          title: 'Erro',
+          text: 'Ocorreu um erro ao tentar criar a reserva. Por favor, tente novamente mais tarde.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
     } else {
-      alert('Professor não reconhecido. Por favor, faça o login para reservar um horário')
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Você precisa estar logado para reservar!',
+        footer: '<a href="/login">Clique aqui para fazer login</a>'
+      });
     }
-
     onBotaoClique()
 
   }

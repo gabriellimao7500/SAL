@@ -1,57 +1,54 @@
-USE sal
-alter table laboratorio MODIFY COLUMN tipoLaboratorio VARCHAR(70) NOT NULL
+USE sal;
 
+ALTER TABLE laboratorio MODIFY COLUMN tipoLaboratorio VARCHAR(70) NOT NULL;
 
-
-
-insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
 ('Informática', 1, ""),
-('Informática',2,""),
+('Informática', 2, ""),
 ('Informática', 3, ""),
-('Informática', 4, "")
+('Informática', 4, "");
 
-insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
-('Química', 1, "")
+('Química', 1, "");
 
-
-insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
-('Segurança do Trabalho', 1 , "")
+('Segurança do Trabalho', 1, "");
 
-insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
-('Nutrição', 1, "")
+('Nutrição', 1, "");
 
-
-insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
-('Microbiologia', 1, "")
+('Microbiologia', 1, "");
 
-insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
-('Farmácia', 1, "")
+('Farmácia', 1, "");
 
-insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
-('Maker', 1, "")
+('Maker', 1, "");
 
-
-insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
-('Sala de Leitura', 1, "")
+('Sala de Leitura', 1, "");
 
-insert into laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
 VALUES
-('Auditório', 1 , "")
+('Auditório', 1, "");
 
-select * from laboratorio
+SELECT * FROM laboratorio;
 
+INSERT INTO professor (nome, email, senha)
+VALUES
+('Prof A', 'prof.a@example.com', '123');
 
-insert into professor (nome, email, senha) VALUES
-('Prof A', 'prof.a@example.com', '123')
+INSERT INTO professor (nome, email, senha)
+VALUES
+('Coodenador Davi', 'adm@gmail.com', '199');
 
-select * from professor
-
-
+SELECT * FROM professor;

@@ -20,20 +20,18 @@ const createReserva = async (reservaData) => {
 
     const formattedDataReserva = format(new Date(dataReserva), 'yyyy-MM-dd');
 
-    // Verificar se o professor já fez 4 agendamentos na semana
     const reservationCount = await countWeeklyReservations(idProfessor, formattedDataReserva);
     if (reservationCount >= 4) {
-        return { error: 'Você já fez 4 agendamentos nesta semana.' };
+        return { error: 'Você já fez 4 agendamentos nesta semana.', reservationCount };
     }
 
     const query = `
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
         VALUES (?, ?, ?, ?, (SELECT idLaboratorio FROM laboratorio WHERE numeroLaboratorio = ? AND tipoLaboratorio = ?), ?)
     `;
-    // eslint-disable-next-line no-useless-catch
     try {
         const [result] = await connection.execute(query, [formattedDataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo]);
-        return { insertId: result.insertId };
+        return { insertId: result.insertId, reservationCount };
     } catch (err) {
         throw err;
     }

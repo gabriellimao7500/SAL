@@ -55,7 +55,7 @@ function Login() {
         <h1>Login</h1>
         <form className='inputs' onSubmit={handleLogin}>
           <Inputs
-            text="username" 
+            text="email" 
             type="text" 
             name="email" 
             value={email}
