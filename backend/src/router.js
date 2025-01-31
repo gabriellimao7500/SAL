@@ -18,7 +18,7 @@ router.get('/labsType/:tipoLaboratorio', labsConstrollers.getDataFromType);
 // reservas
 router.post('/marks', marksControllers.getData);
 router.get('/marks/:idReserva', marksControllers.getDataFromId);
-router.post('/createMarks', marksControllers.countWeeklyReservationsMiddleware, marksControllers.createMark);
+router.post('/createMarks', marksControllers.createMark);
 router.put('/marks/:idReserva', marksControllers.updateReserva);
 router.delete('/marks/:idReserva', marksControllers.deleteMark);
 

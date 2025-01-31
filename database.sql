@@ -44,3 +44,48 @@ CREATE TABLE requisicao (
     FOREIGN KEY (idProfessorRequisitado) REFERENCES professor(idProfessor),
     FOREIGN KEY (idReserva) REFERENCES reserva(idReserva)
 );
+
+DELIMITER //
+
+CREATE PROCEDURE sp_createReserva(
+    IN p_dataReserva DATE,
+    IN p_periodo VARCHAR(5),
+    IN p_aulaReserva INT,
+    IN p_idProfessor INT,
+    IN p_numeroLaboratorio INT,
+    IN p_tipoLaboratorio VARCHAR(70),
+    IN p_motivo VARCHAR(150),
+    OUT p_result VARCHAR(255)
+)
+BEGIN
+    DECLARE v_reservationCount INT;
+    DECLARE v_idLaboratorio INT;
+
+    -- Calculate the start and end of the week for the given date
+    SET @startOfWeek = DATE_SUB(p_dataReserva, INTERVAL WEEKDAY(p_dataReserva) DAY);
+    SET @endOfWeek = DATE_ADD(@startOfWeek, INTERVAL 6 DAY);
+
+    -- Count the number of reservations for the professor in the given week
+    SELECT COUNT(*) INTO v_reservationCount
+    FROM reserva
+    WHERE idProfessor = p_idProfessor AND dataReserva BETWEEN @startOfWeek AND @endOfWeek;
+
+    -- Check if the reservation count exceeds the limit
+    IF v_reservationCount >= 4 THEN
+        SET p_result = 'Limite de 4 agendamentos por semana atingido para este professor.';
+    ELSE
+        -- Get the idLaboratorio based on numeroLaboratorio and tipoLaboratorio
+        SELECT idLaboratorio INTO v_idLaboratorio
+        FROM laboratorio
+        WHERE numeroLaboratorio = p_numeroLaboratorio AND tipoLaboratorio = p_tipoLaboratorio;
+
+        -- Insert the new reservation
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (p_dataReserva, p_periodo, p_aulaReserva, p_idProfessor, v_idLaboratorio, p_motivo);
+
+        SET p_result = 'Reserva criada com sucesso.';
+    END IF;
+END //
+
+DELIMITER ;
+

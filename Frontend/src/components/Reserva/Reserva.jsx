@@ -77,35 +77,33 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
           }
         }
       );
-  
-      // Verificando o resultado da requisição
-      
-      if (result.data.type === 'reservation_limit') {
-      // Limite de agendamentos atingido
-      Swal.fire({
-        title: 'Limite de Agendamentos Atingido',
-        text: 'Você já fez 4 agendamentos nesta semana. Você só pode fazer novos agendamentos na próxima semana.',
-        icon: 'warning',
-        confirmButtonText: 'OK'
-      });
-      } else {
-        // Reserva criada com sucesso
+
+       
+
         Swal.fire({
           title: 'Reserva Criada',
           text: 'Sua reserva foi criada com sucesso!',
           icon: 'success',
           confirmButtonText: 'OK'
         });
-      }
+      
     } catch (error) {
-      // Erro na requisição
-      console.error('Erro ao criar reserva:', error);
+      if(error.response.status === 404){
       Swal.fire({
-        title: 'Erro',
-        text: 'Ocorreu um erro ao tentar criar a reserva. Por favor, tente novamente mais tarde.',
+        title: 'Limite de Agendamentos Atingido',
+        text: 'Você já fez 4 agendamentos nesta semana. Você só pode fazer novos agendamentos na próxima semana.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
+    }else{
+      Swal.fire({
+        title: 'Erro ao criar reserva',
+        text: 'Houve um erro ao criar a reserva. Tente novamente mais tarde.',
         icon: 'error',
         confirmButtonText: 'OK'
       });
+
+    }
     }
   
     // Função para clique do botão
