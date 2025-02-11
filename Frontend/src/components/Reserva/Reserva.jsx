@@ -50,13 +50,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
     }
   
     // Logando as informações para depuração
-    console.log(date);
-    console.log(aula);
-    console.log(motivo3);
-    console.log(professor);
-    console.log(localStorage.getItem('typeLab'));
-    console.log(localStorage.getItem('numLab'));
-    console.log(localStorage.getItem('periodo'));
+    
   
     try {
       // Tentando criar a reserva
@@ -113,10 +107,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
 
   const [svgWithClass, setSvgWithClass] = useState('');
 
-  useEffect(() => {
-    const updatedSvg = svg.replace('<svg', `<svg class="${styles.svg}"`);
-    setSvgWithClass(updatedSvg);
-  }, [svg]);
+  
 
   return (
     <section className={visible ? styles.blur : "none"}>

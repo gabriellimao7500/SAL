@@ -8,6 +8,12 @@
     justify-content: space-around;
 }
 
+.isYou{
+    background-color: #f7f7f7 !important;
+    
+    color: black;
+}
+
 .ocupado{
     background: #FF3162;
     min-height: 44px;
@@ -20,6 +26,7 @@
     transition: 150ms ease-in ;
     border: 2px solid black;
     border-radius: 4px;
+    font-weight: bold;
 }.ocupado:hover{
     border: none;
     outline: white 1px solid;

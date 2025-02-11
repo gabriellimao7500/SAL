@@ -1,3 +1,4 @@
+-- Active: 1739237217105@@127.0.0.1@3306@sal
 USE sal;
 
 ALTER TABLE laboratorio MODIFY COLUMN tipoLaboratorio VARCHAR(70) NOT NULL;
@@ -46,6 +47,16 @@ SELECT * FROM laboratorio;
 INSERT INTO professor (nome, email, senha)
 VALUES
 ('Prof A', 'prof.a@example.com', '123');
+
+INSERT INTO professor (nome, email, senha)
+VALUES
+('Prof B', 'prof.b@example.com', '123');
+
+
+
+DELETE from reserva
+
+
 
 INSERT INTO professor (nome, email, senha)
 VALUES

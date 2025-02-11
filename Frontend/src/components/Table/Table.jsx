@@ -7,20 +7,7 @@ import Reserva from '../Reserva/Reserva';
 function Table({reserva, pullMarks}) {
     
     
-reserva.push(
-    {
-        "idReserva": 0,
-        "dataReserva": "0000-00-00T00:00:00.000Z",
-        "periodo": "",
-        "aulaReserva": 0,
-        "nome": "",
-        "email": "",
-        "tipoLaboratorio": "",
-        "numeroLaboratorio": 0,
-        "svg": "",
-        "motivo": ""
-    }
-)
+
     
     const date = new Date();
     const dia = date.getDate();
@@ -124,7 +111,7 @@ reserva.push(
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < weeksPass + 50; i++) {
+    for (let i = 0; i < weeksPass + 2; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
@@ -297,14 +284,40 @@ reserva.push(
   
       var indice = ((aula-1)*5+sem-1) - multi;
       idx.push(indice)
+      reserva.index = indice
     });
       
     
 
     const getClassName = (index) => {
 
+        let reservasFiltradas = reserva.filter(reserva => reserva.index === index);
+
+        
+        /*{
+        "idReserva": 0,
+        "dataReserva": "0000-00-00T00:00:00.000Z",
+        "periodo": "",
+        "aulaReserva": 0,
+        "nome": "",
+        "email": "",
+        "tipoLaboratorio": "",
+        "numeroLaboratorio": 0,
+        "svg": "",
+        "motivo": ""
+    } */
+        
+        
+        
+        
+        
         if (idx.includes(index)) {
-            return 'ocupado';
+            var email = reservasFiltradas[0].email;
+            var profEmail = JSON.parse(sessionStorage.getItem('professor')).email;
+            if(email === profEmail){
+                return `ocupado ${index} isYou`
+            }
+            return `ocupado ${index}`;
         } else {
             return styles.select;
         }
@@ -312,7 +325,7 @@ reserva.push(
 
     const [onReserva, setOnReserva] = useState(false);
     const [type, setType] = useState(false);
-    const [targetReserva, setTargetReserva] = useState(0);
+    
     
     function reservasOff() {
         setOnReserva(false)
@@ -321,13 +334,7 @@ reserva.push(
         
     }
     
-    const obj = document.querySelectorAll(".ocupado")
-    obj.forEach((element, index) => {
-        element.addEventListener('click', () => {
-            setTargetReserva(index)
-        })
-    })
-
+    
     function calculateDate(startDay, startMonth, startYear, weeksPassed, weekDay) {
         // Cria uma nova data com base nos parâmetros fornecidos
         let startDate = new Date(startYear, startMonth - 1, startDay);
@@ -353,7 +360,7 @@ reserva.push(
     const [dateReserva,setDateReserva] = useState('')
     
 
-    
+    const [objDefault, setObjDefault] = useState([{}])
 
     const onReser = async(rowIndex, colIndex, event)=>{
         
@@ -381,8 +388,29 @@ reserva.push(
 
         
         if (target.classList.contains('ocupado')) {
+
+
+
+            var e = target.className;
+            var b = e.split(" ");
+            var bb = parseInt(b[1]);
+            
+
+            
+            const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
+            setObjDefault(reservasFiltradas)
+            
+            
+            
+
+
+            
+
             setType(false)
             setOnReserva(true)
+            
+            
+            
             
         } else {
             if(formatoISO >= data2){
@@ -393,10 +421,11 @@ reserva.push(
 
     }
 
-   
+
+
     return (
         <section className={styles.calendar}>
-            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={reserva[targetReserva]} type={type} date={dateReserva} aula={aulaAtu}></Reserva>) : ''}
+            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={objDefault[0]} type={type} date={dateReserva} aula={aulaAtu}></Reserva>) : ''}
             <section className={styles.hours}>
                 <div>{windowWidth > 430 ? '7:00 - 7:50' : '1°'}</div>
                 <div>{windowWidth > 430 ? '7:50 - 8:40' : '2°'}</div>
