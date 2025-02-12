@@ -1,8 +1,12 @@
 import React, { useState, useEffect, createElement } from 'react';
+import Swal from 'sweetalert2';
+
 import styles from './Table.module.css';
 import Reserva from '../Reserva/Reserva';
+import Hours from '../Hours/Hours';
 
-
+import arrow_left from '../../assets/arrow_left.svg'
+import arrow_right from '../../assets/arrow_right.svg'
 
 function Table({reserva, pullMarks}) {
     
@@ -417,24 +421,25 @@ function Table({reserva, pullMarks}) {
              if(formatoISO >= data2){
                 setType("nothing")
                 setOnReserva(true)
+            }else{
+                sla()
             }
         }
 
     }
 
-
+    function sla(){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Você não pode agendar um dia anterior ao dia atual!'
+          });
+    }
 
     return (
         <section className={styles.calendar}>
             {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={objDefault[0]} type={type} date={dateReserva} aula={aulaAtu} pullMarks ={pullMarks}></Reserva>) : ''}
-            <section className={styles.hours}>
-                <div>{windowWidth > 430 ? '7:00 - 7:50' : '1°'}</div>
-                <div>{windowWidth > 430 ? '7:50 - 8:40' : '2°'}</div>
-                <div>{windowWidth > 430 ? '8:40 - 9:30' : '3°'}</div>
-                <div>{windowWidth > 430 ? '9:50 - 10:40' : '4°'}</div>
-                <div>{windowWidth > 430 ? '10:40 - 11:30' : '5°'}</div>
-                <div>{windowWidth > 430 ? '11:30 - 12:20' : '6°'}</div>
-            </section>
+            <Hours windowWidth={windowWidth}></Hours>
             <div className={styles["schedule-container"]}>
                 <div className={styles["schedule-wrapper"]} style={{ transform: `translateX(-${currentWeek * 100}%)` }}>
                     {weeks.map((week, index) => (
@@ -472,10 +477,10 @@ function Table({reserva, pullMarks}) {
             </div>
             <div className={styles.navigation}>
                 <button id="ir" onClick={() => changeWeek(1)} disabled={nextDisabled}>
-                    <span className="material-symbols-outlined">chevron_right</span>
+                    <img src={arrow_right} alt="svg" />
                 </button>
                 <button id="voltar" onClick={() => changeWeek(-1)} disabled={prevDisabled}>
-                    <span className="material-symbols-outlined">chevron_left</span>
+                    <img src={arrow_left} alt="svg" />
                 </button>
             </div>
         </section>
