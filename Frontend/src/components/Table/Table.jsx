@@ -42,7 +42,18 @@ function Table({reserva, pullMarks}) {
     const day2 = day;
     const year2 = ano;
 
-    const semanasPraMais = 2;
+    var semanasPraMais = 2;
+
+    if(JSON.parse(sessionStorage.getItem('professor'))){
+        let user = JSON.parse(sessionStorage.getItem('professor'));
+        if(user.email === "adm@gmail.com"){
+            semanasPraMais = 52;
+        }else{
+            semanasPraMais = 2;
+        }
+    }
+
+    
     const ebb = getWeeksPassed(a,m,d);
     const yearPlus = getYearsPassed(a, m , d, ebb);
     
@@ -111,7 +122,7 @@ function Table({reserva, pullMarks}) {
         [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
     ];
 
-    for (let i = 0; i < weeksPass + 2; i++) {
+    for (let i = 0; i < weeksPass + semanasPraMais; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
 
@@ -415,7 +426,7 @@ function Table({reserva, pullMarks}) {
 
     return (
         <section className={styles.calendar}>
-            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={objDefault[0]} type={type} date={dateReserva} aula={aulaAtu}></Reserva>) : ''}
+            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={objDefault[0]} type={type} date={dateReserva} aula={aulaAtu} pullMarks ={pullMarks}></Reserva>) : ''}
             <section className={styles.hours}>
                 <div>{windowWidth > 430 ? '7:00 - 7:50' : '1°'}</div>
                 <div>{windowWidth > 430 ? '7:50 - 8:40' : '2°'}</div>

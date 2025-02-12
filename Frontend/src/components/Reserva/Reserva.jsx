@@ -5,7 +5,7 @@ import InputText from './InputText/InputText';
 import config from '../../../config';
 import Swal from 'sweetalert2';
 
-function Reserva({ reserva, onBotaoClique, type, date, aula }) {
+function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
   const [visible, setVisible] = useState(true);
   const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')))
   const [motivo3, setMotivo] = useState('')
@@ -43,8 +43,8 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Você precisa estar logado para reservar!',
-        footer: '<a href="/login">Clique aqui para fazer login</a>'
+        text: 'Você precisa estar logado para reservar!'
+        //footer: '<a href="/login">Clique aqui para fazer login</a>'
       });
       return;
     }
@@ -119,7 +119,27 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
     }).then((result) => {
         if (result.isConfirmed) {
             // função para retirar o agendamento
-
+              
+              const deleteMark = async()=>{
+                  var url = config.apiUrl;
+                  var idReserva = reserva.idReserva
+                  try {
+                      await axios.delete(`${url}/marks/${idReserva}`);
+                  } catch (error) {
+                      console.log('erro', error);
+                      Swal.fire(
+                        'Erro ao tentar cancelar esse agendamento!',
+                        'Tente novamente mais tarde.',
+                        'error'
+                    );
+                  }
+                pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+              }
+              deleteMark();
+              console.log(reserva.idReserva)
+              
+      
+          
             Swal.fire(
                 'Agendamento removido!',
                 'Você retirou seu agendamento com sucesso.',
