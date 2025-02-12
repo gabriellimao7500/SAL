@@ -313,7 +313,9 @@ function Table({reserva, pullMarks}) {
         
         if (idx.includes(index)) {
             var email = reservasFiltradas[0].email;
-            var profEmail = JSON.parse(sessionStorage.getItem('professor')).email;
+            if (JSON.parse(sessionStorage.getItem('professor'))){
+                var profEmail = JSON.parse(sessionStorage.getItem('professor')).email;
+            }
             if(email === profEmail){
                 return `ocupado ${index} isYou`
             }
@@ -324,14 +326,12 @@ function Table({reserva, pullMarks}) {
     };
 
     const [onReserva, setOnReserva] = useState(false);
-    const [type, setType] = useState(false);
+    const [type, setType] = useState("no");
     
     
     function reservasOff() {
         setOnReserva(false)
         pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
-        
-        
     }
     
     
@@ -389,32 +389,22 @@ function Table({reserva, pullMarks}) {
         
         if (target.classList.contains('ocupado')) {
 
-
-
             var e = target.className;
             var b = e.split(" ");
             var bb = parseInt(b[1]);
             
-
-            
             const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
             setObjDefault(reservasFiltradas)
-            
-            
-            
 
-
-            
-
-            setType(false)
+            if(target.classList.contains('isYou')){
+                setType("me")
+            }else{
+                setType("other")
+            }
             setOnReserva(true)
-            
-            
-            
-            
         } else {
-            if(formatoISO >= data2){
-                setType(true)
+             if(formatoISO >= data2){
+                setType("nothing")
                 setOnReserva(true)
             }
         }

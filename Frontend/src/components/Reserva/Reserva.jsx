@@ -50,8 +50,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
     }
   
     // Logando as informações para depuração
-    
-  
+
     try {
       // Tentando criar a reserva
       const result = await axios.post(
@@ -107,33 +106,76 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
 
   const [svgWithClass, setSvgWithClass] = useState('');
 
-  
+  function RemoverAgendamento(){
+      Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você realmente deseja remover este agendamento?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, remover',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // função para retirar o agendamento
+
+            Swal.fire(
+                'Agendamento removido!',
+                'Você retirou seu agendamento com sucesso.',
+                'success'
+            );
+        }
+    });
+  }
 
   return (
     <section className={visible ? styles.blur : "none"}>
       <section ref={reservasRef} className={styles.reservas}>
         <section className={styles.hours}>
-          <div className={styles.periodo}>{localStorage.getItem('periodo')}: {aula}° aula</div>
-          <div className={styles.time}>{d} / {m} / {a}</div>
+          <div className={styles.periodo}>
+            {localStorage.getItem("periodo")}: {aula}° aula
+          </div>
+          <div className={styles.time}>
+            {d} / {m} / {a}
+          </div>
         </section>
         <section className={styles.labinfo}>
           <div dangerouslySetInnerHTML={{ __html: svgWithClass }}></div>
-          <div className={styles.labname}>Laboratório de {localStorage.getItem('typeLab')} <div /> {localStorage.getItem('numLab')}</div>
+          <div className={styles.labname}>
+            Laboratório de {localStorage.getItem("typeLab")} <div />{" "}
+            {localStorage.getItem("numLab")}
+          </div>
         </section>
-        {type ? (
+  
+        {type === "nothing" && (
           <form action="" onSubmit={handleLogin} className={styles.form}>
             <div className={styles.main_input}>
               <div className={styles.motivo}>Motivo:</div>
-              <textarea className={styles.input} type="text" name="" id="" onChange={(e) => setMotivo(e.target.value)} />
+              <textarea
+                className={styles.input}
+                type="text"
+                onChange={(e) => setMotivo(e.target.value)}
+              />
             </div>
             <input className={styles.submit} type="submit" value="Reservar" />
           </form>
-        ) : (
+        )}
+  
+        {type === "other" && (
           <section className={styles.reservado}>
             <section className={styles.inforeserva}>
-              <div className={styles.Reservado_por}><div>Reservado por:</div></div>
+              <div className={styles.Reservado_por}>
+                <div>Reservado por:</div>
+              </div>
               <section className={styles.userinfo}>
-                <img className={styles.img} src="../../../../generic.jpg" alt="" width={60} height={60} />
+                <img
+                  className={styles.img}
+                  src="../../../../generic.jpg"
+                  alt=""
+                  width={60}
+                  height={60}
+                />
                 <section className={styles.nameProfessor}>
                   <div className={styles.name}>{nome}</div>
                   <div className={styles.email}>{email}</div>
@@ -143,9 +185,35 @@ function Reserva({ reserva, onBotaoClique, type, date, aula }) {
             </section>
           </section>
         )}
+
+        {type === "me" && (
+          <section className={styles.reservado}>
+            <section className={styles.inforeserva}>
+              <div className={styles.Reservado_por}>
+                <div>Reservado por:</div>
+              </div>
+              <section className={styles.userinfo}>
+                <img
+                  className={styles.img}
+                  src="../../../../generic.jpg"
+                  alt=""
+                  width={60}
+                  height={60}
+                />
+                <section className={styles.nameProfessor}>
+                  <div className={styles.name}>{nome}</div>
+                  <div className={styles.email}>{email}</div>
+                </section>
+              </section>
+              <InputText motivo={motivo} />
+              <input onClick={RemoverAgendamento} className={`${styles.submit} ${styles.cancelar}`} type="submit" value="cancelar agendamento" />
+            </section>
+          </section>
+        )}
       </section>
     </section>
   );
+  
 }
 
 export default Reserva;
