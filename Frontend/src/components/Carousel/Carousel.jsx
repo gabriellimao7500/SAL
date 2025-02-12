@@ -59,7 +59,6 @@ function Carousel(){
     return(
 
         <div className={styles.carrousel}>
-
             <Swiper
             direction={windowWidth < 430 ? 'vertical' : 'horizontal'}
             className={styles.carr}
