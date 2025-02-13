@@ -10,45 +10,45 @@ ALTER TABLE laboratorio MODIFY COLUMN tipoLaboratorio VARCHAR(70) NOT NULL;
 
 
 
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
-('Informática', 1, ""),
-('Informática', 2, ""),
-('Informática', 3, ""),
-('Informática', 4, "");
+('Informática', 1),
+('Informática', 2),
+('Informática', 3),
+('Informática', 4);
 
 
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
-('Química', 1, "");
+('Química', 1);
 
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
-('Segurança do Trabalho', 1, "");
+('Segurança do Trabalho', 1);
 
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
-('Nutrição', 1, "");
+('Nutrição', 1);
 
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
-('Microbiologia', 1, "");
+('Microbiologia', 1);
 
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
-('Farmácia', 1, "");
+('Farmácia', 1);
 
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
-('Maker', 1, "");
+('Maker', 1);
 
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
-('Sala de Leitura', 1, "");
+('Sala de Leitura', 1);
 
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio, svg)
+INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
-('Auditório', 1, "");
+('Auditório', 1);
 
 SELECT * FROM laboratorio;
 

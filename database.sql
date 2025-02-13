@@ -10,13 +10,21 @@ CREATE TABLE professor (
     imagem LONGBLOB
 );
 
+
+
+
+
+
+
 -- Criar tabela laboratorio
 CREATE TABLE laboratorio (
     idLaboratorio INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     tipoLaboratorio VARCHAR(70) NOT NULL,
-    numeroLaboratorio INT NOT NULL,
-    svg TEXT
+    numeroLaboratorio INT NOT NULL
 );
+
+
+ALTER TABLE laboratorio DROP COLUMN svg
 
 -- Criar tabela reserva
 CREATE TABLE reserva (

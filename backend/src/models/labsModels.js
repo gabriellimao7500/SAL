@@ -18,16 +18,7 @@ const getDataFromType = async (tipoLaboratorio) => {
 
 
 const getAll = async() =>{
-    const query = `SELECT
-    tipoLaboratorio,
-    GROUP_CONCAT(DISTINCT svg) AS svg
-FROM 
-    laboratorio
-GROUP BY 
-    tipoLaboratorio
-ORDER BY tipoLaboratorio ASC
-;
-`;
+    const query = `SELECT * FROM laboratorio WHERE idLaboratorio IN (SELECT MIN(idLaboratorio) FROM laboratorio GROUP BY tipoLaboratorio) ORDER BY tipoLaboratorio ASC;`;
     const [labs] = await connection.execute(query);// query sql para pegar todas as reservas
     return labs;
 };
