@@ -1,3 +1,4 @@
+-- Active: 1722448001420@@127.0.0.1@3306@sal
 CREATE DATABASE sal;
 USE sal;
 
@@ -10,21 +11,13 @@ CREATE TABLE professor (
     imagem LONGBLOB
 );
 
-
-
-
-
-
-
 -- Criar tabela laboratorio
 CREATE TABLE laboratorio (
     idLaboratorio INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     tipoLaboratorio VARCHAR(70) NOT NULL,
-    numeroLaboratorio INT NOT NULL
+    numeroLaboratorio INT NOT NULL,
+    svg TEXT
 );
-
-
-ALTER TABLE laboratorio DROP COLUMN svg
 
 -- Criar tabela reserva
 CREATE TABLE reserva (
