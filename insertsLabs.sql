@@ -3,13 +3,6 @@ USE sal;
 
 ALTER TABLE laboratorio MODIFY COLUMN tipoLaboratorio VARCHAR(70) NOT NULL;
 
-
-
-
-
-
-
-
 INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
 ('Informática', 1),
@@ -21,10 +14,6 @@ VALUES
 INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES
 ('Química', 1);
-
-INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
-VALUES
-('Segurança do Trabalho', 1);
 
 INSERT INTO laboratorio(tipoLaboratorio, numeroLaboratorio)
 VALUES

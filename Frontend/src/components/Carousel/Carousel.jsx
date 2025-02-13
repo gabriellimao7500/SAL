@@ -1,126 +1,112 @@
 import React, { useState, useEffect } from 'react';
-import styles from './Carousel.module.css'
+import styles from './Carousel.module.css';
 import LabsSelect from '../LabsSelect/LabsSelect';
-import axios from 'axios'
+import axios from 'axios';
 import config from '../../../config';
+
 import auditorioSvg from '../../assets/auditorio.svg';
+import informaticaSvg from '../../assets/informatica.svg';
+import makerSvg from '../../assets/maker.svg';
+import microbiologiaSvg from '../../assets/microbiologia.svg';
+import nutricaoSvg from '../../assets/nutricao.svg';
+import quimicaSvg from '../../assets/quimica.svg';
+import saladeleituraSvg from '../../assets/saladeleitura.svg';
+import farmaciaSvg from '../../assets/farmacia.svg';
 
-import { Swiper, SwiperSlide} from 'swiper/react'
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-const assets = '../../assets';
+function Carousel() {
+    localStorage.setItem('typeLab', "");
 
+    const [labs, setLabs] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-function Carousel(){
-    
-    localStorage.setItem('typeLab', "")
-    
-    const[labs, setLabs] = useState([]);
-    const[loading, setLoading] =useState(true);
-    useEffect(()=>{
-        const fetchLabs = async()=>{
+    useEffect(() => {
+        const fetchLabs = async () => {
             var url = config.apiUrl;
-            
+
             try {
                 const response = await axios.get(`${url}/labs`);
                 setLabs(response.data);
             } catch (error) {
                 console.log('erro', error);
-            }finally{
+            } finally {
                 setLoading(false);
             }
             if (loading) {
                 return <h1>Loading...</h1>;
             }
-            
-        }
-        fetchLabs()
+        };
+        fetchLabs();
+    }, []);
 
-    },[]);
-    
-    
     const labsSvgs = [
         {
             tipoLaboratorio: "Auditório",
             svg: auditorioSvg
         },
         {
+            tipoLaboratorio: "Farmácia",
+            svg: farmaciaSvg
+        },
+        {
             tipoLaboratorio: "Informática",
-            svg: assets + '/svg/informatica.svg'
+            svg: informaticaSvg
         },
         {
             tipoLaboratorio: "Maker",
-            svg: assets + '/svg/maker.svg'
+            svg: makerSvg
         },
         {
             tipoLaboratorio: "Microbiologia",
-            svg: assets + '/svg/microbiologia.svg'
+            svg: microbiologiaSvg
         },
         {
             tipoLaboratorio: "Nutrição",
-            svg: assets + '/svg/nutricao.svg'
+            svg: nutricaoSvg
         },
         {
             tipoLaboratorio: "Química",
-            svg: assets + '/svg/quimica.svg'
+            svg: quimicaSvg
         },
         {
             tipoLaboratorio: "Sala de Leitura",
-            svg: assets + '/svg/sala-de-leitura.svg'
+            svg: saladeleituraSvg
         }
     ];
-    
-
-    
-     
-    
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
 
-    window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleResize);
 
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+        // Cleanup the event listener on component unmount
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
-  
-
-
-
-  
- console.log()
-
-    
-    
-
-
-  
-
-
-    return(
-
+    return (
         <div className={styles.carrousel}>
             <Swiper
-            direction={windowWidth < 430 ? 'vertical' : 'horizontal'}
-            className={styles.carr}
-            slidesPerView={4}
-            pagination={{ clickable: false }}
-            navigation
+                direction={windowWidth < 430 ? 'vertical' : 'horizontal'}
+                className={styles.carr}
+                slidesPerView={4}
+                pagination={{ clickable: false }}
+                navigation
             >
-                {labs.map( (item) => (
+                {labs.map((item) => (
                     <SwiperSlide key={item.length}>
-                    <LabsSelect svg={labsSvgs.find(labsSvg => labsSvg.tipoLaboratorio.trim() === item.tipoLaboratorio.trim())?.svg} name={item.tipoLaboratorio} number={item.numeroLaboratorio}></LabsSelect>
+                        <LabsSelect svg={labsSvgs.find(labsSvg => labsSvg.tipoLaboratorio.trim() === item.tipoLaboratorio.trim())?.svg} name={item.tipoLaboratorio} number={item.numeroLaboratorio}></LabsSelect>
                     </SwiperSlide>
                 ))}
             </Swiper>
         </div>
-    )
+    );
 }
 
-export default Carousel
+export default Carousel;
