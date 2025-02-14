@@ -54,7 +54,7 @@ function AboutUs(){
             name: "Gabriel Ortiz dos Anjos Marsura",
             github: "https://github.com/GMarsura",
             insta: "https://www.instagram.com/gabriel_marsura/",
-            linkedin: "https://www.linkedin.com/in/gabriel-oliveira-8bb517287/"
+            linkedin: "https://www.linkedin.com/in/gabriel-marsura-4bb6732a9/"
         },
         {
             name: "Matheus Vinicius Rodrigues Brito",
