@@ -72,8 +72,8 @@ BEGIN
     WHERE idProfessor = p_idProfessor AND dataReserva BETWEEN @startOfWeek AND @endOfWeek;
 
     -- Check if the reservation count exceeds the limit
-    IF v_reservationCount >= 4 THEN
-        SET p_result = 'Limite de 4 agendamentos por semana atingido para este professor.';
+    IF v_reservationCount >= 3 THEN
+        SET p_result = 'Limite de 3 agendamentos por semana atingido para este professor.';
     ELSE
         -- Get the idLaboratorio based on numeroLaboratorio and tipoLaboratorio
         SELECT idLaboratorio INTO v_idLaboratorio

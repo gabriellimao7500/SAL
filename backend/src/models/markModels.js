@@ -17,7 +17,7 @@ const createReserva = async (reservaData) => {
         const [rows] = await connection.query(selectQuery);
         const result = rows[0].result;
 
-        if (result === 'Limite de 4 agendamentos por semana atingido para este professor.') {
+        if (result === 'Limite de 3 agendamentos por semana atingido para este professor.') {
             return { error: result, type: 'reservation_limit' };
         }
 

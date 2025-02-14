@@ -84,7 +84,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
       if(error.response.status === 404){
       Swal.fire({
         title: 'Limite de Agendamentos Atingido',
-        text: 'Você já fez 4 agendamentos nesta semana. Você só pode fazer novos agendamentos na próxima semana.',
+        text: 'Você já fez 3 agendamentos nesta semana. Você só pode fazer novos agendamentos na próxima semana.',
         icon: 'warning',
         confirmButtonText: 'OK'
       });
