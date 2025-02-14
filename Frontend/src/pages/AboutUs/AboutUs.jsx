@@ -71,7 +71,6 @@ function AboutUs(){
             <Header></Header>
             <div className={styles.main}>
                 <img className={styles.logo} src="logo.svg" alt="" width={400}/>
-
                 <div className={styles.info}>
                     <div className={styles.buttons}>
                         <Button content={"About Us"} isActive={activeIndex === 0} onClick={() => handleButtonClick(0)}></Button>

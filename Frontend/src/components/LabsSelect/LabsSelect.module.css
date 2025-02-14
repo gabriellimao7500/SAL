@@ -20,17 +20,6 @@
     cursor: pointer;
     color: #fff;
 }
-
-.img{
-    filter: brightness(0.2);
-    transform: scale(1.8);
-    transition: 300ms ease-in-out;
-}
-.button:hover .img {
-    filter: brightness(1.5);
-    transition: 300ms ease-in-out;
-}
-
 .button2{
     width: 250px;
     height: 50px;
@@ -40,9 +29,11 @@
     border-radius: 6px;
 
     display: flex;
-    justify-content: space-evenly;
-    flex-direction: column;
+    justify-content: space-between;
+    flex-direction: row-reverse;
     align-items: center;
+
+    padding-inline: 30px;
 
     color: #777;
     font-size: 13px;
@@ -55,6 +46,24 @@
     color: #fff;
 }
 
+.img{
+    filter: brightness(0.2);
+    transform: scale(1.8);
+    transition: 300ms ease-in-out;
+}
+.button:hover .img {
+    filter: brightness(1.5);
+    transition: 300ms ease-in-out;
+}
+.img2{
+    filter: brightness(0.2);
+    transform: scale(0.6);
+    transition: 300ms ease-in-out;
+}
+.button2:hover .img2 {
+    filter: brightness(1.5);
+    transition: 300ms ease-in-out;
+}
 
 .button:hover svg path {
     fill: #fff;

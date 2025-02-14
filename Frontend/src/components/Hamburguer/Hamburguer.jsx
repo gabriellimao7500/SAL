@@ -2,7 +2,7 @@ import './Hamburguer.css';
 
 import LabsSelect from '../LabsSelect/LabsSelect';
 
-import { useState, useEffect } from 'react'; // Importando useEffect corretamente
+import { useState, useEffect } from 'react';
 import SVG from './SVG';
 import axios from 'axios';
 import config from '../../../config';
@@ -46,7 +46,7 @@ function Hamburguer() {
         <section className="labs">
           {labs.map((item) => (
             <LabsSelect
-              key={item.id} // Adicione uma key única
+              key={item.id}
               svg={labsSvgs.find(labSvg => labSvg.tipoLaboratorio.trim() === item.tipoLaboratorio.trim())?.svg}
               name={item.tipoLaboratorio}
               number={item.numeroLaboratorio}

@@ -102,10 +102,10 @@ header{
     position: fixed;
 }
 
-.About_Us_Link{
+.Header_Link{
     color: #888;   
     transition: 150ms ease-in;
-}.About_Us_Link:hover{
+}.Header_Link:hover{
     color: #f7f7f7;
     transition: 150ms ease-in;
 }

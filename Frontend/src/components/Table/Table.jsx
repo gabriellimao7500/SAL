@@ -212,21 +212,8 @@ function Table({reserva, pullMarks}) {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-    
-    
-        
-    
-
-    
-    
-
 
     const renderMonthLabel = () => {
-        
-        
-        
-        
-
 
         if (currentWeek !== 0 && isMonthTransition) {
             
@@ -272,8 +259,6 @@ function Table({reserva, pullMarks}) {
             );
         }
     };
-    
-    
 
     function getDayOfWeek(dateString) {
         const date = new Date(dateString);
@@ -281,10 +266,6 @@ function Table({reserva, pullMarks}) {
         // Ajustar para que segunda-feira seja 1 e sexta-feira seja 5
         return day === 0 || day === 6 ? null : day;
     }
-
-
-
-    
 
     var idx = []
     reserva.map((reserva, id) => {
@@ -410,25 +391,30 @@ function Table({reserva, pullMarks}) {
             
             const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
             setObjDefault(reservasFiltradas)
-
-            if(target.classList.contains('isYou')){
-                setType("me")
+            if(formatoISO >= data2){
+                if(target.classList.contains('isYou')){
+                    setType("me")
+                }else{
+                    setType("other")
+                }
+                setOnReserva(true)
             }else{
                 setType("other")
+                setOnReserva(true)
             }
-            setOnReserva(true)
+            
         } else {
-             if(formatoISO >= data2){
+            if(formatoISO >= data2){
                 setType("nothing")
                 setOnReserva(true)
             }else{
-                sla()
+                erroDeAgendamento()
             }
         }
 
     }
 
-    function sla(){
+    function erroDeAgendamento(){
         Swal.fire({
             icon: 'error',
             title: 'Oops...',

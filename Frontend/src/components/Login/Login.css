@@ -49,6 +49,8 @@
 }
 
 .incorrect{
+  width: 208px;
+  text-align: center;
   color: rgb(255, 61, 61);
   font-weight: bold;
   position: fixed;
@@ -63,8 +65,7 @@
   top: 14%;
   opacity: 1;
   transition: 0.8s ease-out;
-  animation: balanga 0.2s ease-out 5;
-
+  animation: balanga 0.2s ease-out 4;
 }
 
 @keyframes balanga {
