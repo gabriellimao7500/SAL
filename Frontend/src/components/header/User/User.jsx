@@ -14,14 +14,7 @@ function User() {
     // Atualizando a imagem do professor
     useEffect(() => {
         if (professor) {
-            const { imagem } = professor;
-            if (imagem) {
-                setImageSrc(imagem);
-            } else {
-                setImageSrc('generic.jpg');
-            }
-        } else {
-            setImageSrc('generic.jpg');
+            setImageSrc('out.png')
         }
     }, [professor]);
 
@@ -72,7 +65,7 @@ function User() {
     return (
         <>
             <div onClick={session ? handleLogout : toggleLogin} className='user'>
-                <div>{session ? 'Clique para sair' : 'Entrar'}</div>
+                <div>{session ? professor.nome : 'Entrar'}</div>
                 <img className='userImage' src={imageSrc} alt="User" />
             </div>
 

@@ -68,6 +68,7 @@ header{
 }
 
 .division > .duvidas {
+    color: #fff;
     font-size: 14px;
     cursor: pointer;
 }
@@ -108,6 +109,10 @@ header{
 }.Header_Link:hover{
     color: #f7f7f7;
     transition: 150ms ease-in;
+}
+
+.cancel_a{
+    color: #fff;
 }
 
 @media  (max-width: 430px) {

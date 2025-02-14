@@ -3,17 +3,26 @@
 }
 
 .user{
+    margin-right: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
+    cursor: pointer;
+    transition: 150ms ease-in-out;
+    color: #656565;
     cursor: pointer;
 }
 
 .userImage{
     width: 50px;
     height: 50px;
-    background-color: #646BC1;
     border-radius: 50%;
+    transition: 150ms ease-in-out;
+    filter: brightness(0.4);
+}.user:hover .userImage, .user:hover{
+    transition: 150ms ease-in-out;
+    filter: brightness(1);
+    color: #fff;
 }
 
 .Login{

@@ -1,4 +1,6 @@
 body {
+  width: 100dvw;
+  height: 100dvh;
   background-color: #000;
   cursor: url("../public/normal.png"), auto;
 }
