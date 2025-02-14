@@ -40,38 +40,14 @@ function Carousel() {
     }, []);
 
     const labsSvgs = [
-        {
-            tipoLaboratorio: "Auditório",
-            svg: auditorioSvg
-        },
-        {
-            tipoLaboratorio: "Farmácia",
-            svg: farmaciaSvg
-        },
-        {
-            tipoLaboratorio: "Informática",
-            svg: informaticaSvg
-        },
-        {
-            tipoLaboratorio: "Maker",
-            svg: makerSvg
-        },
-        {
-            tipoLaboratorio: "Microbiologia",
-            svg: microbiologiaSvg
-        },
-        {
-            tipoLaboratorio: "Nutrição",
-            svg: nutricaoSvg
-        },
-        {
-            tipoLaboratorio: "Química",
-            svg: quimicaSvg
-        },
-        {
-            tipoLaboratorio: "Sala de Leitura",
-            svg: saladeleituraSvg
-        }
+        { tipoLaboratorio: "Auditório", svg: auditorioSvg },
+        { tipoLaboratorio: "Farmácia", svg: farmaciaSvg },
+        { tipoLaboratorio: "Informática", svg: informaticaSvg },
+        { tipoLaboratorio: "Maker", svg: makerSvg },
+        { tipoLaboratorio: "Microbiologia", svg: microbiologiaSvg },
+        { tipoLaboratorio: "Nutrição", svg: nutricaoSvg },
+        { tipoLaboratorio: "Química", svg: quimicaSvg },
+        { tipoLaboratorio: "Sala de Leitura", svg: saladeleituraSvg },
     ];
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
