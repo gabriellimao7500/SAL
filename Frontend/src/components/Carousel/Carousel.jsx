@@ -14,7 +14,6 @@ import saladeleituraSvg from '../../assets/saladeleitura.svg';
 import farmaciaSvg from '../../assets/farmacia.svg';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 function Carousel() {
     localStorage.setItem('typeLab', "");
 
@@ -83,7 +82,6 @@ function Carousel() {
         };
 
         window.addEventListener('resize', handleResize);
-
         // Cleanup the event listener on component unmount
         return () => {
             window.removeEventListener('resize', handleResize);
@@ -101,7 +99,9 @@ function Carousel() {
             >
                 {labs.map((item) => (
                     <SwiperSlide key={item.length}>
+
                         <LabsSelect svg={labsSvgs.find(labsSvg => labsSvg.tipoLaboratorio.trim() === item.tipoLaboratorio.trim())?.svg} name={item.tipoLaboratorio} number={item.numeroLaboratorio}></LabsSelect>
+
                     </SwiperSlide>
                 ))}
             </Swiper>

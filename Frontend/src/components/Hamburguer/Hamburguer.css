@@ -35,6 +35,16 @@ section.tela{
     z-index: 0;
 }
 
+.labs{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
 @media (max-height: 570px) {
     .off{
         left: -250px;
