@@ -1,4 +1,4 @@
--- Active: 1722448001420@@127.0.0.1@3306@sal
+-- Active: 1739237217105@@127.0.0.1@3306@sal
 CREATE DATABASE sal;
 USE sal;
 
@@ -45,6 +45,13 @@ CREATE TABLE requisicao (
     FOREIGN KEY (idProfessorRequisitado) REFERENCES professor(idProfessor),
     FOREIGN KEY (idReserva) REFERENCES reserva(idReserva)
 );
+
+
+DROP PROCEDURE IF EXISTS sp_createReserva;
+
+
+DELETE FROM reserva
+
 
 DELIMITER //
 

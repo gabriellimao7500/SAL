@@ -3,28 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import config from '../../../config';
 
-/*var labs = [
-    {
-        "idLaboratorio": 1,
-        "tipoLaboratorio": "Informatica",
-        "numeroLaboratorio": 1,
-    },
-    {
-        "idLaboratorio": 2,
-        "tipoLaboratorio": "Informatica",
-        "numeroLaboratorio": 2,
-    },
-    {
-        "idLaboratorio": 3,
-        "tipoLaboratorio": "Informatica",
-        "numeroLaboratorio": 3,
-    },
-    {
-        "idLaboratorio": 4,
-        "tipoLaboratorio": "Informatica",
-        "numeroLaboratorio": 4,
-    }
-]*/
+import arrow_down from '../../assets/arrow_down.svg'
 
 function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
     
@@ -144,7 +123,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
                         {(selectedLab === lab.numeroLaboratorio && !isOpen) ?
                             (<div className={styles.arrow}>
                                 <span className="material-symbols-outlined">
-                                    keyboard_arrow_down
+                                    <img src={arrow_down} alt="" srcset=""/>
                                 </span>
                             </div>)
                             : null}
@@ -169,7 +148,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
                         {(selectedHour === hour.hora && !isOpen) ?
                             (<div className={styles.arrow}>
                                 <span className="material-symbols-outlined">
-                                    keyboard_arrow_down
+                                    <img src={arrow_down} alt="" srcset="" />
                                 </span>
                             </div>)
                             : null}
