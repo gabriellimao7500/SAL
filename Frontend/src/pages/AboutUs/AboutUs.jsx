@@ -60,7 +60,7 @@ function AboutUs(){
             name: "Matheus Vinicius Rodrigues Brito",
             github: "https://github.com/matheusviniciusbrito",
             insta: "https://www.instagram.com/mavinous/",
-            linkedin: "https://www.linkedin.com/in/matheus-vinicius-rodrigues-brito-100620246/"
+            linkedin: "https://www.linkedin.com/in/matheus-vinicius-4b6769326/"
         }
         
         
