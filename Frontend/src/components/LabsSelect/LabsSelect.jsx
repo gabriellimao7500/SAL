@@ -20,7 +20,7 @@ function LabsSelect({ svg, name , hamburguer}) {
 
     return (
         <Link to="/Labs" className={hamburguer ? styles.button2 : styles.button} onClick={handleClick}>
-            <img src={svg} alt="svg" />
+            <img src={svg} alt="svg" className={styles.img} />
             <div>
                 <h3 ref={nameRef}>{name}</h3>
             </div>

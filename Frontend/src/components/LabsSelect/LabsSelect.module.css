@@ -2,7 +2,6 @@
     width: 250px;
     height: 340px;
     margin-inline: 45px;
-
     border: 2px solid #333;
     border-radius: 6px;
 
@@ -20,6 +19,16 @@
     transition: 300ms ease-in-out;
     cursor: pointer;
     color: #fff;
+}
+
+.img{
+    filter: brightness(0.2);
+    transform: scale(1.8);
+    transition: 300ms ease-in-out;
+}
+.button:hover .img {
+    filter: brightness(1.5);
+    transition: 300ms ease-in-out;
 }
 
 .button2{
