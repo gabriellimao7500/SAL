@@ -86,7 +86,7 @@ th, td {
 
 td:hover .select{
     border: black 2px solid;
-    height: 48px;
+    height: 46px;
     background-color: #6C63FF;
     transition: 150ms ease-in-out;
 }
