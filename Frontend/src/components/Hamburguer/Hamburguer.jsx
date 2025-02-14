@@ -6,14 +6,9 @@ import { useState, useEffect } from 'react'; // Importando useEffect corretament
 import SVG from './SVG';
 import axios from 'axios';
 import config from '../../../config';
-import auditorioSvg from '../../assets/auditorio.svg';
-import informaticaSvg from '../../assets/informatica.svg';
-import makerSvg from '../../assets/maker.svg';
-import microbiologiaSvg from '../../assets/microbiologia.svg';
-import nutricaoSvg from '../../assets/nutricao.svg';
-import quimicaSvg from '../../assets/quimica.svg';
-import saladeleituraSvg from '../../assets/saladeleitura.svg';
-import farmaciaSvg from '../../assets/farmacia.svg';
+
+
+import labsSvgs from '../../assets/json/lb';
 
 function Hamburguer() {
   const [labs, setLabs] = useState([]);
@@ -39,16 +34,7 @@ function Hamburguer() {
     return <h1>Loading...</h1>;
   }
 
-  const labsSvgs = [
-    { tipoLaboratorio: "Auditório", svg: auditorioSvg },
-    { tipoLaboratorio: "Farmácia", svg: farmaciaSvg },
-    { tipoLaboratorio: "Informática", svg: informaticaSvg },
-    { tipoLaboratorio: "Maker", svg: makerSvg },
-    { tipoLaboratorio: "Microbiologia", svg: microbiologiaSvg },
-    { tipoLaboratorio: "Nutrição", svg: nutricaoSvg },
-    { tipoLaboratorio: "Química", svg: quimicaSvg },
-    { tipoLaboratorio: "Sala de Leitura", svg: saladeleituraSvg },
-  ];
+  
 
   function toggleMenu() {
     setMenu(!menu);
