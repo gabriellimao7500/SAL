@@ -48,7 +48,7 @@ const getData = async (req, res) => {
 
 const deleteMark = async (req, res) => {
     const { idReserva } = req.params;
-    console.log("A reserva deletada é: " + idReserva)
+    
     if (!idReserva) {
         return res.status(400).json({ error: 'ID não fornecido.' });
     }
