@@ -59,34 +59,71 @@ CREATE PROCEDURE sp_createReserva(
     OUT p_result VARCHAR(255)
 )
 BEGIN
-    DECLARE v_reservationCount INT;
-    DECLARE v_idLaboratorio INT;
+    DECLARE v_reservationCount INT DEFAULT 0;
+    DECLARE v_idLaboratorio INT DEFAULT NULL;
+    DECLARE v_professorEmail VARCHAR(50);
+    DECLARE v_startOfWeek DATE;
+    DECLARE v_endOfWeek DATE;
 
-    -- Calculate the start and end of the week for the given date
-    SET @startOfWeek = DATE_SUB(p_dataReserva, INTERVAL WEEKDAY(p_dataReserva) DAY);
-    SET @endOfWeek = DATE_ADD(@startOfWeek, INTERVAL 6 DAY);
+    -- Obtém o e-mail do professor
+    SELECT email INTO v_professorEmail
+    FROM professor
+    WHERE idProfessor = p_idProfessor;
 
-    -- Count the number of reservations for the professor in the given week
-    SELECT COUNT(*) INTO v_reservationCount
-    FROM reserva
-    WHERE idProfessor = p_idProfessor AND dataReserva BETWEEN @startOfWeek AND @endOfWeek;
-
-    -- Check if the reservation count exceeds the limit
-    IF v_reservationCount >= 3 THEN
-        SET p_result = 'Limite de 3 agendamentos por semana atingido para este professor.';
-    ELSE
-        -- Get the idLaboratorio based on numeroLaboratorio and tipoLaboratorio
+    -- Verifica se o professor é o administrador
+    IF v_professorEmail = 'adm@gmail.com' THEN
+        -- Obtém o idLaboratorio correspondente
         SELECT idLaboratorio INTO v_idLaboratorio
         FROM laboratorio
-        WHERE numeroLaboratorio = p_numeroLaboratorio AND tipoLaboratorio = p_tipoLaboratorio;
+        WHERE numeroLaboratorio = p_numeroLaboratorio AND tipoLaboratorio = p_tipoLaboratorio
+        LIMIT 1;
 
-        -- Insert the new reservation
-        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (p_dataReserva, p_periodo, p_aulaReserva, p_idProfessor, v_idLaboratorio, p_motivo);
+        -- Verifica se o laboratório existe
+        IF v_idLaboratorio IS NOT NULL THEN
+            -- Insere a nova reserva
+            INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+            VALUES (p_dataReserva, p_periodo, p_aulaReserva, p_idProfessor, v_idLaboratorio, p_motivo);
 
-        SET p_result = 'Reserva criada com sucesso.';
+            SET p_result = 'Reserva criada com sucesso.';
+        ELSE
+            SET p_result = 'Erro: Laboratório não encontrado.';
+        END IF;
+    ELSE
+        -- Calcula início e fim da semana da data escolhida
+        SET v_startOfWeek = DATE_SUB(p_dataReserva, INTERVAL WEEKDAY(p_dataReserva) DAY);
+        SET v_endOfWeek = DATE_ADD(v_startOfWeek, INTERVAL 6 DAY);
+
+        -- Conta quantas reservas o professor já tem na semana
+        SELECT COUNT(*) INTO v_reservationCount
+        FROM reserva
+        WHERE idProfessor = p_idProfessor AND dataReserva BETWEEN v_startOfWeek AND v_endOfWeek;
+
+        -- Verifica se atingiu o limite de 3 reservas por semana
+        IF v_reservationCount >= 3 THEN
+            SET p_result = 'Limite de 3 agendamentos por semana atingido para este professor.';
+        ELSE
+            -- Obtém o idLaboratorio correspondente
+            SELECT idLaboratorio INTO v_idLaboratorio
+            FROM laboratorio
+            WHERE numeroLaboratorio = p_numeroLaboratorio AND tipoLaboratorio = p_tipoLaboratorio
+            LIMIT 1;
+
+            -- Verifica se o laboratório existe
+            IF v_idLaboratorio IS NOT NULL THEN
+                -- Insere a nova reserva
+                INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+                VALUES (p_dataReserva, p_periodo, p_aulaReserva, p_idProfessor, v_idLaboratorio, p_motivo);
+
+                SET p_result = 'Reserva criada com sucesso.';
+            ELSE
+                SET p_result = 'Erro: Laboratório não encontrado.';
+            END IF;
+        END IF;
     END IF;
 END //
 
 DELIMITER ;
+
+
+
 
