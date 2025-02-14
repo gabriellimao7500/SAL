@@ -391,6 +391,7 @@ function Table({reserva, pullMarks}) {
             
             const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
             setObjDefault(reservasFiltradas)
+
             if(formatoISO >= data2){
                 if(target.classList.contains('isYou')){
                     setType("me")
@@ -405,20 +406,24 @@ function Table({reserva, pullMarks}) {
             
         } else {
             if(formatoISO >= data2){
-                setType("nothing")
-                setOnReserva(true)
+                if(localStorage.getItem('periodo') === "Noite" && rowIndex > 1){
+                    erroDeAgendamento('Você só pode agendar uma aula disponivel!')
+                }else{
+                    setType("nothing")
+                    setOnReserva(true)
+                }
             }else{
-                erroDeAgendamento()
+                erroDeAgendamento('Você não pode agendar um dia anterior ao dia atual!')
             }
         }
 
     }
 
-    function erroDeAgendamento(){
+    function erroDeAgendamento( erro ){
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Você não pode agendar um dia anterior ao dia atual!'
+            text: erro
           });
     }
 
