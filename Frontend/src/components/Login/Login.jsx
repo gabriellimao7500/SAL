@@ -12,6 +12,8 @@ function Login() {
   const [incorrect, setIncorrect] = useState(false);
   const navigate = useNavigate();
 
+
+  
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
@@ -26,16 +28,18 @@ function Login() {
 
       if (Array.isArray(response.data) && response.data.length === 1) {
         sessionStorage.setItem('professor', JSON.stringify(response.data[0]));
-        console.log(JSON.parse(sessionStorage.getItem('professor')));
+        
         
         // Remove parâmetros da URL sem recarregar a página
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
-
+        var profNome = JSON.parse(sessionStorage.getItem('professor')).nome;
+        var primeiroNome = profNome.split(" ")[0];
+        
         // Exibe o SweetAlert de sucesso
         Swal.fire({
           title: 'Login realizado com sucesso!',
-          text: `Bem vindo professor ${JSON.parse(sessionStorage.getItem('professor')).nome}`,
+          text: `Bem vindo professor ${primeiroNome}`,
           icon: 'success',
           confirmButtonText: 'OK'
         }).then(() => {
