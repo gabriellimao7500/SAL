@@ -39,7 +39,7 @@ function Login() {
         // Exibe o SweetAlert de sucesso
         Swal.fire({
           title: 'Login realizado com sucesso!',
-          text: `Bem vindo professor ${primeiroNome}`,
+          text: `Bem vindo professor(a) ${primeiroNome}`,
           icon: 'success',
           confirmButtonText: 'OK'
         }).then(() => {
