@@ -29,7 +29,7 @@ function HowToUse(){
         },
         {
             passo: "Terceiro passo: ",
-            texto: "Insira o motivo da reserva e clique em 'Reservar'.",
+            texto: 'Insira o motivo da reserva e clique em "Reservar".',
             image: img3
         },
         {
