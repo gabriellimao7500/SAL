@@ -198,7 +198,8 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
                   height={60}
                 />
                 <section className={styles.nameProfessor}>
-                  <div className={styles.name}>{nome}</div>
+                
+                  <div className={styles.name}>{`${nome.split(" ")[0]} ${nome.split(" ")[1]}`}</div>
                   <div className={styles.email}>{email}</div>
                 </section>
               </section>
@@ -225,7 +226,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
                   height={60}
                 />
                 <section className={styles.nameProfessor}>
-                  <div className={styles.name}>{nome}</div>
+                  <div className={styles.name}>{`${nome.split(" ")[0]} ${nome.split(" ")[1]}`}</div>
                   <div className={styles.email}>{email}</div>
                 </section>
               </section>

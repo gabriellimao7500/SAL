@@ -65,7 +65,7 @@ function User() {
     return (
         <>
             <div onClick={session ? handleLogout : toggleLogin} className='user'>
-                <div>{session ? professor.nome : 'Entrar'}</div>
+                <div>{session ? `${professor.nome.split(" ")[0]} ${professor.nome.split(" ")[1]}` : 'Entrar'}</div>
                 <img className='userImage' src={imageSrc} alt="User" />
             </div>
 
