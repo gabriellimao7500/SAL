@@ -59,6 +59,6 @@ DELETE from reserva
 
 INSERT INTO professor (nome, email, senha)
 VALUES
-('Coodenador Davi', 'adm@gmail.com', '199');
+('Coodenador Davi', 'adm@gmail.com', '123');
 
 SELECT * FROM professor;
