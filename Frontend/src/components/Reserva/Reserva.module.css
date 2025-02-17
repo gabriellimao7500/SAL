@@ -18,8 +18,8 @@
     display: flex;
     flex-direction: column;
     align-items: center; 
-    padding-top: 20px;
 }
+
 
 .reservado{
     width: 100%;
@@ -60,6 +60,13 @@
     background-color: rgba(255, 255, 255, 0.85);
     transition: 150ms ease-in;
 }
+.submit:disabled{
+    background-color: #777;
+    color: #999;
+}.submit:disabled:hover{
+    background-color: #777;
+    color: #999;
+}
 .svg{
     width: 40px;
     height: 40px;
@@ -80,6 +87,7 @@
     gap: 4px;
 }
 .Reservado_por{
+    margin-top: 20px;
     font-size: 16px;
     font-weight: bold;
     width: 100%;
@@ -92,7 +100,7 @@
     flex-direction: column;
     align-items: center;
     padding-inline: 10%;
-    padding-top: 60px;
+    padding-top: 20px;
 }
 .img{
     border-radius: 50%;
@@ -111,6 +119,13 @@
     justify-content: center;
     gap: 20px;
 }
+.logado{
+    margin-top: 20px;
+}
+.naoLogado{
+
+}
+
 .name{
     font-size: 18px;
     font-weight: bold;
@@ -145,6 +160,7 @@
     border: none;
 }
 
+
 .input::-webkit-scrollbar {
     width: 10px;
   }
@@ -175,6 +191,7 @@
 }
 
 .cancelar{
+    width: 110%;
     margin-top: 10px;
     background-color: #ff3162;
     color: white;

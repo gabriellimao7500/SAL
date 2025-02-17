@@ -4,6 +4,7 @@ import axios from 'axios'
 import InputText from './InputText/InputText';
 import config from '../../../config';
 import Swal from 'sweetalert2';
+import labsSvgs from '../../assets/json/lb';
 
 function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
   const [visible, setVisible] = useState(true);
@@ -152,7 +153,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
   return (
     <section className={visible ? styles.blur : "none"}>
       <section ref={reservasRef} className={styles.reservas}>
-        <section className={styles.hours}>
+        <section className={type === "nothing" ? `${styles.hours}` : `${styles.hours} ${styles.logado}`}>
           <div className={styles.periodo}>
             {localStorage.getItem("periodo")}: {aula}° aula
           </div>
@@ -161,7 +162,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
           </div>
         </section>
         <section className={styles.labinfo}>
-          <div dangerouslySetInnerHTML={{ __html: svgWithClass }}></div>
+          <img src={labsSvgs.find(labsSvg => labsSvg.tipoLaboratorio.trim() === localStorage.getItem('typeLab'))?.svg} alt="" srcset="" />
           <div className={styles.labname}>
             Laboratório de {localStorage.getItem("typeLab")} <div />{" "}
             {localStorage.getItem("numLab")}
@@ -178,7 +179,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
                 onChange={(e) => setMotivo(e.target.value)}
               />
             </div>
-            <input className={styles.submit} type="submit" value="Reservar" />
+            <input disabled={motivo3.length > 0 ? false : true} className={styles.submit} type="submit" value="Reservar" />
           </form>
         )}
   
@@ -202,6 +203,9 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
                 </section>
               </section>
               <InputText motivo={motivo} />
+              {professor && professor.email === "adm@gmail.com" && (
+                <input onClick={RemoverAgendamento} className={`${styles.submit} ${styles.cancelar}`} type="submit" value="cancelar agendamento" />
+              )}
             </section>
           </section>
         )}
