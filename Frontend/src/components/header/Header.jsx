@@ -41,9 +41,9 @@ function Header( {Labs}) {
         <section className="info">
           <Link to="/AboutUs"><div className='Header_Link'>Sobre nós</div></Link>
           <Link to="https://github.com/gabriellimao7500/SAL" target="_blank"><div className='Header_Link'>Docs</div></Link>
-          <a href="mailto:gabriellimao7500@gmail.com?subject=Dúvida&body=Olá, gostaria de tirar uma dúvida." target="_blank">
+          <Link to="/HowToUse">
             <div className='Header_Link'>Ajuda</div>
-          </a>
+          </Link>
         </section>
         <a className="duvidas" href="mailto:gabriellimao7500@gmail.com?subject=Dúvida&body=Olá, gostaria de tirar uma dúvida." target="_blank">
           <div>dúvidas</div>

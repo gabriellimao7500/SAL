@@ -49,7 +49,7 @@ function Home(){
                     Comece a utilizar
                 </Link>
                 
-                <Link to="/Help"
+                <Link to="/HowToUse"
                 className='button2'
                 onMouseEnter={handleSibling2MouseEnter}
                 onMouseLeave={handleSibling2MouseLeave}
