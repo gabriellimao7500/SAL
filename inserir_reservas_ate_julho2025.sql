@@ -1,12 +1,12 @@
-use sal
+use sal;
 
 
 
-delete from reserva
+delete from reserva;
 
 
 
-DROP PROCEDURE inserir_reservas()
+DROP PROCEDURE if EXISTS inserir_reservas;
 
 
 -- Loop para cada semana a partir de 03/03/2025 até 30/06/2025
