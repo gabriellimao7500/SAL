@@ -365,22 +365,22 @@ BEGIN
         -- Quinta-feira (Laboratório 1 - Manhã)
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 1, 3, 1, 'FI - com professores JUNIOR /THAYANI - 1º MTEC 1º MTEC Desenvolvimento de sistemas');
+        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 1, 3, 1, 'FI - com professores JUNIOR /THAYANI - 1º MTEC Desenvolvimento de sistemas');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 2, 3, 1, 'FI - com professores JUNIOR /THAYANI - 1º MTEC 1º MTEC Desenvolvimento de sistemas');
+        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 2, 3, 1, 'FI - com professores JUNIOR /THAYANI - 1º MTEC Desenvolvimento de sistemas');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 3, 3, 1, 'IPSS - com professor JUNIOR - 3º MTEC 3º MTEC Desenvolvimento de sistemas');
+        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 3, 3, 1, 'IPSS - com professor JUNIOR - 3º MTEC Desenvolvimento de sistemas');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 4, 3, 1, 'IPSS - com professor JUNIOR - 3º MTEC 3º MTEC Desenvolvimento de sistemas');
+        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 4, 3, 1, 'IPSS - com professor JUNIOR - 3º MTEC Desenvolvimento de sistemas');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 5, 3, 1, 'SE - com professores JUNIOR /THAYANI - 3º MTEC 1º MTEC Desenvolvimento de sistemas');
+        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 5, 3, 1, 'SE - com professores JUNIOR /THAYANI - 3º MTEC Desenvolvimento de sistemas');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 6, 3, 1, 'SE - com professores JUNIOR /THAYANI - 3º MTEC 1º MTEC Desenvolvimento de sistemas');
+        VALUES (data_atual + INTERVAL 3 DAY, 'Manhã', 6, 3, 1, 'SE - com professores JUNIOR /THAYANI - 3º MTEC Desenvolvimento de sistemas');
 
 
         -- Quinta-feira (Laboratório 1 - Tarde)
