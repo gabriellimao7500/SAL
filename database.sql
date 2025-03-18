@@ -1,4 +1,4 @@
--- Active: 1739316167339@@127.0.0.1@3306@sal
+-- Active: 1739237217105@@127.0.0.1@3306@sal
 CREATE DATABASE sal;
 USE sal;
 
@@ -8,8 +8,30 @@ CREATE TABLE professor (
     nome VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     senha VARCHAR(16) NOT NULL,
+    rule ENUM('comum', 'admin') NOT NULL,
     imagem LONGBLOB
 );
+
+
+
+
+
+--alter table para adcionar o campo rule
+
+ALTER TABLE professor ADD COLUMN rule ENUM('comum', 'admin') NOT NULL;
+
+-- exemplo de upgrade para o cargo de adm em um professor
+-- UPDATE professor SET rule = 'admin' WHERE idProfessor = 3;
+
+-- exemplo de downgrade para o cargo comum em um professor
+-- UPDATE professor SET rule = 'comum' WHERE idProfessor = 3;
+
+
+
+
+
+
+SELECT * FROM professor
 
 -- Criar tabela laboratorio
 CREATE TABLE laboratorio (
@@ -50,6 +72,10 @@ CREATE TABLE requisicao (
 DROP PROCEDURE IF EXISTS sp_createReserva;
 
 
+
+
+
+
 DELETE FROM reserva
 
 
@@ -68,62 +94,51 @@ CREATE PROCEDURE sp_createReserva(
 BEGIN
     DECLARE v_reservationCount INT DEFAULT 0;
     DECLARE v_idLaboratorio INT DEFAULT NULL;
-    DECLARE v_professorEmail VARCHAR(50);
+    DECLARE v_professorRule VARCHAR(10) DEFAULT 'comum'; -- Definindo um valor padrão para evitar NULL
     DECLARE v_startOfWeek DATE;
     DECLARE v_endOfWeek DATE;
 
-    -- Obtém o e-mail do professor
-    SELECT email INTO v_professorEmail
+    -- Obtém a regra (rule) do professor, garantindo que não seja NULL
+    SELECT COALESCE(rule, 'comum') INTO v_professorRule
     FROM professor
     WHERE idProfessor = p_idProfessor;
 
-    -- Verifica se o professor é o administrador
-    IF v_professorEmail = 'adm@gmail.com' THEN
-        -- Obtém o idLaboratorio correspondente
-        SELECT idLaboratorio INTO v_idLaboratorio
-        FROM laboratorio
-        WHERE numeroLaboratorio = p_numeroLaboratorio AND tipoLaboratorio = p_tipoLaboratorio
-        LIMIT 1;
+    -- Obtém o idLaboratorio correspondente
+    SELECT idLaboratorio INTO v_idLaboratorio
+    FROM laboratorio
+    WHERE numeroLaboratorio = p_numeroLaboratorio AND tipoLaboratorio = p_tipoLaboratorio
+    LIMIT 1;
 
-        -- Verifica se o laboratório existe
-        IF v_idLaboratorio IS NOT NULL THEN
-            -- Insere a nova reserva
+    -- Verifica se o laboratório existe
+    IF v_idLaboratorio IS NULL THEN
+        SET p_result = 'Erro: Laboratório não encontrado.';
+    ELSE
+        -- Se o professor for admin, não há limite de reservas
+        IF v_professorRule = 'admin' THEN
             INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
             VALUES (p_dataReserva, p_periodo, p_aulaReserva, p_idProfessor, v_idLaboratorio, p_motivo);
 
             SET p_result = 'Reserva criada com sucesso.';
         ELSE
-            SET p_result = 'Erro: Laboratório não encontrado.';
-        END IF;
-    ELSE
-        -- Calcula início e fim da semana da data escolhida
-        SET v_startOfWeek = DATE_SUB(p_dataReserva, INTERVAL WEEKDAY(p_dataReserva) DAY);
-        SET v_endOfWeek = DATE_ADD(v_startOfWeek, INTERVAL 6 DAY);
+            -- Calcula início e fim da semana da data escolhida
+            SET v_startOfWeek = DATE_SUB(p_dataReserva, INTERVAL WEEKDAY(p_dataReserva) DAY);
+            SET v_endOfWeek = DATE_ADD(v_startOfWeek, INTERVAL 6 DAY);
 
-        -- Conta quantas reservas o professor já tem na semana
-        SELECT COUNT(*) INTO v_reservationCount
-        FROM reserva
-        WHERE idProfessor = p_idProfessor AND dataReserva BETWEEN v_startOfWeek AND v_endOfWeek;
+            -- Conta quantas reservas o professor já tem na semana
+            SELECT COUNT(*) INTO v_reservationCount
+            FROM reserva
+            WHERE idProfessor = p_idProfessor 
+              AND dataReserva BETWEEN v_startOfWeek AND v_endOfWeek;
 
-        -- Verifica se atingiu o limite de 3 reservas por semana
-        IF v_reservationCount >= 3 THEN
-            SET p_result = 'Limite de 3 agendamentos por semana atingido para este professor.';
-        ELSE
-            -- Obtém o idLaboratorio correspondente
-            SELECT idLaboratorio INTO v_idLaboratorio
-            FROM laboratorio
-            WHERE numeroLaboratorio = p_numeroLaboratorio AND tipoLaboratorio = p_tipoLaboratorio
-            LIMIT 1;
-
-            -- Verifica se o laboratório existe
-            IF v_idLaboratorio IS NOT NULL THEN
+            -- Verifica se atingiu o limite de 3 reservas por semana
+            IF v_reservationCount >= 3 THEN
+                SET p_result = 'Limite de 3 agendamentos por semana atingido para este professor.';
+            ELSE
                 -- Insere a nova reserva
                 INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
                 VALUES (p_dataReserva, p_periodo, p_aulaReserva, p_idProfessor, v_idLaboratorio, p_motivo);
 
                 SET p_result = 'Reserva criada com sucesso.';
-            ELSE
-                SET p_result = 'Erro: Laboratório não encontrado.';
             END IF;
         END IF;
     END IF;

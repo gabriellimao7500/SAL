@@ -48,9 +48,15 @@ function Table({reserva, pullMarks}) {
 
     var semanasPraMais = 2;
 
+
+
+    
+
+    
+
     if(JSON.parse(sessionStorage.getItem('professor'))){
         let user = JSON.parse(sessionStorage.getItem('professor'));
-        if(user.email === "adm@gmail.com"){
+        if(user.rule === "admin"){
             semanasPraMais = 52;
         }else{
             semanasPraMais = 2;

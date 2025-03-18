@@ -11,7 +11,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
   const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')))
   const [motivo3, setMotivo] = useState('')
   const reservasRef = useRef(null);
-  const { periodo, svg, numeroLaboratorio, tipoLaboratorio, nome, email, motivo } = reserva
+  const {nome, email, motivo } = reserva
   var dt = new Date(date);
   var d = dt.getUTCDate();
   var m = dt.getUTCMonth() + 1;
@@ -204,7 +204,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
                 </section>
               </section>
               <InputText motivo={motivo} />
-              {professor && professor.email === "adm@gmail.com" && (
+              {professor && professor.rule === "admin" && (
                 <input onClick={RemoverAgendamento} className={`${styles.submit} ${styles.cancelar}`} type="submit" value="cancelar agendamento" />
               )}
             </section>
