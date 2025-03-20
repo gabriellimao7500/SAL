@@ -149,7 +149,7 @@ BEGIN
 
 
 
-        -- Terça-feira (Laboratório 2 - Tarde) ************************************
+        -- Terça-feira (Laboratório 2 - Tarde)
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
         VALUES (data_atual + INTERVAL 1 DAY, 'Tarde', 1, 3, 2, 'PDTCC - com professores LILIAN / ANNIE - 2º MTEC INFORMATICA PARA INTERNET');
