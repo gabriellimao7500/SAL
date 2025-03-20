@@ -464,7 +464,6 @@ BEGIN
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
         VALUES (data_atual + INTERVAL 4 DAY, 'Manhã', 2, 3, 1, 'PAM2 - com professores DANADONI / ALLAN - 3º Desenvolvimento de sistemas');
 
-
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
         VALUES (data_atual + INTERVAL 4 DAY, 'Manhã', 4, 3, 1, 'DS - com professores THAYANI / ALLAN - 2º Desenvolvimento de sistemas');
 
@@ -475,22 +474,20 @@ BEGIN
         VALUES (data_atual + INTERVAL 4 DAY, 'Manhã', 6, 3, 1, 'DS - com professores THAYANI / ALLAN - 2º Desenvolvimento de sistemas');
         
         
-        
         -- Sexta-feira (Laboratório 1 - Tarde)
 
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 4, 3, 1, 'GCW - com professor CARLOS - 3º MTEC Informática para internet');
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 1, 3, 1, 'UDIAD- com professor ELVIS - 3º MTEC Informática para internet');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 5, 3, 1, 'CNW2 - com professor FERNANDO - 3º MTEC Informática para internet');
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 3, 3, 1, 'AI - com professores ELVIS / RYNALDO - 3º MTEC Informática para internet');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 6, 3, 1, 'CNW2 - com professor FERNANDO - 3º MTEC Informática para internet');
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 4, 3, 1, 'AI - com professores ELVIS / RYNALDO - 3º MTEC Informática para internet');
 
 
     -- Sexta-feira (Laboratório 1 - Noite)
-
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
         VALUES (data_atual + INTERVAL 4 DAY, 'Noite', 1, 3, 1, 'RDST - com professores ELVIS / CLAUDIO - 2º TST');
@@ -499,48 +496,37 @@ BEGIN
         VALUES (data_atual + INTERVAL 4 DAY, 'Noite', 2, 3, 1, 'AI - com professores ELVIS / CLAUDIO - 2º FARMÁCIA');
 
 
-
-
-
     -- Sexta-feira (Laboratório 2 - Manhã)
 
     -- Sexta-feira (Laboratório 2 - Tarde)
-        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 4, 3, 2, 'AI - com professores MAURICIO / FERNANDO - 3º MTEC NUTRIÇÃO E DIETÉTICA');
-
-        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 5, 3, 2, 'AI - com professores MAURICIO / FERNANDO - 3º MTEC NUTRIÇÃO E DIETÉTICA');
-
-        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 6, 3, 2, 'AI - com professores ELVIS/ RYNALDO - 3º MTEC RECURSOS HUMANOS');
-
-
 
     -- Sexta-feira (Laboratório 2 - Noite)
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
         VALUES (data_atual + INTERVAL 4 DAY, 'Noite', 1, 3, 2, 'PTCC - com professor FELIPE - 2º FARMÁCIA');
 
-
-
-
-
-
-
         
     -- Sexta-feira (Laboratório 3 - Manhã)
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Manhã', 5, 3, 3, 'PDTCC - com professores  PIO - 3º MTEC ADMINISTRAÇÃO');
+        VALUES (data_atual + INTERVAL 4 DAY, 'Manhã', 5, 3, 3, 'PDTCC - com professor PIO - 3º MTEC ADMINISTRAÇÃO');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Manhã', 6, 3, 3, 'PDTCC - com professores  PIO - 3º MTEC ADMINISTRAÇÃO');
+        VALUES (data_atual + INTERVAL 4 DAY, 'Manhã', 6, 3, 3, 'PDTCC - com professor PIO - 3º MTEC ADMINISTRAÇÃO');
 
+    -- Sexta-feira (Laboratório 3 - Tarde)
 
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 3, 3, 3, 'AD - com professor CARLOS - 3º INFORMATICA PARA INTERNET');
 
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 4, 3, 3, 'GCW - com professor CARLOS -');
 
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 5, 3, 3, 'FI - com professor CARLOS - 1º INFORMATICA PARA INTERNET');
 
-
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 6, 3, 3, 'FI - com professor CARLOS - 1º INFORMATICA PARA INTERNET');
 
 
     -- Sexta-feira (Laboratório 4 - Manhã)
@@ -559,19 +545,16 @@ BEGIN
      -- Sexta-feira (Laboratório 4 - Tarde)
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 3, 3, 4, 'AD - com professor CARLOS - 1º Informática para internet');
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 3, 3, 4, 'AI - com professor MAURICIO - 3º NUTRIÇÃO E DIÉTICA');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 5, 3, 4, 'FI - com professor CARLOS - 1º Desenvolvimento de sistemas');
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 4, 3, 4, 'AI - com professor MAURICIO - 3º NUTRIÇÃO E DIÉTICA');
 
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
-        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 6, 3, 4, 'FI - com professor CARLOS - 1º Desenvolvimento de sistemas');
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 5, 3, 4, 'CNW - com professor DONI - 3º Informática para Internet');
 
-
-
-
-
-
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) 
+        VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 6, 3, 4, 'CNW - com professor DONI - 3º Informática para Internet');
 
 
         -- Avança para a próxima semana
