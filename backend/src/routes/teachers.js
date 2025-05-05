@@ -6,6 +6,8 @@ const { getData, getDataFromId, updateSenha, updateImagem } = require('../models
 router.get('/', async (req, res) => {
     try {
         const teachers = await getData();
+        console.log(teachers);
+
         res.json(teachers);
     } catch (error) {
         res.status(500).json({ error: 'Erro ao listar professores' });

@@ -35,7 +35,7 @@ const AdminTeachers = () => {
 
     // Função para carregar dados no formulário para edição
     const handleEdit = (teacher) => {
-        setForm({ name: teacher.name, email: teacher.email });
+        setForm({ nome: teacher.nome, email: teacher.email });
         setEditingId(teacher.id);
     };
 
@@ -50,7 +50,7 @@ const AdminTeachers = () => {
                 <input
                     type="text"
                     placeholder="Nome"
-                    value={form.name}
+                    value={form.nome}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     required
                 />
@@ -63,26 +63,28 @@ const AdminTeachers = () => {
                 />
                 <button type="submit">{editingId ? 'Editar' : 'Adicionar'}</button>
             </form>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {teachers.map((teacher) => (
-                        <tr key={teacher.id}>
-                            <td>{teacher.name}</td>
-                            <td>{teacher.email}</td>
-                            <td>
-                                <button onClick={() => handleEdit(teacher)}>Editar</button>
-                            </td>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto', maxHeight: '700px' }}>
+                <table style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Ações</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody >
+                        {teachers.map((teacher) => (
+                            <tr key={teacher.id} >
+                                <td>{teacher.nome}</td>
+                                <td>{teacher.email}</td>
+                                <td>
+                                    <button onClick={() => handleEdit(teacher)}>Editar</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
