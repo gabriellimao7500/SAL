@@ -1,0 +1,9 @@
+body {
+    width: 100dvw;
+    height: 100dvh;
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+    cursor: url("../public/normal.png"), auto;
+    display: flex;
+}

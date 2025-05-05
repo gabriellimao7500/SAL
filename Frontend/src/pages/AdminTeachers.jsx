@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './AdminTeachers.css';
+import { Link } from 'react-router-dom';
 
 const AdminTeachers = () => {
     const [teachers, setTeachers] = useState([]);
@@ -72,106 +74,91 @@ const AdminTeachers = () => {
     }, []);
 
     return (
-        <div>
-            <h1>Gerenciar Professores</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Nome"
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    required
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    required
-                />
-                <button type="submit">{editingId ? 'Editar' : 'Adicionar'}</button>
-            </form>
+        <body>
 
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto', maxHeight: '700px' }}>
-                <table style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody >
-                        {teachers.map((teacher) => (
-                            <tr key={teacher.id} >
-                                <td>{teacher.nome}</td>
-                                <td>{teacher.email}</td>
-                                <td>
-                                    <button onClick={() => handleEdit(teacher)}>Editar</button>
-                                </td>
+            <div>
+                <h1>Gerenciar Professores</h1>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto', maxHeight: '700px' }}>
+                    <table style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Ações</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            {/* Popup para edição */}
-            {isModalOpen && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                    <div style={{
-                        backgroundColor: 'white',
-                        padding: '20px',
-                        borderRadius: '8px',
-                        width: '400px',
-                        textAlign: 'center'
-                    }}>
-                        <h2>Editar Professor</h2>
-                        <form onSubmit={handleSubmit}>
-                            <input
-                                type="text"
-                                placeholder="Nome"
-                                value={form.name}
-                                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                required
-                            />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={form.email}
-                                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                required
-                            />
-                            <button type="submit">Salvar</button>
-                            <button type="button" onClick={closeModal} style={{ marginLeft: '10px' }}>Cancelar</button>
-                        </form>
-                        <button
-                            onClick={handleDelete}
-                            style={{
-                                marginTop: '20px',
-                                backgroundColor: 'red',
-                                color: 'white',
-                                border: 'none',
-                                padding: '10px 20px',
-                                borderRadius: '5px',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            Excluir
-                        </button>
-                    </div>
+                        </thead>
+                        <tbody >
+                            {teachers.map((teacher) => (
+                                <tr key={teacher.id} >
+                                    <td>{teacher.nome}</td>
+                                    <td>{teacher.email}</td>
+                                    <td>
+                                        <button onClick={() => handleEdit(teacher)}>Editar</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-            )}
-        </div>
+
+                {/* Popup para edição */}
+                {isModalOpen && (
+                    <div style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <div style={{
+                            backgroundColor: 'white',
+                            padding: '20px',
+                            borderRadius: '8px',
+                            width: '400px',
+                            textAlign: 'center'
+                        }}>
+                            <h2>Editar Professor</h2>
+                            <form onSubmit={handleSubmit}>
+                                <input
+                                    type="text"
+                                    placeholder="Nome"
+                                    value={form.name}
+                                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                                    required
+                                />
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    value={form.email}
+                                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                    required
+                                />
+                                <button type="submit">Salvar</button>
+                                <button type="button" onClick={closeModal} style={{ marginLeft: '10px' }}>Cancelar</button>
+                            </form>
+                            <button
+                                onClick={handleDelete}
+                                style={{
+                                    marginTop: '20px',
+                                    backgroundColor: 'red',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '10px 20px',
+                                    borderRadius: '5px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Excluir
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </body>
     );
 };
 
