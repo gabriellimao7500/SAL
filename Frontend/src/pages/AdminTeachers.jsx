@@ -5,6 +5,7 @@ const AdminTeachers = () => {
     const [teachers, setTeachers] = useState([]);
     const [form, setForm] = useState({ name: '', email: '' });
     const [editingId, setEditingId] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o popup
 
     // Função para buscar professores
     const fetchTeachers = async () => {
@@ -33,10 +34,37 @@ const AdminTeachers = () => {
         }
     };
 
-    // Função para carregar dados no formulário para edição
+    // Função para abrir o popup e carregar dados no formulário para edição
     const handleEdit = (teacher) => {
-        setForm({ nome: teacher.nome, email: teacher.email });
-        setEditingId(teacher.id);
+        setForm({ name: teacher.nome, email: teacher.email });
+        setEditingId(teacher.idProfessor);
+        setIsModalOpen(true); // Abrir o popup
+    };
+
+    // Função para fechar o popup
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setForm({ name: '', email: '' });
+        setEditingId(null);
+    };
+
+    // Função para excluir professor
+    const handleDelete = async () => {
+        console.log(`ID: ${editingId}, Nome: ${form.name}, Email: ${form.email}`); // Logando os dados recebidos
+
+        try {
+            await axios.delete(`http://localhost:3333/teachers/${editingId}`,
+                { data: { name: form.name, email: form.email } } // Enviando os dados necessários para a exclusão
+            );
+            alert('Professor excluído com sucesso!');
+            closeModal(); // Fechar o popup após a exclusão
+            setForm({ name: '', email: '' });
+            setEditingId(null);
+            setIsModalOpen(false);
+            fetchTeachers();
+        } catch (error) {
+            console.error('Erro ao excluir professor:', error);
+        }
     };
 
     useEffect(() => {
@@ -50,7 +78,7 @@ const AdminTeachers = () => {
                 <input
                     type="text"
                     placeholder="Nome"
-                    value={form.nome}
+                    value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     required
                 />
@@ -63,6 +91,7 @@ const AdminTeachers = () => {
                 />
                 <button type="submit">{editingId ? 'Editar' : 'Adicionar'}</button>
             </form>
+
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto', maxHeight: '700px' }}>
                 <table style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
                     <thead>
@@ -85,6 +114,63 @@ const AdminTeachers = () => {
                     </tbody>
                 </table>
             </div>
+
+            {/* Popup para edição */}
+            {isModalOpen && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <div style={{
+                        backgroundColor: 'white',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        width: '400px',
+                        textAlign: 'center'
+                    }}>
+                        <h2>Editar Professor</h2>
+                        <form onSubmit={handleSubmit}>
+                            <input
+                                type="text"
+                                placeholder="Nome"
+                                value={form.name}
+                                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                                required
+                            />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                value={form.email}
+                                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                required
+                            />
+                            <button type="submit">Salvar</button>
+                            <button type="button" onClick={closeModal} style={{ marginLeft: '10px' }}>Cancelar</button>
+                        </form>
+                        <button
+                            onClick={handleDelete}
+                            style={{
+                                marginTop: '20px',
+                                backgroundColor: 'red',
+                                color: 'white',
+                                border: 'none',
+                                padding: '10px 20px',
+                                borderRadius: '5px',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            Excluir
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

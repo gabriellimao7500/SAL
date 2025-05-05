@@ -43,9 +43,43 @@ const updateSenha = async (idProfessor, senha) => {
     }
 }
 
+const updateProfessor = async (idProfessor, nome, email) => {
+    try {
+        const query = "UPDATE professor SET nome = ?, email = ? WHERE idProfessor = ?";
+        const [result] = await connection.execute(query, [nome, email, idProfessor]);
+
+        if (result.affectedRows > 0) {
+            return { success: true, message: 'Professor atualizado com sucesso' };
+        } else {
+            return { success: false, message: 'Nenhum professor encontrado com o ID especificado' };
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar professor:', error);
+        throw new Error('Erro ao atualizar professor no banco de dados');
+    }
+}
+
+const deleteProfessor = async (idProfessor, nome, email) => {
+    try {
+        const query = "DELETE FROM professor WHERE idProfessor = ? AND nome = ? AND email = ?";
+        const [result] = await connection.execute(query, [idProfessor, nome, email]);
+
+        if (result.affectedRows > 0) {
+            return { success: true, message: 'Professor excluído com sucesso' };
+        } else {
+            return { success: false, message: 'Nenhum professor encontrado com os dados especificados' };
+        }
+    } catch (error) {
+        console.error('Erro ao excluir professor:', error);
+        throw new Error('Erro ao excluir professor no banco de dados');
+    }
+}
+
 module.exports = {
     getData,
     getDataFromId,
     updateSenha,
-    updateImagem
+    updateImagem,
+    updateProfessor,
+    deleteProfessor
 };
