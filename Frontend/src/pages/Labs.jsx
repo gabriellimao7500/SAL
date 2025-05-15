@@ -5,8 +5,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import './Labs.css';
 import config from "../../config";
+import { useNavigate } from "react-router-dom"; // Para navegação entre páginas
 
 function Labs() {
+    const navigate = useNavigate(); // Hook para navegação
 
     const [reservas, setReservas] = useState([]);
     const [periodo2, setPeriodo2] = useState(localStorage.getItem('periodo'))
@@ -16,7 +18,7 @@ function Labs() {
 
 
     const pullMarks = async (periodo2, tipo2, numLab2) => {
-        
+
         const result = await axios.post(`${config.apiUrl}/Marks`,
             JSON.stringify({
                 "periodo": periodo2,
@@ -72,7 +74,14 @@ function Labs() {
             "motivo": "pq sim"
         }
     ]
-    
+
+    const handleViewConflicts = () => {
+        navigate('/conflicts'); // Redireciona para a página de conflitos
+    };
+
+    const handleMassUpdate = () => {
+        navigate('/mass-update'); // Redireciona para a página de atualização em massa
+    };
 
     return (
         <div className="App">
@@ -81,7 +90,12 @@ function Labs() {
                 <Select LabAtu={1} Type={"lab"} pullMarks={pullMarks} />
                 <Select Type={"date"} horarioAtu={"Manhã"} pullMarks={pullMarks} />
             </div>
-
+            <button onClick={handleViewConflicts} className="conflicts-button">
+                Ver Divergências
+            </button>
+            <button onClick={handleMassUpdate} className="mass-update-button">
+                Atualizar Tabela em Massa
+            </button>
             <Table reserva={reservas} pullMarks={pullMarks} />
         </div>
     );

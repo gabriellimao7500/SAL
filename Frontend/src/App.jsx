@@ -8,6 +8,8 @@ import Labs from './pages/Labs'
 import AboutUs from './pages/AboutUs/AboutUs'
 import HowToUse from './pages/HowToUse'
 import AdminTeachers from './pages/AdminTeachers'
+import Conflicts from './pages/Conflicts'
+import MassUpdate from './pages/MassUpdate'
 
 function App() {
 
@@ -20,6 +22,8 @@ function App() {
         <Route path='/AboutUs' element={<AboutUs />}></Route>
         <Route path='/HowToUse' element={<HowToUse />}></Route>
         <Route path='/admin/teachers' element={<AdminTeachers />} />
+        <Route path='/conflicts' element={<Conflicts />} />
+        <Route path='/mass-update' element={<MassUpdate />} />
       </Routes>
     </Router>
   )
