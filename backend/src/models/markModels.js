@@ -3,6 +3,8 @@ const { format, startOfWeek, endOfWeek } = require('date-fns');
 
 const createReserva = async (reservaData) => {
     const { dataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo } = reservaData;
+    console.log('Dados da reserva:', reservaData);
+
 
     const formattedDataReserva = format(new Date(dataReserva), 'yyyy-MM-dd');
 
@@ -28,7 +30,7 @@ const createReserva = async (reservaData) => {
     }
 };
 
-const getData = async(periodo,tipoLaboratorio,numeroLaboratorio) =>{
+const getData = async (periodo, tipoLaboratorio, numeroLaboratorio) => {
     const query = `select idReserva, dataReserva, periodo, aulaReserva, nome, email, tipoLaboratorio, numeroLaboratorio,svg,motivo FROM reserva
                         INNER JOIN professor ON reserva.idProfessor = professor.idProfessor
                         INNER JOIN laboratorio ON reserva.idLaboratorio = laboratorio.idLaboratorio
@@ -37,15 +39,15 @@ const getData = async(periodo,tipoLaboratorio,numeroLaboratorio) =>{
                         WEEK(dataReserva) ASC,   
                         aulaReserva ASC,         
                         DAYOFWEEK(dataReserva) ASC`;
-                        
-    const [marks] = await connection.execute(query,[periodo,tipoLaboratorio,numeroLaboratorio]);// query sql para pegar todas as reservas
+
+    const [marks] = await connection.execute(query, [periodo, tipoLaboratorio, numeroLaboratorio]);// query sql para pegar todas as reservas
     return marks;
 };
 
 const deleteReserva = async (idReserva) => {
 
     const query = 'DELETE FROM reserva WHERE idReserva = ?';
-    const values = [idReserva]; 
+    const values = [idReserva];
 
     try {
         const [result] = await connection.execute(query, values);
@@ -56,9 +58,9 @@ const deleteReserva = async (idReserva) => {
     }
 };
 
-const getDataFromDate = async(dataReserva)=>{
+const getDataFromDate = async (dataReserva) => {
     const query = "SELECT * FROM reserva WHERE dataReserva = ?";
-    const [marks] = await connection.execute(query,[dataReserva]);//query sql para pegar uma reserva especifica
+    const [marks] = await connection.execute(query, [dataReserva]);//query sql para pegar uma reserva especifica
     return marks;
 };
 
@@ -90,8 +92,8 @@ const updateReserva = {
 
 module.exports = {
     createReserva,
-    getData, 
-    deleteReserva, 
+    getData,
+    deleteReserva,
     getDataFromDate,
     updateReserva,
 };

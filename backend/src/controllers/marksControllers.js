@@ -20,6 +20,7 @@ const createMark = async (req, res) => {
         };
 
         const createdReserva = await markModels.createReserva(reservaData);
+        console.log("Reserva criada com sucesso: ", createdReserva);
         if (createdReserva.error) {
             return res.status(404).json({ error: createdReserva.error, type: 'reservation_limit' });
         }
@@ -32,13 +33,14 @@ const createMark = async (req, res) => {
         console.error('Erro ao criar a reserva:', err);
         return res.status(500).json({ error: 'Erro ao criar a reserva.' });
     }
+
 };
 
 const getData = async (req, res) => {
-    const{periodo,tipoLaboratorio,numeroLaboratorio} = req.body;
-    
+    const { periodo, tipoLaboratorio, numeroLaboratorio } = req.body;
+
     try {
-        const marks = await markModels.getData(periodo,tipoLaboratorio,numeroLaboratorio);
+        const marks = await markModels.getData(periodo, tipoLaboratorio, numeroLaboratorio);
         return res.status(200).json(marks);
     } catch (error) {
         console.error('Erro ao obter dados:', error);
@@ -48,14 +50,14 @@ const getData = async (req, res) => {
 
 const deleteMark = async (req, res) => {
     const { idReserva } = req.params;
-    
+
     if (!idReserva) {
         return res.status(400).json({ error: 'ID não fornecido.' });
     }
 
     try {
         const result = await markModels.deleteReserva(Number(idReserva)); // Converta o ID para número
-        
+
         if (result > 0) {
             return res.status(200).json({ message: 'Reserva deletada com sucesso.' });
         } else {
@@ -67,12 +69,12 @@ const deleteMark = async (req, res) => {
     }
 };
 
-const getDataFromId = async (req, res) =>{
-    const {idReserva} = req.params;
-    try{
+const getDataFromId = async (req, res) => {
+    const { idReserva } = req.params;
+    try {
         const marks = await markModels.getDataFromId(idReserva);
         return marks;
-    }catch(error){
+    } catch (error) {
         console.error('Erro ao obter dados:', error);
         return res.status(500).json({ message: "Erro ao obter dados" });
     }
