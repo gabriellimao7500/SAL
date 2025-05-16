@@ -4,8 +4,8 @@ const loginController = require('./controllers/loginControllers');
 const labsControllers = require('./controllers/labsControllers');
 const marksControllers = require('./controllers/marksControllers');
 const reqController = require('./controllers/reqsControllers');
-const conflictsController = require('./controllers/conflictsController');
-const massUpdateController = require('./controllers/massUpdateController');
+
+const conflictsController = require('./controllers/conflictResolutionController');
 
 const router = express.Router();
 router.use(express.json());
@@ -36,14 +36,11 @@ router.get('/reqs/:idRequisicao', reqController.getDataFromId);
 router.post('/createReqs', reqController.createRequisicao);
 router.delete('/reqs/:idRequisicao', reqController.deleteReq);
 
-// Conflitos
-router.get('/conflicts', conflictsController.getConflicts);
-router.post('/conflicts/accept', conflictsController.acceptConflict);
-router.post('/conflicts/reject', conflictsController.rejectConflict);
 
-// Atualização em Massa
-router.post('/mass-update/compare', massUpdateController.compareSql);
-router.post('/mass-update/accept', massUpdateController.acceptUpdate);
-router.post('/mass-update/reject', massUpdateController.rejectUpdate);
+// Atualização em Massa e conflitos
+router.post('/mass-update/compare', conflictsController.compareSql);
+router.post('/mass-update/accept', conflictsController.acceptConflict);
+router.post('/mass-update/reject', conflictsController.rejectConflict);
+router.post('/mass-update/reject', conflictsController.resolveConflict);
 
 module.exports = router;

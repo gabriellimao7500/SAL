@@ -7,6 +7,7 @@ function MassUpdate() {
     const [sqlCode, setSqlCode] = useState("");
     const [comparisonResults, setComparisonResults] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [newRequests, setNewRequests] = useState([]);
 
     const handleSqlChange = (e) => {
         setSqlCode(e.target.value);
@@ -16,7 +17,9 @@ function MassUpdate() {
         setLoading(true);
         try {
             const result = await axios.post(`${config.apiUrl}/mass-update/compare`, { sql: sqlCode });
-            setComparisonResults(result.data);
+            setComparisonResults(result.data.conflicts);
+            console.log("Resultados da comparação:", result.data.conflicts);
+
         } catch (error) {
             console.error("Erro ao comparar SQL:", error);
         } finally {
@@ -25,12 +28,10 @@ function MassUpdate() {
     };
 
     const handleAccept = async (id) => {
-        try {
-            await axios.post(`${config.apiUrl}/mass-update/accept`, { id });
-            setComparisonResults(comparisonResults.filter(item => item.id !== id));
-        } catch (error) {
-            console.error("Erro ao aceitar atualização:", error);
-        }
+        // Remove o conflito aceito da lista
+        const updatedResults = comparisonResults.filter(item => item.id !== id);
+        setComparisonResults(updatedResults);
+
     };
 
     const handleReject = async (id) => {
@@ -57,19 +58,19 @@ function MassUpdate() {
                 <ul>
                     {comparisonResults.map(result => (
                         <li key={result.id}>
-                            <p>{`Conflito: ${result.description}`}</p>
+                            <p>{`Conflito de Horários`}</p>
                             <p><strong>Reserva Existente:</strong></p>
-                            <p>{`Laboratório: ${result.existing.lab}`}</p>
-                            <p>{`Período: ${result.existing.period}`}</p>
-                            <p>{`Aula: ${result.existing.class}`}</p>
-                            <p>{`Professor: ${result.existing.professor}`}</p>
-                            <p>{`Descrição: ${result.existing.description}`}</p>
+                            <p>{`Laboratório: ${result.existingRes.idLaboratorio}`}</p>
+                            <p>{`Período: ${result.existingRes.period}`}</p>
+                            <p>{`Aula: ${result.existingRes.class}`}</p>
+                            <p>{`Professor: ${result.existingRes.idProfessor}`}</p>
+                            <p>{`Descrição: ${result.existingRes.motivo}`}</p>
                             <p><strong>Nova Reserva:</strong></p>
-                            <p>{`Laboratório: ${result.new.lab}`}</p>
-                            <p>{`Período: ${result.new.period}`}</p>
-                            <p>{`Aula: ${result.new.class}`}</p>
-                            <p>{`Professor: ${result.new.professor}`}</p>
-                            <p>{`Descrição: ${result.new.description}`}</p>
+                            <p>{`Laboratório: ${result.newRes.idLaboratorio}`}</p>
+                            <p>{`Período: ${result.newRes.period}`}</p>
+                            <p>{`Aula: ${result.newRes.class}`}</p>
+                            <p>{`Professor: ${result.newRes.idProfessor}`}</p>
+                            <p>{`Descrição: ${result.newRes.motivo}`}</p>
                             <button onClick={() => handleAccept(result.id)}>Aceitar</button>
                             <button onClick={() => handleReject(result.id)}>Rejeitar</button>
                         </li>

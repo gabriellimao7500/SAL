@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { compareSql, acceptUpdate, rejectUpdate } = require('../controllers/massUpdateController')
+const { compareSql, acceptConflict, rejectConflict, resolveConflict } = require('../controllers/conflictResolutionController');
 
 router.post('/compare', compareSql);
-router.post('/accept', acceptUpdate);
-router.post('/reject', rejectUpdate);
+router.post('/accept', acceptConflict);
+router.post('/reject', rejectConflict);
+router.post('/resolve', resolveConflict);
 
 module.exports = router;
