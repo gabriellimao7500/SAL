@@ -39,6 +39,7 @@ router.delete('/reqs/:idRequisicao', reqController.deleteReq);
 
 // Atualização em Massa e conflitos
 router.post('/mass-update/compare', conflictsController.compareSql);
+router.post('/mass-update/resolve', conflictsController.resolveConflict);
 router.post('/mass-update/accept', conflictsController.acceptConflict);
 router.post('/mass-update/reject', conflictsController.rejectConflict);
 router.post('/mass-update/reject', conflictsController.resolveConflict);

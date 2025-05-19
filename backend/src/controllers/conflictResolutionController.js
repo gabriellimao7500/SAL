@@ -4,9 +4,10 @@ const conflicts = [];
 
 const compareSql = async (req, res) => {
     const { sql } = req.body;
-    console.log("Recebendo query SQL do frontend:", sql);
+    // console.log("Recebendo query SQL do frontend:", sql);
 
     try {
+        conflicts.length = 0; // Limpa os conflitos antes de cada requisição
         console.log("Criando tabela temporária para novas reservas...");
         await db.query(`
             CREATE TEMPORARY TABLE IF NOT EXISTS temp_reservas (
@@ -45,6 +46,8 @@ const compareSql = async (req, res) => {
                     newResDate == existingResDate
                 ) {
                     conflicts.push({
+                        conflictId: conflicts.length + 1,
+                        sql: `INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo) VALUES ('${newRes.dataReserva}', '${newRes.periodo}', ${newRes.aulaReserva}, ${newRes.idProfessor}, ${newRes.idLaboratorio}, '${newRes.motivo}')`,
                         existingRes,
                         newRes
                     });
@@ -52,7 +55,7 @@ const compareSql = async (req, res) => {
             });
         });
 
-        console.log("Conflitos identificados:", conflicts);
+        //console.log("Conflitos identificados:", conflicts);
         res.json({ conflicts, pendingQuery: sql });
     } catch (error) {
         console.error("Erro ao buscar conflitos:", error);
@@ -85,15 +88,19 @@ const rejectConflict = (req, res) => {
 
 const resolveConflict = async (req, res) => {
     const { resolution } = req.body;
-    console.log("Resolvendo conflitos:", resolution);
+    //console.log("Resolvendo conflitos:", resolution[0]);
+
+    const acceptedConflicts = resolution.filter(r => r.action === "acceptNew");
+    console.log("Conflitos aceitos:", acceptedConflicts);
 
     try {
         for (const { action, oldReservation, newReservation } of resolution) {
-            if (action === 'acceptNew') {
+            if (action === "acceptNew") {
+                const formattedDate = new Date(newReservation.dataReserva).toISOString().split('T')[0]; // Formatar a data
                 await db.query(
                     `UPDATE reserva SET dataReserva = ?, periodo = ?, aulaReserva = ?, idProfessor = ?, idLaboratorio = ?, motivo = ? WHERE idReserva = ?`,
                     [
-                        newReservation.dataReserva,
+                        formattedDate, // Usar a data formatada
                         newReservation.periodo,
                         newReservation.aulaReserva,
                         newReservation.idProfessor,
@@ -102,6 +109,8 @@ const resolveConflict = async (req, res) => {
                         oldReservation.idReserva
                     ]
                 );
+            } else if (action === "rejectNew") {
+                console.log(`Conflito rejeitado para nova reserva: ${newReservation.idReserva}`);
             }
         }
 
