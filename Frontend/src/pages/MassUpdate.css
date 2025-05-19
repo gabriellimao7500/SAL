@@ -1,0 +1,122 @@
+/* MassUpdate.css */
+
+/* Container principal da página */
+.mass-update-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #181a1b;
+    width: 100%;
+    height: 100vh;
+    color: #fff;
+}
+
+/* Título da página */
+.mass-update-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #646BC1;
+    margin-bottom: 24px;
+}
+
+/* Grid de cards */
+.mass-update-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+}
+
+/* Card individual */
+.mass-update-card {
+    width: 25vw;
+    background: #22223b;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(34, 34, 59, 0.08);
+    padding: 16px 6px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s;
+}
+
+.rejected {
+    border-color: red;
+    border-width: 10px;
+    border: red solid;
+}
+
+.accepted {
+    border-color: green;
+    border-width: 10px;
+    border: green solid;
+}
+
+.mass-update-card:hover {
+    box-shadow: 0 4px 16px rgba(34, 34, 59, 0.14);
+}
+
+/* Título do card */
+.mass-update-card-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #22223b;
+    margin-bottom: 12px;
+}
+
+/* Informações do card */
+.mass-update-card-info {
+    font-size: 1rem;
+    align-self: center;
+    color: #4a4e69;
+    margin-bottom: 8px;
+    width: 60%;
+    height: 50px;
+    overflow: auto;
+}
+
+/* Botão de ação */
+.mass-update-action-btn {
+    align-self: center;
+    margin-top: 16px;
+    width: 30%;
+    background: #3a86ff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Botão de ação */
+.mass-update-action-btn-reject {
+    align-self: center;
+    margin-top: 16px;
+    width: 30%;
+    background: #181a1b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.mass-update-action-btn:hover {
+    background: #265dbe;
+}
+
+.mass-update-action-btn-reject:hover {
+    background: #272727;
+}
