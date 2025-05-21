@@ -8,11 +8,14 @@ import Hours from '../Hours/Hours';
 import arrow_left from '../../assets/arrow_left.svg'
 import arrow_right from '../../assets/arrow_right.svg'
 
-function Table({reserva, pullMarks}) {
-    
-    
+import axios from 'axios';
+import config from "../../../config"
 
-    
+function Table({ reserva, pullMarks }) {
+
+
+
+
     const date = new Date();
     const dia = date.getDate();
     const mesatu = date.getMonth();
@@ -22,14 +25,14 @@ function Table({reserva, pullMarks}) {
     const ano = 2025;
     //mes inicial
     let mes = 1;
-    mes --;
+    mes--;
     //dia inicial
-    let day =6;
+    let day = 6;
 
 
 
     const a = ano;
-    const m = mes+1;
+    const m = mes + 1;
     const d = day;
 
     //data de referencia
@@ -39,7 +42,7 @@ function Table({reserva, pullMarks}) {
     const diaR = 1
 
 
-    
+
 
 
     const mes2 = mes;
@@ -50,32 +53,32 @@ function Table({reserva, pullMarks}) {
 
 
 
-    
 
-    
 
-    if(JSON.parse(sessionStorage.getItem('professor'))){
+
+
+    if (JSON.parse(sessionStorage.getItem('professor'))) {
         let user = JSON.parse(sessionStorage.getItem('professor'));
-        if(user.rule === "admin"){
+        if (user.rule === "admin") {
             semanasPraMais = 52;
-        }else{
+        } else {
             semanasPraMais = 2;
         }
     }
 
-    
-    const ebb = getWeeksPassed(a,m,d);
-    const yearPlus = getYearsPassed(a, m , d, ebb);
-    
-    const [wp, setWp]= useState(getWeeksPassed2(anoR, mesR, diaR, a, m, d));
+
+    const ebb = getWeeksPassed(a, m, d);
+    const yearPlus = getYearsPassed(a, m, d, ebb);
+
+    const [wp, setWp] = useState(getWeeksPassed2(anoR, mesR, diaR, a, m, d));
     const [realWeek, setRealWeek] = useState(wp);
     const [currentWeek, setCurrentWeek] = useState(ebb);
     const [isTransition, setIsTransition] = useState(m === 12 ? false : true);
-    const [currentMes, setCurrentMes] = useState(currentWeek%52 >= 48 ? 11 : currentWeek%52 >=44 ? 10 :currentWeek%52 >=40 ? 9 : currentWeek%52 >=35 ? 8 : currentWeek%52 >=31 ? 7 : currentWeek%52 >= 26 ? 6: currentWeek%52 >=22 ? 5 : currentWeek%52 >=18 ? 4: currentWeek%52 >=13 ? 3 : currentWeek%52 >= 9 ? 2 : currentWeek%52 >=5 ? 1 : currentWeek%52 === 0 && !isTransition ? 11 : 0 );
+    const [currentMes, setCurrentMes] = useState(currentWeek % 52 >= 48 ? 11 : currentWeek % 52 >= 44 ? 10 : currentWeek % 52 >= 40 ? 9 : currentWeek % 52 >= 35 ? 8 : currentWeek % 52 >= 31 ? 7 : currentWeek % 52 >= 26 ? 6 : currentWeek % 52 >= 22 ? 5 : currentWeek % 52 >= 18 ? 4 : currentWeek % 52 >= 13 ? 3 : currentWeek % 52 >= 9 ? 2 : currentWeek % 52 >= 5 ? 1 : currentWeek % 52 === 0 && !isTransition ? 11 : 0);
     const [currentAno, setCurrentAno] = useState(ano + yearPlus);
     const [prevDisabled, setPrevDisabled] = useState(true);
     const [nextDisabled, setNextDisabled] = useState(false);
-    
+
 
     function getWeeksPassed(initialYear, initialMonth, initialDay) {
         const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
@@ -86,38 +89,38 @@ function Table({reserva, pullMarks}) {
         return Math.floor(weeksPassed);
     }
 
-   function getWeeksPassed2(initialYear, initialMonth, initialDay, endYear, endMonth, endDay) {
+    function getWeeksPassed2(initialYear, initialMonth, initialDay, endYear, endMonth, endDay) {
         const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
         const endDate = new Date(endYear, endMonth - 1, endDay);
         const diffInMs = endDate - initialDate;
         const msInAWeek = 1000 * 60 * 60 * 24 * 7;
         const weeksPassed = diffInMs / msInAWeek;
         return Math.floor(weeksPassed);
-        
+
     }
     function getYearsPassed(initialYear, initialMonth, initialDay, weeks) {
-        
+
         const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
-    
-        
+
+
         const daysToAdd = weeks * 7;
-    
-        
+
+
         const finalDate = new Date(initialDate);
         finalDate.setDate(finalDate.getDate() + daysToAdd);
         return finalDate.getFullYear() - initialDate.getFullYear();
     }
 
-    
+
 
     const weeksPass = ebb;
 
-    const DiasDoMes = [31 , currentAno%4 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    
+    const DiasDoMes = [31, currentAno % 4 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
     const verify = (day, temp) => {
         day += temp;
-        
-        
+
+
         if (mes > 11) {
             mes = 0;
         }
@@ -137,69 +140,69 @@ function Table({reserva, pullMarks}) {
     }
 
     useEffect(() => {
-        
+
 
         setPrevDisabled(currentWeek === 0);
         setNextDisabled(currentWeek === weeks.length - 1);
     }, [currentWeek, weeks.length]);
 
 
-        const week = weeks[currentWeek];
-        const isMonthTransition = week.includes(1) && week.some(day => [28, 29,30,31].includes(day));
-        const isYearTransition = isMonthTransition && currentWeek%52 === 0;
-        
-        
-        
+    const week = weeks[currentWeek];
+    const isMonthTransition = week.includes(1) && week.some(day => [28, 29, 30, 31].includes(day));
+    const isYearTransition = isMonthTransition && currentWeek % 52 === 0;
+
+
+
 
     const changeWeek = (direction) => {
-        
-        if(isMonthTransition){
+
+        if (isMonthTransition) {
             setIsTransition(true)
-        }else{
+        } else {
             setIsTransition(false)
         }
 
         setRealWeek((prevWeek) => {
-            
-            
-            
+
+
+
             var newWeek = prevWeek + direction;
             var bool = (newWeek + ebb) % 52;
-            
-            
 
 
-            if (newWeek > prevWeek && ( bool === 1 ||bool === 5 || bool === 9 || bool === 13 || bool === 18 || bool === 22 || bool === 26 || bool === 31 || bool === 35 || bool === 40 || bool === 44 || bool === 48)) {
-                if(bool === 1 && (newWeek+ebb) != 1){
-                    setCurrentAno(currentAno+1);
-                    setCurrentMes(currentMes+1);
-                }else if(newWeek + ebb != 1){
-                    setCurrentMes(currentMes+1);
+
+
+            if (newWeek > prevWeek && (bool === 1 || bool === 5 || bool === 9 || bool === 13 || bool === 18 || bool === 22 || bool === 26 || bool === 31 || bool === 35 || bool === 40 || bool === 44 || bool === 48)) {
+                if (bool === 1 && (newWeek + ebb) != 1) {
+                    setCurrentAno(currentAno + 1);
+                    setCurrentMes(currentMes + 1);
+                } else if (newWeek + ebb != 1) {
+                    setCurrentMes(currentMes + 1);
                 }
-            }else if (newWeek < prevWeek && ((bool+1) === 1 ||(bool+1) === 5 || (bool+1) === 9 || (bool+1) === 13 || (bool+1) === 18 || (bool+1) === 22 || (bool+1) === 26 || (bool+1) === 31 || (bool+1) === 35 || (bool+1) === 40 || (bool+1) === 44 || (bool+1) === 48)) {
-                
-                if((bool+1)=== 1 && (newWeek+ebb) != 1){
-                    setCurrentAno(currentAno-1);
-                    if(currentMes <= 0){
+            } else if (newWeek < prevWeek && ((bool + 1) === 1 || (bool + 1) === 5 || (bool + 1) === 9 || (bool + 1) === 13 || (bool + 1) === 18 || (bool + 1) === 22 || (bool + 1) === 26 || (bool + 1) === 31 || (bool + 1) === 35 || (bool + 1) === 40 || (bool + 1) === 44 || (bool + 1) === 48)) {
+
+                if ((bool + 1) === 1 && (newWeek + ebb) != 1) {
+                    setCurrentAno(currentAno - 1);
+                    if (currentMes <= 0) {
                         setCurrentMes(0);
-                    }else{
-                        setCurrentMes(currentMes-1);
+                    } else {
+                        setCurrentMes(currentMes - 1);
                     }
-                }else if(newWeek + ebb != 1){
-                    setCurrentMes(currentMes-1);
+                } else if (newWeek + ebb != 1) {
+                    setCurrentMes(currentMes - 1);
                 }
             }
-            if(newWeek > prevWeek){
-                setCurrentWeek(currentWeek+1);
-            }else if(currentWeek <= 0){
+            if (newWeek > prevWeek) {
+                setCurrentWeek(currentWeek + 1);
+            } else if (currentWeek <= 0) {
                 setCurrentWeek(0);
-            }else{
-                setCurrentWeek(currentWeek-1)
+            } else {
+                setCurrentWeek(currentWeek - 1)
             }
             return newWeek;
         });
-        
-        
+
+
     };
 
     const monthLabels = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
@@ -207,7 +210,7 @@ function Table({reserva, pullMarks}) {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
-        
+
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
@@ -222,22 +225,22 @@ function Table({reserva, pullMarks}) {
     const renderMonthLabel = () => {
 
         if (currentWeek !== 0 && isMonthTransition) {
-            
+
             const nextMonth = (currentMes + 1) % 12;
             return (
                 <div>
                     {monthLabels[currentMes % 12]} - {monthLabels[nextMonth % 12]}
                 </div>
             );
-        }else if(currentWeek === 0 && isMonthTransition){
+        } else if (currentWeek === 0 && isMonthTransition) {
             const nextMonth = (currentMes + 1) % 12;
             return (
                 <div>
-                    {monthLabels[currentMes%12]} - {monthLabels[nextMonth%12]}
+                    {monthLabels[currentMes % 12]} - {monthLabels[nextMonth % 12]}
                 </div>
             );
-        }else {
-            
+        } else {
+
             return (
                 <div>
                     {monthLabels[currentMes % 12]}
@@ -246,17 +249,17 @@ function Table({reserva, pullMarks}) {
         }
     };
 
-    
+
     const renderYearLabel = () => {
         if (isYearTransition) {
-            
+
             return (
                 <div>
-                    {currentAno} - {currentAno+1}
+                    {currentAno} - {currentAno + 1}
                 </div>
             );
-        }else{
-            
+        } else {
+
 
             return (
                 <div>
@@ -276,26 +279,26 @@ function Table({reserva, pullMarks}) {
     var idx = []
     reserva.map((reserva, id) => {
         var dt = new Date(reserva.dataReserva);
-        var dia = dt.getUTCDate();      
-        var mes = dt.getUTCMonth() + 1;      
+        var dia = dt.getUTCDate();
+        var mes = dt.getUTCMonth() + 1;
         var ano = dt.getUTCFullYear();
-        let wp = getWeeksPassed2(a,m,d,ano,mes,dia);
+        let wp = getWeeksPassed2(a, m, d, ano, mes, dia);
         var multi = 5 * wp;
         var aula = (wp * 7) + reserva.aulaReserva;
         var sem = getDayOfWeek(dt);
-  
-      var indice = ((aula-1)*5+sem-1) - multi;
-      idx.push(indice)
-      reserva.index = indice
+
+        var indice = ((aula - 1) * 5 + sem - 1) - multi;
+        idx.push(indice)
+        reserva.index = indice
     });
-      
-    
+
+
 
     const getClassName = (index) => {
 
         let reservasFiltradas = reserva.filter(reserva => reserva.index === index);
 
-        
+
         /*{
         "idReserva": 0,
         "dataReserva": "0000-00-00T00:00:00.000Z",
@@ -308,17 +311,17 @@ function Table({reserva, pullMarks}) {
         "svg": "",
         "motivo": ""
     } */
-        
-        
-        
-        
-        
+
+
+
+
+
         if (idx.includes(index)) {
             var email = reservasFiltradas[0].email;
-            if (JSON.parse(sessionStorage.getItem('professor'))){
+            if (JSON.parse(sessionStorage.getItem('professor'))) {
                 var profEmail = JSON.parse(sessionStorage.getItem('professor')).email;
             }
-            if(email === profEmail){
+            if (email === profEmail) {
                 return `ocupado ${index} isYou`
             }
             return `ocupado ${index}`;
@@ -329,56 +332,56 @@ function Table({reserva, pullMarks}) {
 
     const [onReserva, setOnReserva] = useState(false);
     const [type, setType] = useState("no");
-    
-    
+
+
     function reservasOff() {
         setOnReserva(false)
         pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
     }
-    
-    
+
+
     function calculateDate(startDay, startMonth, startYear, weeksPassed, weekDay) {
         // Cria uma nova data com base nos parâmetros fornecidos
         let startDate = new Date(startYear, startMonth - 1, startDay);
-        
+
         // Calcula o número total de dias a serem adicionados
         let totalDays = weeksPassed * 7 + (weekDay - 1);
-        
+
         // Adiciona os dias à data inicial
         startDate.setDate(startDate.getDate() + totalDays);
-        
+
         // Retorna a data final no formato YYYY-MM-DD
         let year = startDate.getFullYear();
         let month = (startDate.getMonth() + 1).toString().padStart(2, '0');
         let day = startDate.getDate().toString().padStart(2, '0');
-        
+
         var dateReserva = new Date(Date.UTC(year, month - 1, day, 3, 0, 0));
 
         return dateReserva;
     }
 
-    
+
     const [aulaAtu, setAulaAtu] = useState(1)
-    const [dateReserva,setDateReserva] = useState('')
-    
+    const [dateReserva, setDateReserva] = useState('')
+
 
     const [objDefault, setObjDefault] = useState([{}])
 
-    const onReser = async(rowIndex, colIndex, event)=>{
-        
-        const index = rowIndex*5 + colIndex
+    const onReser = async (rowIndex, colIndex, event) => {
+
+        const index = rowIndex * 5 + colIndex
         var indie = index
-            let aula = Math.floor(indie / 5) + 1;
-            let diaSem = (indie % 5) + 1;
-            
-            let wp = currentWeek;
-            while (aula > 6) {
-                aula -= 6;
-                wp++;
-            }
-            let temp = calculateDate( d, m, a, wp, diaSem)
-            var formatoISO = temp.toISOString();
-            
+        let aula = Math.floor(indie / 5) + 1;
+        let diaSem = (indie % 5) + 1;
+
+        let wp = currentWeek;
+        while (aula > 6) {
+            aula -= 6;
+            wp++;
+        }
+        let temp = calculateDate(d, m, a, wp, diaSem)
+        var formatoISO = temp.toISOString();
+
         setDateReserva(formatoISO)
         setAulaAtu(aula)
 
@@ -388,54 +391,119 @@ function Table({reserva, pullMarks}) {
         data2 = data2.toISOString();
 
 
-        
+
         if (target.classList.contains('ocupado')) {
 
             var e = target.className;
             var b = e.split(" ");
             var bb = parseInt(b[1]);
-            
+
             const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
             setObjDefault(reservasFiltradas)
 
-            if(formatoISO >= data2){
-                if(target.classList.contains('isYou')){
+            if (formatoISO >= data2) {
+                if (target.classList.contains('isYou')) {
                     setType("me")
-                }else{
+                } else {
                     setType("other")
                 }
                 setOnReserva(true)
-            }else{
+            } else {
                 setType("other")
                 setOnReserva(true)
             }
-            
+
         } else {
-            if(formatoISO >= data2){
-                if(localStorage.getItem('periodo') === "Noite" && rowIndex > 1){
+            if (formatoISO >= data2) {
+                if (localStorage.getItem('periodo') === "Noite" && rowIndex > 1) {
                     erroDeAgendamento('Você só pode agendar uma aula disponivel!')
-                }else{
+                } else {
                     setType("nothing")
                     setOnReserva(true)
                 }
-            }else{
+            } else {
                 erroDeAgendamento('Você não pode agendar um dia anterior ao dia atual!')
             }
         }
 
     }
 
-    function erroDeAgendamento( erro ){
+    function erroDeAgendamento(erro) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: erro
-          });
+        });
     }
+
+    const [serieMode, setSerieMode] = useState(false);
+    const [horariosSelecionados, setHorariosSelecionados] = useState([]);
+    const [dataInicio, setDataInicio] = useState('');
+    const [dataFim, setDataFim] = useState('');
+
+    const toggleHorarioSelecionado = (rowIndex, colIndex) => {
+        // Identifica aula e dia da semana
+        const aula = rowIndex + 1;
+        const diaSemana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'][colIndex];
+        const laboratorio = localStorage.getItem('typeLab');
+        const periodo = localStorage.getItem('periodo');
+        const numeroLaboratorio = localStorage.getItem('numLab');
+
+        const key = `${aula}-${colIndex}`;
+        const exists = horariosSelecionados.find(h => h.key === key);
+
+        if (exists) {
+            setHorariosSelecionados(horariosSelecionados.filter(h => h.key !== key));
+        } else {
+            setHorariosSelecionados([
+                ...horariosSelecionados,
+                { key, diaSemana, aula, laboratorio, periodo, numeroLaboratorio }
+            ]);
+        }
+    };
+
+    const handleAgendarSerie = async (horariosSelecionados, dataInicio, dataFim) => {
+
+
+        // Pegue dados do usuário logado
+        const user = JSON.parse(sessionStorage.getItem('professor')) || {};
+        const motivo = window.prompt("Informe o motivo para todos os agendamentos em série:", "");
+
+        // Monta os objetos no padrão esperado
+        const horariosPadronizados = horariosSelecionados.map(h => ({
+            // idReserva será gerado pelo backend
+            dataReserva: null, // será calculado no backend
+            periodo: h.periodo,
+            aulaReserva: h.aula,
+            idProfessor: user.idProfessor || 0,
+            idLaboratorio: h.numeroLaboratorio,
+            motivo: motivo || '',
+            diaSemana: h.diaSemana,
+        }));
+
+        try {
+            await axios.post(`${config.apiUrl}/auto-agendamento`, {
+                horarios: horariosPadronizados,
+                dataInicio,
+                dataFim
+            }, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+            alert('Agendamentos criados com sucesso!');
+        } catch (err) {
+            console.log(err);
+            // Aqui você pode tratar o erro, exibir uma mensagem ao usuário, etc.
+
+            alert('Erro ao criar agendamentos em série');
+        }
+    };
+
+
 
     return (
         <section className={styles.calendar}>
-            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={objDefault[0]} type={type} date={dateReserva} aula={aulaAtu} pullMarks ={pullMarks}></Reserva>) : ''}
+            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={objDefault[0]} type={type} date={dateReserva} aula={aulaAtu} pullMarks={pullMarks}></Reserva>) : ''}
             <Hours windowWidth={windowWidth}></Hours>
             <div className={styles["schedule-container"]}>
                 <div className={styles["schedule-wrapper"]} style={{ transform: `translateX(-${currentWeek * 100}%)` }}>
@@ -458,7 +526,17 @@ function Table({reserva, pullMarks}) {
                                     <tr key={rowIndex}>
                                         {Array(5).fill().map((_, colIndex) => (
                                             <td key={colIndex}>
-                                                <div className={`${getClassName((rowIndex*5 + colIndex)+ 30 * currentWeek)} indice`} onClick={()=>onReser(rowIndex, colIndex, event)} type={type}/>
+                                                <div
+                                                    className={`${getClassName((rowIndex * 5 + colIndex) + 30 * currentWeek)} indice ${serieMode && horariosSelecionados.find(h => h.key === `${rowIndex + 1}-${colIndex}`) ? styles.selected : ''}`}
+                                                    onClick={(event) => {
+                                                        if (serieMode) {
+                                                            toggleHorarioSelecionado(rowIndex, colIndex);
+                                                        } else {
+                                                            onReser(rowIndex, colIndex, event);
+                                                        }
+                                                    }}
+                                                    type={type}
+                                                />
                                             </td>
                                         ))}
                                     </tr>
@@ -472,6 +550,36 @@ function Table({reserva, pullMarks}) {
                     <div>{renderYearLabel()}</div>
                 </div>
             </div>
+            <button onClick={() => {
+                setSerieMode(!serieMode);
+                setHorariosSelecionados([]);
+            }}>
+                {serieMode ? 'Cancelar Seleção em Série' : 'Selecionar em Série'}
+            </button>
+            {serieMode && (
+                <div>
+                    <ul>
+                        {horariosSelecionados.map((h, idx) => (
+                            <li key={h.key}>{h.diaSemana} - Aula {h.aula} - Lab {h.laboratorio} - {h.periodo}</li>
+                        ))}
+                    </ul>
+                    <input type="date" onChange={e => setDataInicio(e.target.value)} placeholder="Data início" />
+                    <input type="date" onChange={e => setDataFim(e.target.value)} placeholder="Data fim" />
+                    <button
+                        onClick={() => {
+                            // Chame a função do pai ou faça o POST aqui
+
+                            handleAgendarSerie(horariosSelecionados, dataInicio, dataFim);
+
+                            setSerieMode(false);
+                            setHorariosSelecionados([]);
+                        }}
+                        disabled={horariosSelecionados.length === 0}
+                    >
+                        Agendar em Série
+                    </button>
+                </div>
+            )}
             <div className={styles.navigation}>
                 <button id="ir" onClick={() => changeWeek(1)} disabled={nextDisabled}>
                     <img src={arrow_right} alt="svg" />

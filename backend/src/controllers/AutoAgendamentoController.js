@@ -1,8 +1,10 @@
 const connection = require('../models/connection/connection');
 
 const criarAgendamentosEmSerie = async (req, res) => {
+    console.log("criarAgendamentosEmSerie");
+    console.log(req.body);
     try {
-        const { diaSemana, aula, dataInicio, dataFim, laboratorio, periodo, motivo, professor } = req.body;
+        const { horarios, dataInicio, dataFim } = req.body;
 
         // Função para obter todas as datas do dia da semana entre dataInicio e dataFim
         function getDatasRecorrentes(diaSemana, dataInicio, dataFim) {
@@ -26,27 +28,26 @@ const criarAgendamentosEmSerie = async (req, res) => {
             return dias;
         }
 
-
-        const datas = getDatasRecorrentes(diaSemana, dataInicio, dataFim);
-
-        // Aqui você pode adaptar para inserir no seu banco conforme sua modelagem
-        for (const data of datas) {
-            await connection.execute(
-                `INSERT INTO reserva (dataReserva, aulaReserva, idLaboratorio, periodo, motivo, idProfessor)
+        for (const horario of horarios) {
+            const datas = getDatasRecorrentes(horario.diaSemana, dataInicio, dataFim);
+            for (const data of datas) {
+                await connection.execute(
+                    `INSERT INTO reserva 
+                        (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
                  VALUES (?, ?, ?, ?, ?, ?)`,
-                [
-                    data.toISOString().slice(0, 10),
-                    aula,
-                    laboratorio,
-                    periodo,
-                    motivo,
-                    professor
-                ]
-            );
+                    [
+                        data.toISOString().slice(0, 10),
+                        horario.periodo,
+                        horario.aulaReserva,
+                        horario.idProfessor,
+                        horario.idLaboratorio,
+                        horario.motivo
+                    ]
+                );
+            }
         }
-        console.log("Datas: ", datas);
 
-        return res.status(201).json({ message: 'Agendamentos criados com sucesso!', quantidade: datas.length });
+        return res.status(201).json({ message: 'Agendamentos criados com sucesso!', quantidade: horarios.length });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Erro ao criar agendamentos em série.' });
