@@ -1,4 +1,7 @@
 const express = require('express');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
 const profController = require('./controllers/profControllers');
 const loginController = require('./controllers/loginControllers');
 const labsControllers = require('./controllers/labsControllers');
@@ -38,6 +41,7 @@ router.delete('/reqs/:idRequisicao', reqController.deleteReq);
 
 
 // Atualização em Massa e conflitos
+router.post('/mass-update/compare-sql-file', upload.single('sqlfile'), conflictsController.compareSqlFile);
 router.post('/mass-update/compare', conflictsController.compareSql);
 router.post('/mass-update/resolve', conflictsController.resolveConflict);
 router.post('/mass-update/accept', conflictsController.acceptConflict);

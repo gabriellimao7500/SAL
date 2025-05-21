@@ -7,11 +7,41 @@ function MassUpdate() {
     const [sqlCode, setSqlCode] = useState("");
     const [comparisonResults, setComparisonResults] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [newRequests, setNewRequests] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null); // Novo estado para o arquivo
 
     const handleSqlChange = (e) => {
         setSqlCode(e.target.value);
     };
+
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+
+    const handleFileUpload = async () => {
+        if (!selectedFile) return;
+        console.log("Arquivo selecionado:", selectedFile.name);
+
+        setLoading(true);
+        const formData = new FormData();
+        formData.append("sqlfile", selectedFile);
+
+        try {
+            console.log("Enviando arquivo SQL para o servidor...");
+
+            const result = await axios.post(
+                `${config.apiUrl}/mass-update/compare-sql-file`,
+                formData,
+                { headers: { "Content-Type": "multipart/form-data" } }
+            );
+            setComparisonResults(result.data.conflicts);
+            console.log("Resultados da comparação:", result.data.conflicts);
+        } catch (error) {
+            console.error("Erro ao enviar arquivo SQL:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     const handleCompare = async () => {
         setLoading(true);
@@ -40,7 +70,7 @@ function MassUpdate() {
     const handleReject = (conflictId) => {
         console.log("Conflito rejeitado:", conflictId);
 
-        
+
         // Marca o conflito como rejeitado
         const updatedResults = comparisonResults.map(item =>
             item.conflictId === conflictId ? { ...item, accepted: false } : item
@@ -74,6 +104,10 @@ function MassUpdate() {
                 onChange={handleSqlChange}
                 placeholder="Insira o código SQL aqui..."
             />
+            <input type="file" name="sqlfile" onChange={handleFileChange} />
+            <button onClick={handleFileUpload} className="mass-update-action-btn" disabled={loading}>
+                {loading ? "Enviando..." : "Enviar arquivo"}
+            </button>
             <button onClick={handleCompare} disabled={loading} className="mass-update-action-btn">
                 {loading ? "Comparando..." : "Comparar"}
             </button>
