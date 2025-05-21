@@ -10,6 +10,8 @@ const reqController = require('./controllers/reqsControllers');
 
 const conflictsController = require('./controllers/conflictResolutionController');
 
+const autoAgendamentoController = require('./controllers/AutoAgendamentoController');
+
 const router = express.Router();
 router.use(express.json());
 
@@ -47,5 +49,7 @@ router.post('/mass-update/resolve', conflictsController.resolveConflict);
 router.post('/mass-update/accept', conflictsController.acceptConflict);
 router.post('/mass-update/reject', conflictsController.rejectConflict);
 router.post('/mass-update/reject', conflictsController.resolveConflict);
+
+router.post('/auto-agendamento', autoAgendamentoController.criarAgendamentosEmSerie);
 
 module.exports = router;
