@@ -7,7 +7,7 @@ const AdminTeachers = () => {
     const [teachers, setTeachers] = useState([]);
     const [filteredTeachers, setFilteredTeachers] = useState([]); // Estado para professores filtrados
     const [searchTerm, setSearchTerm] = useState(''); // Estado para o termo de busca
-    const [form, setForm] = useState({ name: '', email: '' });
+    const [form, setForm] = useState({ name: '', email: '', senha: '' });
     const [editingId, setEditingId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar o popup
 
@@ -29,9 +29,11 @@ const AdminTeachers = () => {
             if (editingId) {
                 await axios.put(`http://localhost:3333/teachers/${editingId}`, form);
             } else {
+                console.log("adicionando")
                 await axios.post('http://localhost:3333/teachers', form);
             }
-            setForm({ name: '', email: '' });
+            setIsModalOpen(false); // Fechar o popup após salvar
+            setForm({ name: '', email: '', senha: '' });
             setEditingId(null);
             fetchTeachers();
         } catch (error) {
@@ -41,7 +43,7 @@ const AdminTeachers = () => {
 
     // Função para abrir o popup e carregar dados no formulário para edição
     const handleEdit = (teacher) => {
-        setForm({ name: teacher.nome, email: teacher.email });
+        setForm({ name: teacher.nome, email: teacher.email, senha: teacher.senha });
         setEditingId(teacher.idProfessor);
         setIsModalOpen(true); // Abrir o popup
     };
@@ -100,10 +102,12 @@ const AdminTeachers = () => {
                         onChange={handleSearch}
                         style={{ marginBottom: '20px', padding: '10px', width: '300px' }}
                     />
-                    <div style={{ overflowY: 'auto', maxHeight: '700px' }} idClass='table'>
+                    <button onClick={() => setIsModalOpen(true)} onChange={{}} style={{ marginBottom: '20px' }}>Adicionar Professor</button>
+                    <div style={{ overflowY: 'auto', maxHeight: '700px' }} idclass='table'>
                         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                             <thead>
                                 <tr>
+                                    <th>id</th>
                                     <th>Nome</th>
                                     <th>Email</th>
                                     <th>Ações</th>
@@ -111,7 +115,8 @@ const AdminTeachers = () => {
                             </thead>
                             <tbody >
                                 {filteredTeachers.map((teacher) => (
-                                    <tr key={teacher.id} >
+                                    <tr key={teacher.idProfessor} >
+                                        <td>{teacher.idProfessor}</td>
                                         <td>{teacher.nome}</td>
                                         <td>{teacher.email}</td>
                                         <td>
@@ -158,6 +163,13 @@ const AdminTeachers = () => {
                                         placeholder="Email"
                                         value={form.email}
                                         onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                        required
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Senha"
+                                        value={form.senha}
+                                        onChange={(e) => setForm({ ...form, senha: e.target.value })}
                                         required
                                     />
                                     <button type="submit">Salvar</button>

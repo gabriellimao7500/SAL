@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { getData, getDataFromId, updateSenha, updateImagem, deleteProfessor } = require('../models/profModels');
+const e = require('express');
+const connection = require('../models/connection/connection');
 
 // Listar todos os professores
 router.get('/', async (req, res) => {
@@ -14,11 +16,15 @@ router.get('/', async (req, res) => {
 
 // Adicionar um professor
 router.post('/', async (req, res) => {
-    const { name, email } = req.body;
+    const { name, email, senha } = req.body;
     try {
-        await connection.query('INSERT INTO teachers (name, email) VALUES ($1, $2)', [name, email]);
+        await connection.query(`INSERT INTO professor (nome, email, senha) VALUES ('${name}', '${email}', '${senha}')`);
+        console.log(`Professor ${name} adicionado com sucesso!`);
+
         res.status(201).json({ message: 'Professor adicionado com sucesso' });
     } catch (error) {
+        console.log(error);
+
         res.status(500).json({ error: 'Erro ao adicionar professor' });
     }
 });
@@ -26,11 +32,13 @@ router.post('/', async (req, res) => {
 // Editar um professor
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { name, email } = req.body;
+    const { name, email, senha } = req.body;
     try {
-        await connection.query('UPDATE teachers SET name = $1, email = $2 WHERE id = $3', [name, email, id]);
-        res.json({ message: 'Professor atualizado com sucesso' });
+        await connection.query(`UPDATE professor SET nome = '${name}', email = '${email}', senha = '${senha}' WHERE idProfessor = ${id}`);
+        res.status(200).json({ message: 'Professor atualizado com sucesso' });
     } catch (error) {
+        console.log(error);
+
         res.status(500).json({ error: 'Erro ao atualizar professor' });
     }
 });
