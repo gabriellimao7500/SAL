@@ -11,7 +11,7 @@ import arrow_right from '../../assets/arrow_right.svg'
 import axios from 'axios';
 import config from "../../../config"
 
-function Table({ reserva, pullMarks }) {
+function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorariosSelecionados }) {
 
 
 
@@ -436,10 +436,6 @@ function Table({ reserva, pullMarks }) {
         });
     }
 
-    const [serieMode, setSerieMode] = useState(false);
-    const [horariosSelecionados, setHorariosSelecionados] = useState([]);
-    const [dataInicio, setDataInicio] = useState('');
-    const [dataFim, setDataFim] = useState('');
 
     const toggleHorarioSelecionado = (rowIndex, colIndex) => {
         // Identifica aula e dia da semana
@@ -463,21 +459,54 @@ function Table({ reserva, pullMarks }) {
     };
 
     const handleAgendarSerie = async (horariosSelecionados, dataInicio, dataFim) => {
+        console.log("no table");
 
+        // Validação das datas
+        if (!dataInicio || !dataFim) {
+            alert('Preencha as datas de início e fim.');
+            return;
+        }
+        if (new Date(dataFim) < new Date(dataInicio)) {
+            alert('A data final deve ser igual ou posterior à data inicial.');
+            return;
+        }
+        if (!horariosSelecionados.length) {
+            alert('Selecione pelo menos um horário.');
+            return;
+        }
 
         // Pegue dados do usuário logado
         const user = JSON.parse(sessionStorage.getItem('professor')) || {};
         const motivo = window.prompt("Informe o motivo para todos os agendamentos em série:", "");
 
+        // Validação dos campos de cada horário
+        for (const h of horariosSelecionados) {
+            if (
+                !h.diaSemana ||
+                !h.aula ||
+                !h.laboratorio ||
+                !h.periodo ||
+                !h.numeroLaboratorio ||
+                !motivo ||
+                !user.nome ||
+                !user.email
+            ) {
+                alert('Todos os campos dos horários devem estar preenchidos (dia da semana, aula, laboratório, período, número do laboratório, motivo, nome e email do professor).');
+                return;
+            }
+        }
+
         // Monta os objetos no padrão esperado
         const horariosPadronizados = horariosSelecionados.map(h => ({
-            // idReserva será gerado pelo backend
-            dataReserva: null, // será calculado no backend
+            dataReserva: null,
             periodo: h.periodo,
             aulaReserva: h.aula,
-            idProfessor: user.idProfessor || 0,
-            idLaboratorio: h.numeroLaboratorio,
-            motivo: motivo || '',
+            nome: user.nome,
+            email: user.email,
+            tipoLaboratorio: h.laboratorio,
+            numeroLaboratorio: h.numeroLaboratorio,
+            svg: '',
+            motivo: motivo,
             diaSemana: h.diaSemana,
         }));
 
@@ -493,8 +522,6 @@ function Table({ reserva, pullMarks }) {
             alert('Agendamentos criados com sucesso!');
         } catch (err) {
             console.log(err);
-            // Aqui você pode tratar o erro, exibir uma mensagem ao usuário, etc.
-
             alert('Erro ao criar agendamentos em série');
         }
     };
@@ -550,36 +577,6 @@ function Table({ reserva, pullMarks }) {
                     <div>{renderYearLabel()}</div>
                 </div>
             </div>
-            <button onClick={() => {
-                setSerieMode(!serieMode);
-                setHorariosSelecionados([]);
-            }}>
-                {serieMode ? 'Cancelar Seleção em Série' : 'Selecionar em Série'}
-            </button>
-            {serieMode && (
-                <div>
-                    <ul>
-                        {horariosSelecionados.map((h, idx) => (
-                            <li key={h.key}>{h.diaSemana} - Aula {h.aula} - Lab {h.laboratorio} - {h.periodo}</li>
-                        ))}
-                    </ul>
-                    <input type="date" onChange={e => setDataInicio(e.target.value)} placeholder="Data início" />
-                    <input type="date" onChange={e => setDataFim(e.target.value)} placeholder="Data fim" />
-                    <button
-                        onClick={() => {
-                            // Chame a função do pai ou faça o POST aqui
-
-                            handleAgendarSerie(horariosSelecionados, dataInicio, dataFim);
-
-                            setSerieMode(false);
-                            setHorariosSelecionados([]);
-                        }}
-                        disabled={horariosSelecionados.length === 0}
-                    >
-                        Agendar em Série
-                    </button>
-                </div>
-            )}
             <div className={styles.navigation}>
                 <button id="ir" onClick={() => changeWeek(1)} disabled={nextDisabled}>
                     <img src={arrow_right} alt="svg" />
