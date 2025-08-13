@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Table from '../components/Table/Table';
+import Select from '../components/Select/Select';
 import axios from 'axios';
 import './AdminDashboard.css'; // Mantém o estilo consistente
 
@@ -19,14 +21,27 @@ const AdminDashboard = () => {
     const [reservas, setReservas] = useState([]);
     const [horariosSelecionados, setHorariosSelecionados] = useState([]);
     const [serieMode, setSerieMode] = useState(false);
+    // Estados para dropdowns
+    const [periodo, setPeriodo] = useState(localStorage.getItem('periodo') || 'Manhã');
+    const [numLab, setNumLab] = useState(localStorage.getItem('numLab') || 1);
+    const [typeLab, setTypeLab] = useState(localStorage.getItem('typeLab') || 'Informática');
     // Função para buscar agendamentos (pode ser adaptada para o backend real)
-    const pullMarks = async (periodo, tipoLab, numLab) => {
+    const pullMarks = async (periodoArg, tipoLabArg, numLabArg) => {
+        const p = periodoArg || periodo;
+        const t = tipoLabArg || typeLab;
+        const n = numLabArg || numLab;
+        localStorage.setItem('periodo', p);
+        localStorage.setItem('typeLab', t);
+        localStorage.setItem('numLab', n);
+        setPeriodo(p);
+        setTypeLab(t);
+        setNumLab(n);
         try {
             const result = await axios.post('http://localhost:3333/Marks',
                 JSON.stringify({
-                    "periodo": periodo || 'Manhã',
-                    "tipoLaboratorio": tipoLab || 'Informática',
-                    "numeroLaboratorio": numLab || 1
+                    "periodo": p,
+                    "tipoLaboratorio": t,
+                    "numeroLaboratorio": n
                 }),
                 {
                     headers: {
@@ -42,7 +57,7 @@ const AdminDashboard = () => {
     // Abrir calendário
     const handleOpenCalendar = () => {
         setIsCalendarOpen(true);
-        pullMarks();
+        pullMarks(); // Garante que reservas seja preenchido ao abrir o modal
     };
     // Fechar calendário
     const handleCloseCalendar = () => {
@@ -62,6 +77,21 @@ const AdminDashboard = () => {
         }
     };
 
+    // Função para buscar labs
+    const [labs, setLabs] = useState([]);
+    const [loadingLabs, setLoadingLabs] = useState(false);
+    const fetchLabs = async () => {
+        setLoadingLabs(true);
+        try {
+            const response = await axios.get('http://localhost:3333/labs');
+            console.log(response.data);
+            setLabs(response.data);
+        } catch (error) {
+            setLabs([]);
+        } finally {
+            setLoadingLabs(false);
+        }
+    };
 
     // Abrir modal para editar professor
     const handleEdit = (teacher) => {
@@ -279,7 +309,6 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </div>
-
             {/* Modal de edição/adicionar professor */}
             {isModalOpen && (
                 <div
@@ -431,20 +460,22 @@ const AdminDashboard = () => {
                     <div className="modal-card" style={{ backgroundColor: '#232323', color: '#fff', padding: '32px 28px', borderRadius: '14px', width: '90vw', maxWidth: '1200px', textAlign: 'center', boxShadow: '0 8px 32px rgba(139,92,246,0.18)', border: '1px solid #333', animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)', position: 'relative' }} onClick={e => e.stopPropagation()}>
                         <button onClick={handleCloseCalendar} style={{ position: 'absolute', top: 12, right: 12, background: 'transparent', border: 'none', color: '#8b5cf6', fontSize: '1.5rem', cursor: 'pointer', transition: 'color 0.2s', zIndex: 2 }} aria-label="Fechar">&#10006;</button>
                         <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>Calendário de Agendamentos</h2>
+                        <div className="select_main" style={{ display: 'flex', gap: '32px', justifyContent: 'center', marginBottom: '18px' }}>
+                            <Select LabAtu={numLab} Type={"lab"} pullMarks={pullMarks} />
+                            <Select Type={"date"} horarioAtu={periodo} pullMarks={pullMarks} />
+                        </div>
                         <div style={{ marginBottom: '12px' }}>
                             <button onClick={() => setSerieMode(!serieMode)} style={{ background: serieMode ? '#8b5cf6' : '#232323', color: '#fff', border: '1px solid #8b5cf6', borderRadius: '6px', padding: '8px 18px', fontWeight: '600', cursor: 'pointer', marginRight: '10px' }}>Agendamento Recorrente</button>
                         </div>
                         {/* Table Calendar */}
                         <div style={{ overflow: 'auto', maxHeight: '70vh' }}>
-                            {/* ...existing code... */}
-                            {/* Table recebe as props para edição e recorrência */}
-                            {React.createElement(require('../components/Table/Table').default, {
-                                reserva: reservas,
-                                pullMarks: pullMarks,
-                                serieMode: serieMode,
-                                horariosSelecionados: horariosSelecionados,
-                                setHorariosSelecionados: setHorariosSelecionados
-                            })}
+                            <Table
+                                reserva={reservas}
+                                pullMarks={pullMarks}
+                                serieMode={serieMode}
+                                horariosSelecionados={horariosSelecionados}
+                                setHorariosSelecionados={setHorariosSelecionados}
+                            />
                         </div>
                     </div>
                 </div>

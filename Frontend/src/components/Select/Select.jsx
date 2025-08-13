@@ -6,7 +6,7 @@ import config from '../../../config';
 import arrow_down from '../../assets/arrow_down.svg'
 
 function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
-    
+
 
     const [isOpen, setIsOpen] = useState(false)
     const [selectedLab, setSelectedLab] = useState(LabAtu);
@@ -17,23 +17,22 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
 
 
 
-    const[labs, setLabs] = useState([]);
-    const[loading, setLoading] =useState(true);
-    useEffect(()=>{
-        const tipo = localStorage.getItem('typeLab')
-        
-        const fetchLabs = async()=>{
+    const [labs, setLabs] = useState([]);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const fetchLabs = async () => {
+            var url = config.apiUrl;
             try {
-                const response = await axios.get(`${config.apiUrl}/labsType/${tipo}`);
+                const response = await axios.get(`${url}/labs`);
                 setLabs(response.data);
             } catch (error) {
                 console.log('erro', error);
+            } finally {
+                setLoading(false);
             }
-            
-        }
-        fetchLabs()
-
-    },[]);
+        };
+        fetchLabs();
+    }, []);
 
 
 
@@ -55,7 +54,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
             setSelectedLab(lab.numeroLaboratorio);
             setIsOpen(false);
             pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'))
-            
+
         }
     }
 
@@ -123,7 +122,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
                         {(selectedLab === lab.numeroLaboratorio && !isOpen) ?
                             (<div className={styles.arrow}>
                                 <span className="material-symbols-outlined">
-                                    <img src={arrow_down} alt="" srcset=""/>
+                                    <img src={arrow_down} alt="" srcSet="" />
                                 </span>
                             </div>)
                             : null}
