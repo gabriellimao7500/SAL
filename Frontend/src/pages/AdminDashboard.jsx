@@ -25,8 +25,10 @@ const AdminDashboard = () => {
     const [periodo, setPeriodo] = useState(localStorage.getItem('periodo') || 'Manhã');
     const [numLab, setNumLab] = useState(localStorage.getItem('numLab') || 1);
     const [typeLab, setTypeLab] = useState(localStorage.getItem('typeLab') || 'Informática');
+    const [loadingMarks, setLoadingMarks] = useState(false);
     // Função para buscar agendamentos (pode ser adaptada para o backend real)
     const pullMarks = async (periodoArg, tipoLabArg, numLabArg) => {
+        setLoadingMarks(true);
         const p = periodoArg || periodo;
         const t = tipoLabArg || typeLab;
         const n = numLabArg || numLab;
@@ -52,6 +54,8 @@ const AdminDashboard = () => {
             setReservas(result.data);
         } catch (err) {
             setReservas([]);
+        } finally {
+            setTimeout(() => setLoadingMarks(false), 1000); // Delay de 1 segundo
         }
     };
     // Abrir calendário
@@ -477,7 +481,7 @@ const AdminDashboard = () => {
                     <div className="modal-card" style={{ backgroundColor: '#232323', color: '#fff', padding: '32px 28px', borderRadius: '14px', width: '90vw', maxWidth: '1200px', textAlign: 'center', boxShadow: '0 8px 32px rgba(139,92,246,0.18)', border: '1px solid #333', animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)', position: 'relative' }} onClick={e => e.stopPropagation()}>
                         <button onClick={handleCloseCalendar} style={{ position: 'absolute', top: 12, right: 12, background: 'transparent', border: 'none', color: '#8b5cf6', fontSize: '1.5rem', cursor: 'pointer', transition: 'color 0.2s', zIndex: 2 }} aria-label="Fechar">&#10006;</button>
                         <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>Calendário de Agendamentos</h2>
-                        <div className="select_main" style={{ display: 'flex', gap: '32px', justifyContent: 'center', margin: '18px 0' }}>
+                        <div className="select_main" style={{ display: 'flex', gap: '32px', height: '5vh', justifyContent: 'center', margin: '18px 0' }}>
                             <select
                                 value={numLab}
                                 onChange={e => {
@@ -531,14 +535,46 @@ const AdminDashboard = () => {
                             <button onClick={() => setSerieMode(!serieMode)} style={{ background: serieMode ? '#8b5cf6' : '#232323', color: '#fff', border: '1px solid #8b5cf6', borderRadius: '6px', padding: '8px 18px', fontWeight: '600', cursor: 'pointer', marginRight: '10px' }}>Agendamento Recorrente</button>
                         </div>
                         {/* Table Calendar */}
-                        <div style={{ overflow: 'auto', maxHeight: '70vh' }}>
-                            <Table
-                                reserva={reservas}
-                                pullMarks={pullMarks}
-                                serieMode={serieMode}
-                                horariosSelecionados={horariosSelecionados}
-                                setHorariosSelecionados={setHorariosSelecionados}
-                            />
+                        <div style={{ position: 'relative', height: '50vh' }}>
+                            {/* Loader sobreposto */}
+                            {loadingMarks && (
+                                <div style={{
+                                    position: 'absolute',
+                                    top: 0, left: 0, right: 0, bottom: 0,
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    background: 'rgba(35,35,35,0.85)',
+                                    zIndex: 2,
+                                    transition: 'opacity 0.4s',
+                                    opacity: loadingMarks ? 1 : 0,
+                                    pointerEvents: 'all',
+                                    height: '100%'
+                                }}>
+                                    <svg width="48" height="48" viewBox="0 0 50 50">
+                                        <circle cx="25" cy="25" r="20" fill="none" stroke="#8b5cf6" strokeWidth="5" strokeDasharray="31.4 31.4" strokeLinecap="round">
+                                            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite" />
+                                        </circle>
+                                    </svg>
+                                </div>
+                            )}
+                            {/* Calendário sempre renderizado, mas invisível durante loading */}
+                            <div
+                                style={{
+                                    opacity: loadingMarks ? 0 : 1,
+                                    transition: 'opacity 0.4s',
+                                    pointerEvents: loadingMarks ? 'none' : 'auto',
+                                    height: '100%'
+                                }}
+                            >
+                                <Table
+                                    reserva={reservas}
+                                    pullMarks={pullMarks}
+                                    serieMode={serieMode}
+                                    horariosSelecionados={horariosSelecionados}
+                                    setHorariosSelecionados={setHorariosSelecionados}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

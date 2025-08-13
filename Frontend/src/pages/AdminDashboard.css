@@ -367,6 +367,7 @@ tbody tr:hover {
     border: 1px solid #333;
     animation: fadeInUp 0.5s cubic-bezier(.77, .2, .32, 1);
     transition: transform 0.4s, opacity 0.4s;
+    height: 80vh;
 }
 
 .modal-card.hide {
