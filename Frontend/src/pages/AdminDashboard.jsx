@@ -11,6 +11,11 @@ const AdminDashboard = () => {
     const [file, setFile] = useState(null);
     const [uploadStatus, setUploadStatus] = useState('');
 
+    // Modal edição professor
+    const [form, setForm] = useState({ name: '', email: '', senha: '' });
+    const [editingId, setEditingId] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     // Buscar professores
     const fetchTeachers = async () => {
         try {
@@ -19,6 +24,55 @@ const AdminDashboard = () => {
             setFilteredTeachers(response.data);
         } catch (error) {
             console.error('Erro ao buscar professores:', error);
+        }
+    };
+
+
+    // Abrir modal para editar professor
+    const handleEdit = (teacher) => {
+        setForm({ name: teacher.nome, email: teacher.email, senha: teacher.senha || '' });
+        setEditingId(teacher.idProfessor);
+        setIsModalOpen(true);
+    };
+
+    // Abrir modal para adicionar professor
+    const handleAdd = () => {
+        setForm({ name: '', email: '', senha: '' });
+        setEditingId(null);
+        setIsModalOpen(true);
+    };
+
+    // Fechar modal
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setForm({ name: '', email: '', senha: '' });
+        setEditingId(null);
+    };
+
+    // Salvar edição
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put(`http://localhost:3333/teachers/${editingId}`, form);
+            setIsModalOpen(false);
+            setForm({ name: '', email: '', senha: '' });
+            setEditingId(null);
+            fetchTeachers();
+        } catch (error) {
+            console.error('Erro ao salvar professor:', error);
+        }
+    };
+
+    // Excluir professor
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`http://localhost:3333/teachers/${editingId}`, {
+                data: { name: form.name, email: form.email }
+            });
+            closeModal();
+            fetchTeachers();
+        } catch (error) {
+            console.error('Erro ao excluir professor:', error);
         }
     };
 
@@ -132,11 +186,30 @@ const AdminDashboard = () => {
                     )}
                 </div>
                 <div className="dashboard-card teachers-card">
-                    <div className="card-header">
-                        <span className="card-icon">
-                            <svg width="24" height="24" fill="#22c55e" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 20v-1a7 7 0 0 1 14 0v1" /></svg>
-                        </span>
-                        <h2>Professores</h2>
+                    <div className="card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <span className="card-icon">
+                                <svg width="24" height="24" fill="#22c55e" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 20v-1a7 7 0 0 1 14 0v1" /></svg>
+                            </span>
+                            <h2>Professores</h2>
+                        </div>
+                        <button
+                            onClick={handleAdd}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer',
+                                padding: '6px',
+                                borderRadius: '50%',
+                                transition: 'background 0.2s'
+                            }}
+                            title="Adicionar Professor"
+                        >
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="#8b5cf6">
+                                <circle cx="12" cy="12" r="11" fill="#181818" stroke="#8b5cf6" strokeWidth="2" />
+                                <path d="M12 8v8M8 12h8" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" />
+                            </svg>
+                        </button>
                     </div>
                     <input
                         type="text"
@@ -145,7 +218,7 @@ const AdminDashboard = () => {
                         onChange={handleSearch}
                     />
                     <div className="teachers-table-wrapper">
-                        <table>
+                        <table className="teachers-table-no-border">
                             <thead>
                                 <tr>
                                     <th>id</th>
@@ -155,9 +228,14 @@ const AdminDashboard = () => {
                             </thead>
                             <tbody>
                                 {filteredTeachers.map((teacher) => (
-                                    <tr key={teacher.idProfessor}>
+                                    <tr
+                                        key={teacher.idProfessor}
+                                        style={{ cursor: 'pointer', transition: 'background 0.2s' }}
+                                        onClick={() => handleEdit(teacher)}
+                                        className="teacher-row"
+                                    >
                                         <td>{teacher.idProfessor}</td>
-                                        <td>{teacher.nome}</td>
+                                        <td style={{ color: '#e5e5e5', fontWeight: 500 }}>{teacher.nome}</td>
                                         <td>{teacher.email}</td>
                                     </tr>
                                 ))}
@@ -166,6 +244,152 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Modal de edição/adicionar professor */}
+            {isModalOpen && (
+                <div
+                    className={"modal-fade-in modal-overlay"}
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 9999,
+                        transition: 'opacity 0.4s'
+                    }}
+                    onClick={closeModal}
+                >
+                    <div
+                        className="modal-card"
+                        style={{
+                            backgroundColor: '#232323',
+                            color: '#fff',
+                            padding: '32px 28px',
+                            borderRadius: '14px',
+                            width: '400px',
+                            textAlign: 'center',
+                            boxShadow: '0 8px 32px rgba(139,92,246,0.18)',
+                            border: '1px solid #333',
+                            animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)',
+                            position: 'relative'
+                        }}
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <button
+                            onClick={closeModal}
+                            style={{
+                                position: 'absolute',
+                                top: 12,
+                                right: 12,
+                                background: 'transparent',
+                                border: 'none',
+                                color: '#8b5cf6',
+                                fontSize: '1.5rem',
+                                cursor: 'pointer',
+                                transition: 'color 0.2s',
+                                zIndex: 2
+                            }}
+                            aria-label="Fechar"
+                        >
+                            &#10006;
+                        </button>
+                        <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>{editingId ? 'Editar Professor' : 'Adicionar Professor'}</h2>
+                        <form onSubmit={handleSubmit}>
+                            <input
+                                type="text"
+                                placeholder="Nome"
+                                value={form.name}
+                                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                                required
+                                style={{
+                                    marginBottom: '12px',
+                                    padding: '10px',
+                                    width: '90%',
+                                    borderRadius: '6px',
+                                    border: '1px solid #8b5cf6',
+                                    background: '#181818',
+                                    color: '#fff'
+                                }}
+                            />
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                value={form.email}
+                                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                required
+                                style={{
+                                    marginBottom: '12px',
+                                    padding: '10px',
+                                    width: '90%',
+                                    borderRadius: '6px',
+                                    border: '1px solid #8b5cf6',
+                                    background: '#181818',
+                                    color: '#fff'
+                                }}
+                            />
+                            <input
+                                type="text"
+                                placeholder="Senha"
+                                value={form.senha}
+                                onChange={(e) => setForm({ ...form, senha: e.target.value })}
+                                required
+                                style={{
+                                    marginBottom: '12px',
+                                    padding: '10px',
+                                    width: '90%',
+                                    borderRadius: '6px',
+                                    border: '1px solid #8b5cf6',
+                                    background: '#181818',
+                                    color: '#fff'
+                                }}
+                            />
+                            <button type="submit" style={{
+                                background: '#8b5cf6',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '6px',
+                                padding: '10px 22px',
+                                fontWeight: '600',
+                                marginRight: '10px',
+                                cursor: 'pointer',
+                                transition: 'background 0.2s'
+                            }}>{editingId ? 'Salvar' : 'Adicionar'}</button>
+                            <button type="button" onClick={closeModal} style={{
+                                background: '#232323',
+                                color: '#fff',
+                                border: '1px solid #8b5cf6',
+                                borderRadius: '6px',
+                                padding: '10px 22px',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'background 0.2s'
+                            }}>Cancelar</button>
+                        </form>
+                        {editingId && (
+                            <button
+                                onClick={handleDelete}
+                                style={{
+                                    marginTop: '20px',
+                                    backgroundColor: '#ef4444',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '10px 20px',
+                                    borderRadius: '6px',
+                                    cursor: 'pointer',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                Excluir
+                            </button>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

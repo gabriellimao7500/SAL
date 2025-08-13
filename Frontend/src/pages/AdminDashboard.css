@@ -294,25 +294,42 @@ tbody tr:hover {
     animation: fadeIn 0.5s;
 }
 
-@media (max-width: 900px) {
-    .dashboard-content {
-        flex-direction: column;
-        gap: 0;
-        align-items: center;
-    }
-
-    .dashboard-card {
-        max-width: 98vw;
-    }
-
-    .dashboard-summary-row {
-        flex-direction: column;
-        gap: 0;
-        align-items: center;
-    }
+.teachers-table-no-border {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #181818;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
 
-/* ANIMAÇÕES */
+.teachers-table-no-border th {
+    background: #232323;
+    color: #8b5cf6;
+    font-weight: 600;
+    border-bottom: none;
+}
+
+.teachers-table-no-border td {
+    padding: 14px 10px;
+    text-align: left;
+    border-bottom: none;
+    border-left: none;
+
+    color: #e5e5e5;
+}
+
+.teacher-row {
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.teacher-row:hover {
+    background: #232323;
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.10);
+}
+
+/* Modal animação */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -325,12 +342,34 @@ tbody tr:hover {
     }
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
+.modal-fade-in {
+    animation: fadeInUp 0.5s cubic-bezier(.77, .2, .32, 1);
+}
 
-    to {
-        opacity: 1;
-    }
+.modal-overlay {
+    opacity: 1;
+    transition: opacity 0.4s;
+}
+
+.modal-overlay.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-card {
+    background: #232323;
+    color: #fff;
+    padding: 32px 28px;
+    border-radius: 14px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.18);
+    border: 1px solid #333;
+    animation: fadeInUp 0.5s cubic-bezier(.77, .2, .32, 1);
+    transition: transform 0.4s, opacity 0.4s;
+}
+
+.modal-card.hide {
+    opacity: 0;
+    transform: translateY(30px);
 }
