@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminDashboard.css'; // Mantém o estilo consistente
 
-// filepath: c:/Users/TI/Documents/Apps/SAL/Frontend/src/pages/AdminDashboard.jsx
-
 const AdminDashboard = () => {
     const [teachers, setTeachers] = useState([]);
     const [filteredTeachers, setFilteredTeachers] = useState([]);
@@ -15,6 +13,43 @@ const AdminDashboard = () => {
     const [form, setForm] = useState({ name: '', email: '', senha: '' });
     const [editingId, setEditingId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Modal calendário/agendamentos
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [reservas, setReservas] = useState([]);
+    const [horariosSelecionados, setHorariosSelecionados] = useState([]);
+    const [serieMode, setSerieMode] = useState(false);
+    // Função para buscar agendamentos (pode ser adaptada para o backend real)
+    const pullMarks = async (periodo, tipoLab, numLab) => {
+        try {
+            const result = await axios.post('http://localhost:3333/Marks',
+                JSON.stringify({
+                    "periodo": periodo || 'Manhã',
+                    "tipoLaboratorio": tipoLab || 'Informática',
+                    "numeroLaboratorio": numLab || 1
+                }),
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            setReservas(result.data);
+        } catch (err) {
+            setReservas([]);
+        }
+    };
+    // Abrir calendário
+    const handleOpenCalendar = () => {
+        setIsCalendarOpen(true);
+        pullMarks();
+    };
+    // Fechar calendário
+    const handleCloseCalendar = () => {
+        setIsCalendarOpen(false);
+        setSerieMode(false);
+        setHorariosSelecionados([]);
+    };
 
     // Buscar professores
     const fetchTeachers = async () => {
@@ -136,14 +171,14 @@ const AdminDashboard = () => {
                         <div className="summary-value">{teachers.length}</div>
                     </div>
                 </div>
-                <div className="dashboard-summary-card">
+                <div className="dashboard-summary-card" style={{ cursor: 'pointer' }} onClick={handleOpenCalendar}>
                     <span className="summary-icon" aria-label="Agendamentos">
                         {/* Ícone de calendário */}
                         <svg width="32" height="32" fill="#22c55e" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4" /><path d="M3 10h18" /></svg>
                     </span>
                     <div>
                         <div className="summary-title">Agendamentos XLSX</div>
-                        <div className="summary-value">—</div>
+                        <div className="summary-value">Alterar</div>
                     </div>
                 </div>
                 <div className="dashboard-summary-card dashboard-graph-placeholder">
@@ -387,6 +422,30 @@ const AdminDashboard = () => {
                                 Excluir
                             </button>
                         )}
+                    </div>
+                </div>
+            )}
+            {/* Modal do calendário/agendamentos */}
+            {isCalendarOpen && (
+                <div className="modal-fade-in modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999 }} onClick={handleCloseCalendar}>
+                    <div className="modal-card" style={{ backgroundColor: '#232323', color: '#fff', padding: '32px 28px', borderRadius: '14px', width: '90vw', maxWidth: '1200px', textAlign: 'center', boxShadow: '0 8px 32px rgba(139,92,246,0.18)', border: '1px solid #333', animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)', position: 'relative' }} onClick={e => e.stopPropagation()}>
+                        <button onClick={handleCloseCalendar} style={{ position: 'absolute', top: 12, right: 12, background: 'transparent', border: 'none', color: '#8b5cf6', fontSize: '1.5rem', cursor: 'pointer', transition: 'color 0.2s', zIndex: 2 }} aria-label="Fechar">&#10006;</button>
+                        <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>Calendário de Agendamentos</h2>
+                        <div style={{ marginBottom: '12px' }}>
+                            <button onClick={() => setSerieMode(!serieMode)} style={{ background: serieMode ? '#8b5cf6' : '#232323', color: '#fff', border: '1px solid #8b5cf6', borderRadius: '6px', padding: '8px 18px', fontWeight: '600', cursor: 'pointer', marginRight: '10px' }}>Agendamento Recorrente</button>
+                        </div>
+                        {/* Table Calendar */}
+                        <div style={{ overflow: 'auto', maxHeight: '70vh' }}>
+                            {/* ...existing code... */}
+                            {/* Table recebe as props para edição e recorrência */}
+                            {React.createElement(require('../components/Table/Table').default, {
+                                reserva: reservas,
+                                pullMarks: pullMarks,
+                                serieMode: serieMode,
+                                horariosSelecionados: horariosSelecionados,
+                                setHorariosSelecionados: setHorariosSelecionados
+                            })}
+                        </div>
                     </div>
                 </div>
             )}
