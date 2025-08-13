@@ -37,7 +37,7 @@ const AdminDashboard = () => {
         setTypeLab(t);
         setNumLab(n);
         try {
-            const result = await axios.post('http://localhost:3333/Marks',
+            const result = await axios.post('http://192.168.1.210:3333/Marks',
                 JSON.stringify({
                     "periodo": p,
                     "tipoLaboratorio": t,
@@ -79,17 +79,32 @@ const AdminDashboard = () => {
 
     // Função para buscar labs
     const [labs, setLabs] = useState([]);
+    const [labsTipo, setLabsTipo] = useState([]); // Laboratórios filtrados por tipo
     const [loadingLabs, setLoadingLabs] = useState(false);
     const fetchLabs = async () => {
         setLoadingLabs(true);
         try {
-            const response = await axios.get('http://localhost:3333/labs');
-            console.log(response.data);
+            const response = await axios.get('http://192.168.1.210:3333/labs');
             setLabs(response.data);
         } catch (error) {
             setLabs([]);
         } finally {
             setLoadingLabs(false);
+        }
+    };
+
+    // Buscar labs por tipo
+    const fetchLabsTipo = async (tipoLab) => {
+        try {
+            const response = await axios.get(`http://192.168.1.210:3333/labsType/${tipoLab}`);
+            setLabsTipo(response.data);
+            // Se existir, atualiza o número do laboratório para o primeiro disponível
+            if (response.data.length > 0) {
+                setNumLab(response.data[0].numeroLaboratorio);
+                pullMarks(periodo, tipoLab, response.data[0].numeroLaboratorio);
+            }
+        } catch (error) {
+            setLabsTipo([]);
         }
     };
 
@@ -143,6 +158,8 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         fetchTeachers();
+        fetchLabs();
+        pullMarks();
     }, []);
 
     // Filtrar professores
@@ -460,9 +477,55 @@ const AdminDashboard = () => {
                     <div className="modal-card" style={{ backgroundColor: '#232323', color: '#fff', padding: '32px 28px', borderRadius: '14px', width: '90vw', maxWidth: '1200px', textAlign: 'center', boxShadow: '0 8px 32px rgba(139,92,246,0.18)', border: '1px solid #333', animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)', position: 'relative' }} onClick={e => e.stopPropagation()}>
                         <button onClick={handleCloseCalendar} style={{ position: 'absolute', top: 12, right: 12, background: 'transparent', border: 'none', color: '#8b5cf6', fontSize: '1.5rem', cursor: 'pointer', transition: 'color 0.2s', zIndex: 2 }} aria-label="Fechar">&#10006;</button>
                         <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>Calendário de Agendamentos</h2>
-                        <div className="select_main" style={{ display: 'flex', gap: '32px', justifyContent: 'center', marginBottom: '18px' }}>
-                            <Select LabAtu={numLab} Type={"lab"} pullMarks={pullMarks} />
-                            <Select Type={"date"} horarioAtu={periodo} pullMarks={pullMarks} />
+                        <div className="select_main" style={{ display: 'flex', gap: '32px', justifyContent: 'center', margin: '18px 0' }}>
+                            <select
+                                value={numLab}
+                                onChange={e => {
+                                    const value = Number(e.target.value); // Converte para número
+                                    setNumLab(value);
+                                    pullMarks(periodo, typeLab, value);
+                                }}
+                                style={{ padding: '8px', borderRadius: '6px', border: '1px solid #8b5cf6', background: '#181818', color: '#fff' }}
+                            >
+                                {labsTipo.length > 0
+                                    ? labsTipo.map(lab => (
+                                        <option key={lab.idLab} value={lab.numeroLaboratorio}>
+                                            Nº {lab.numeroLaboratorio}
+                                        </option>
+                                    ))
+                                    : labs.filter(lab => lab.tipoLaboratorio === typeLab).map(lab => (
+                                        <option key={lab.idLab} value={lab.numeroLaboratorio}>
+                                            Nº {lab.numeroLaboratorio}
+                                        </option>
+                                    ))
+                                }
+                            </select>
+                            <select
+                                value={typeLab}
+                                onChange={async e => {
+                                    const tipo = e.target.value;
+                                    setTypeLab(tipo);
+                                    await fetchLabsTipo(tipo);
+                                }}
+                                style={{ padding: '8px', borderRadius: '6px', border: '1px solid #8b5cf6', background: '#181818', color: '#fff' }}
+                            >
+                                {/* Preenche com tipos únicos */}
+                                {[...new Set(labs.map(lab => lab.tipoLaboratorio))].map(tipo => (
+                                    <option key={tipo} value={tipo}>{tipo}</option>
+                                ))}
+                            </select>
+                            <select
+                                value={periodo}
+                                onChange={e => {
+                                    setPeriodo(e.target.value);
+                                    pullMarks(e.target.value, typeLab, numLab);
+                                }}
+                                style={{ padding: '8px', borderRadius: '6px', border: '1px solid #8b5cf6', background: '#181818', color: '#fff' }}
+                            >
+                                <option value="Manhã">Manhã</option>
+                                <option value="Tarde">Tarde</option>
+                                <option value="Noite">Noite</option>
+                            </select>
                         </div>
                         <div style={{ marginBottom: '12px' }}>
                             <button onClick={() => setSerieMode(!serieMode)} style={{ background: serieMode ? '#8b5cf6' : '#232323', color: '#fff', border: '1px solid #8b5cf6', borderRadius: '6px', padding: '8px 18px', fontWeight: '600', cursor: 'pointer', marginRight: '10px' }}>Agendamento Recorrente</button>
