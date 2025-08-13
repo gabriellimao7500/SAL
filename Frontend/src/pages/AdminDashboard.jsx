@@ -59,9 +59,10 @@ const AdminDashboard = () => {
         }
     };
     // Abrir calendário
-    const handleOpenCalendar = () => {
+    const handleOpenCalendar = async () => {
         setIsCalendarOpen(true);
-        pullMarks(); // Garante que reservas seja preenchido ao abrir o modal
+        setTypeLab("Informática");
+        await fetchLabsTipo("Informática");
     };
     // Fechar calendário
     const handleCloseCalendar = () => {
@@ -482,6 +483,7 @@ const AdminDashboard = () => {
                         <button onClick={handleCloseCalendar} style={{ position: 'absolute', top: 12, right: 12, background: 'transparent', border: 'none', color: '#8b5cf6', fontSize: '1.5rem', cursor: 'pointer', transition: 'color 0.2s', zIndex: 2 }} aria-label="Fechar">&#10006;</button>
                         <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>Calendário de Agendamentos</h2>
                         <div className="select_main" style={{ display: 'flex', gap: '32px', height: '5vh', justifyContent: 'center', margin: '18px 0' }}>
+                            <button onClick={() => setSerieMode(!serieMode)} style={{ background: serieMode ? '#8b5cf6' : '#232323', color: '#fff', border: '1px solid #8b5cf6', borderRadius: '6px', padding: '8px 18px', fontWeight: '600', cursor: 'pointer', marginRight: '10px' }}>Agendamento Recorrente</button>
                             <select
                                 value={numLab}
                                 onChange={e => {
@@ -504,6 +506,7 @@ const AdminDashboard = () => {
                                     ))
                                 }
                             </select>
+
                             <select
                                 value={typeLab}
                                 onChange={async e => {
@@ -531,9 +534,9 @@ const AdminDashboard = () => {
                                 <option value="Noite">Noite</option>
                             </select>
                         </div>
-                        <div style={{ marginBottom: '12px' }}>
-                            <button onClick={() => setSerieMode(!serieMode)} style={{ background: serieMode ? '#8b5cf6' : '#232323', color: '#fff', border: '1px solid #8b5cf6', borderRadius: '6px', padding: '8px 18px', fontWeight: '600', cursor: 'pointer', marginRight: '10px' }}>Agendamento Recorrente</button>
-                        </div>
+
+
+
                         {/* Table Calendar */}
                         <div style={{ position: 'relative', height: '50vh' }}>
                             {/* Loader sobreposto */}
