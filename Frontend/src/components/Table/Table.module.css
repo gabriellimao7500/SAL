@@ -122,6 +122,15 @@ td {
     background: #232 !important;
 }
 
+.sobrescrever {
+    background-color: #6C63FF !important;
+    color: white !important;
+}
+
+.indice.sobrescrever {
+    background-color: #6C63FF !important;
+    color: white !important;
+}
 
 @media (max-width: 430px) {
 

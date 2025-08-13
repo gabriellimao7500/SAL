@@ -101,6 +101,7 @@ function AutoAgendamento() {
             idProfessor: user.idProfessor,
             motivo: motivo || '',
             diaSemana: h.diaSemana,
+            sobrescrever: h.sobrescrever || false
         }));
 
         try {

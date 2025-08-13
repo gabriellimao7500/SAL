@@ -438,24 +438,41 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
 
 
     const toggleHorarioSelecionado = (rowIndex, colIndex) => {
-        // Identifica aula e dia da semana
         const aula = rowIndex + 1;
         const diaSemana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'][colIndex];
         const laboratorio = localStorage.getItem('typeLab');
         const periodo = localStorage.getItem('periodo');
         const numeroLaboratorio = localStorage.getItem('numLab');
-
         const key = `${aula}-${colIndex}`;
-        const exists = horariosSelecionados.find(h => h.key === key);
 
+        // Verifica se já está selecionado
+        const exists = horariosSelecionados.find(h => h.key === key);
         if (exists) {
             setHorariosSelecionados(horariosSelecionados.filter(h => h.key !== key));
-        } else {
-            setHorariosSelecionados([
-                ...horariosSelecionados,
-                { key, diaSemana, aula, laboratorio, periodo, numeroLaboratorio }
-            ]);
+            return;
         }
+
+        // Verifica se está ocupado usando o mesmo critério do getClassName
+        const index = (rowIndex * 5 + colIndex) + 30 * currentWeek;
+        const ocupado = reserva.some(reservaItem => reservaItem.index === index);
+
+        let sobrescrever = false;
+        if (ocupado) {
+            sobrescrever = window.confirm('Este horário já está ocupado. Deseja sobrescrever?');
+        }
+
+        setHorariosSelecionados([
+            ...horariosSelecionados,
+            {
+                key,
+                diaSemana,
+                aula,
+                laboratorio,
+                periodo,
+                numeroLaboratorio,
+                sobrescrever
+            }
+        ]);
     };
 
     const handleAgendarSerie = async (horariosSelecionados, dataInicio, dataFim) => {
@@ -551,21 +568,29 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                             <tbody>
                                 {Array(6).fill().map((_, rowIndex) => (
                                     <tr key={rowIndex}>
-                                        {Array(5).fill().map((_, colIndex) => (
-                                            <td key={colIndex}>
-                                                <div
-                                                    className={`${getClassName((rowIndex * 5 + colIndex) + 30 * currentWeek)} indice ${serieMode && horariosSelecionados.find(h => h.key === `${rowIndex + 1}-${colIndex}`) ? styles.selected : ''}`}
-                                                    onClick={(event) => {
-                                                        if (serieMode) {
-                                                            toggleHorarioSelecionado(rowIndex, colIndex);
-                                                        } else {
-                                                            onReser(rowIndex, colIndex, event);
+                                        {Array(5).fill().map((_, colIndex) => {
+                                            const key = `${rowIndex + 1}-${colIndex}`;
+                                            const horarioSelecionado = horariosSelecionados.find(h => h.key === key);
+                                            return (
+                                                <td key={colIndex}>
+                                                    <div
+                                                        className={
+                                                            `${getClassName((rowIndex * 5 + colIndex) + 30 * currentWeek)} indice ` +
+                                                            `${serieMode && horarioSelecionado ? styles.selected : ''} ` +
+                                                            `${horarioSelecionado && horarioSelecionado.sobrescrever ? styles.sobrescrever : ''}`
                                                         }
-                                                    }}
-                                                    type={type}
-                                                />
-                                            </td>
-                                        ))}
+                                                        onClick={(event) => {
+                                                            if (serieMode) {
+                                                                toggleHorarioSelecionado(rowIndex, colIndex);
+                                                            } else {
+                                                                onReser(rowIndex, colIndex, event);
+                                                            }
+                                                        }}
+                                                        type={type}
+                                                    />
+                                                </td>
+                                            );
+                                        })}
                                     </tr>
                                 ))}
                             </tbody>

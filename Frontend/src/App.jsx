@@ -10,6 +10,7 @@ import HowToUse from './pages/HowToUse'
 import AdminTeachers from './pages/AdminTeachers'
 import MassUpdate from './pages/MassUpdate'
 import AutoAgendamento from './pages/AutoAgendamento'
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path='/admin/teachers' element={<AdminTeachers />} />
         <Route path='/admin/AutoAgendamento' element={<AutoAgendamento />} />
         <Route path='/admin/mass-update' element={<MassUpdate />} />
+        <Route path='/admin/dashboard' element={<AdminDashboard />} />
       </Routes>
     </Router>
   )
