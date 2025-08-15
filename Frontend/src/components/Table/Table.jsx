@@ -303,7 +303,25 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
         reserva.index = indice
     });
 
+    function submitReserva() {
+        // Lógica para submeter a reserva
+        const instrucoesReserva = {
+            endDate: adminCampos.dataFim,
+            startDate: adminCampos.dataInicio,
+            periodo: localStorage.getItem('periodo'),
+            aulaReserva: aulaAtu,
+            idProfessor: JSON.parse(sessionStorage.getItem('professor')).id,
+            tipoLaboratorio: localStorage.getItem('typeLab'),
+            numeroLaboratorio: localStorage.getItem('numLab'),
+            svg: "",
+            motivo: adminCampos.motivo,
+            diaDaSemana: adminCampos.diaDaSemana
+        };
 
+        // Enviar reservaData para o servidor ou processá-la conforme necessário
+        console.log("Reserva submetida:", instrucoesReserva);
+
+    }
 
     const getClassName = (index) => {
 
@@ -401,7 +419,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
         if (user && user.rule === "admin") {
             // ADMIN: abre modal customizado
             let campos = {
-                professor: '',
+                professor: user?.nome || '',
                 disciplina: '',
                 observacao: '',
                 dataInicio: formatoISO.substring(0, 10),
@@ -632,7 +650,8 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                             editando={editandoAdmin}
                             onChange={setAdminCampos}
                             onClose={() => setAdminModalOpen(false)}
-                            onSubmit={e => { e.preventDefault(); setAdminModalOpen(false); }}
+                            onSubmit={e => { e.preventDefault(); submitReserva(); setAdminModalOpen(false); }}
+                            diaSemana={aulaAtu ? ['segunda', 'terca', 'quarta', 'quinta', 'sexta'][(objDefault[0]?.index ?? 0) % 5] : ''}
                         />
                     );
                 } else {
