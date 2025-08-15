@@ -2,7 +2,8 @@ import React, { useState, useEffect, createElement } from 'react';
 import Swal from 'sweetalert2';
 
 import styles from './Table.module.css';
-import Reserva from '../Reserva/Reserva';
+import ReservaModal from './ReservaModal';
+import AdminReservaModal from './AdminReservaModal';
 import Hours from '../Hours/Hours';
 
 import arrow_left from '../../assets/arrow_left.svg'
@@ -12,6 +13,16 @@ import axios from 'axios';
 import config from "../../../config"
 
 function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorariosSelecionados }) {
+    // Modal customizado para admin
+    const [adminModalOpen, setAdminModalOpen] = useState(false);
+    const [adminCampos, setAdminCampos] = useState({
+        professor: '',
+        disciplina: '',
+        observacao: '',
+        dataInicio: '',
+        dataFim: '',
+    });
+    const [editandoAdmin, setEditandoAdmin] = useState(false);
 
 
 
@@ -386,6 +397,69 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
         setAulaAtu(aula)
 
         const target = event.target;
+        const user = JSON.parse(sessionStorage.getItem('professor'));
+        if (user && user.rule === "admin") {
+            // ADMIN: abre modal customizado
+            let campos = {
+                professor: '',
+                disciplina: '',
+                observacao: '',
+                dataInicio: formatoISO.substring(0, 10),
+                dataFim: formatoISO.substring(0, 10),
+            };
+            if (target.classList.contains('ocupado')) {
+                var e = target.className;
+                var b = e.split(" ");
+                var bb = parseInt(b[1]);
+                const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
+                setObjDefault(reservasFiltradas);
+                if (reservasFiltradas.length > 0) {
+                    campos.professor = reservasFiltradas[0].nome || '';
+                    campos.disciplina = reservasFiltradas[0].disciplina || '';
+                    campos.observacao = reservasFiltradas[0].motivo || '';
+                    campos.dataInicio = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
+                    campos.dataFim = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
+                    setEditandoAdmin(true);
+                } else {
+                    setEditandoAdmin(false);
+                }
+            } else {
+                setEditandoAdmin(false);
+            }
+            setAdminCampos(campos);
+            setAdminModalOpen(true);
+        } else {
+            // NÃO ADMIN: modal padrão
+            if (target.classList.contains('ocupado')) {
+                var e = target.className;
+                var b = e.split(" ");
+                var bb = parseInt(b[1]);
+                const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
+                setObjDefault(reservasFiltradas)
+                if (formatoISO >= data2) {
+                    if (target.classList.contains('isYou')) {
+                        setType("me")
+                    } else {
+                        setType("other")
+                    }
+                    setOnReserva(true)
+                } else {
+                    setType("other")
+                    setOnReserva(true)
+                }
+            } else {
+                if (formatoISO >= data2) {
+                    if (localStorage.getItem('periodo') === "Noite" && rowIndex > 1) {
+                        erroDeAgendamento('Você só pode agendar uma aula disponivel!')
+                    } else {
+                        setType("nothing")
+                        setOnReserva(true)
+                    }
+                } else {
+                    erroDeAgendamento('Você não pode agendar um dia anterior ao dia atual!')
+                }
+            }
+        }
         var data2 = date;
         data2.setHours(0, 0, 0, 0);
         data2 = data2.toISOString();
@@ -547,7 +621,34 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
 
     return (
         <section className={styles.calendar}>
-            {onReserva == true ? (<Reserva onBotaoClique={reservasOff} reserva={objDefault[0]} type={type} date={dateReserva} aula={aulaAtu} pullMarks={pullMarks}></Reserva>) : ''}
+            {/* Renderiza apenas o modal correto */}
+            {(() => {
+                const user = JSON.parse(sessionStorage.getItem('professor'));
+                if (user && user.rule === "admin") {
+                    return (
+                        <AdminReservaModal
+                            open={adminModalOpen}
+                            campos={adminCampos}
+                            editando={editandoAdmin}
+                            onChange={setAdminCampos}
+                            onClose={() => setAdminModalOpen(false)}
+                            onSubmit={e => { e.preventDefault(); setAdminModalOpen(false); }}
+                        />
+                    );
+                } else {
+                    return (
+                        <ReservaModal
+                            open={onReserva}
+                            reserva={objDefault[0]}
+                            type={type}
+                            date={dateReserva}
+                            aula={aulaAtu}
+                            pullMarks={pullMarks}
+                            onClose={reservasOff}
+                        />
+                    );
+                }
+            })()}
             <Hours windowWidth={windowWidth}></Hours>
             <div className={styles["schedule-container"]}>
                 <div className={styles["schedule-wrapper"]} style={{ transform: `translateX(-${currentWeek * 100}%)` }}>
