@@ -90,10 +90,23 @@ const updateReserva = {
     // Outros métodos conforme necessário
 };
 
+const executeRawQuery = async (query) => {
+    console.log('Executando query SQL:', query);
+    try {
+        const [result] = await connection.query(query);
+        console.log('Query executada com sucesso:', result);
+        return result;
+    } catch (err) {
+        console.error('Erro ao executar query SQL:', err.message, '\nStack:', err.stack);
+        throw err;
+    }
+};
+
 module.exports = {
     createReserva,
     getData,
     deleteReserva,
     getDataFromDate,
     updateReserva,
+    executeRawQuery, // exporta o novo método
 };

@@ -46,7 +46,7 @@ const getData = async (req, res) => {
         console.error('Erro ao obter dados:', error);
         return res.status(500).json({ message: "Erro ao obter dados" });
     }
-}
+};
 
 const deleteMark = async (req, res) => {
     const { idReserva } = req.params;
@@ -104,10 +104,24 @@ const updateReserva = async (req, res) => {
     }
 };
 
+const executeRawQuery = async (query) => {
+    console.log('Executando query SQL:', query);
+
+    try {
+        const result = await markModels.executeRawQuery(query);
+        console.log('Query executada com sucesso:', result);
+
+        return result;
+    } catch (err) {
+        throw err;
+    }
+};
+
 module.exports = {
     createMark,
     getData,
     deleteMark,
     getDataFromId,
     updateReserva,
+    executeRawQuery, // exporta o novo método
 }

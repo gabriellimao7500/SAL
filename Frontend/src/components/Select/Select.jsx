@@ -20,18 +20,19 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
     const [labs, setLabs] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
+        const tipo = localStorage.getItem('typeLab')
+
         const fetchLabs = async () => {
-            var url = config.apiUrl;
             try {
-                const response = await axios.get(`${url}/labs`);
+                const response = await axios.get(`${config.apiUrl}/labsType/${tipo}`);
                 setLabs(response.data);
             } catch (error) {
                 console.log('erro', error);
-            } finally {
-                setLoading(false);
             }
-        };
-        fetchLabs();
+
+        }
+        fetchLabs()
+
     }, []);
 
 
@@ -122,7 +123,7 @@ function Select({ LabTipe, LabAtu, Type, horarioAtu, pullMarks }) {
                         {(selectedLab === lab.numeroLaboratorio && !isOpen) ?
                             (<div className={styles.arrow}>
                                 <span className="material-symbols-outlined">
-                                    <img src={arrow_down} alt="" srcSet="" />
+                                    <img src={arrow_down} alt="" srcset="" />
                                 </span>
                             </div>)
                             : null}

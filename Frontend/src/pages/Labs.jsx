@@ -5,21 +5,21 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import './Labs.css';
 import config from "../../config";
-import { useNavigate } from "react-router-dom"; // Para navegação entre páginas
 
 function Labs() {
-    const navigate = useNavigate(); // Hook para navegação
 
     const [reservas, setReservas] = useState([]);
     const [periodo2, setPeriodo2] = useState(localStorage.getItem('periodo'))
     const [tipo2, setTipo2] = useState(localStorage.getItem('typeLab'))
     const [num2, setNum2] = useState(localStorage.getItem('numLab'))
+    const [serieMode, setSerieMode] = useState(false);
+    const [horariosSelecionados, setHorariosSelecionados] = useState([]);
 
 
 
-    const pullMarks = async (periodo2, tipo2, numLab2) => {
+    const pullMarks = async (periodo2, tipo2 = tipo2, numLab2) => {
 
-        const result = await axios.post(`${config.apiUrl}/Marks`,
+        const result = await axios.post(`http://localhost:3333/Marks`,
             JSON.stringify({
                 "periodo": periodo2,
                 "tipoLaboratorio": tipo2,
@@ -31,7 +31,11 @@ function Labs() {
                 }
             }
 
-        );
+        ).catch((error) => {
+            console.error("Error fetching marks:", error);
+        });
+        console.log(result.data);
+
         setReservas(result.data);
 
 
@@ -75,13 +79,6 @@ function Labs() {
         }
     ]
 
-    const handleViewConflicts = () => {
-        navigate('/conflicts'); // Redireciona para a página de conflitos
-    };
-
-    const handleMassUpdate = () => {
-        navigate('/mass-update'); // Redireciona para a página de atualização em massa
-    };
 
     return (
         <div className="App">
@@ -90,13 +87,13 @@ function Labs() {
                 <Select LabAtu={1} Type={"lab"} pullMarks={pullMarks} />
                 <Select Type={"date"} horarioAtu={"Manhã"} pullMarks={pullMarks} />
             </div>
-            <button onClick={handleViewConflicts} className="conflicts-button">
-                Ver Divergências
-            </button>
-            <button onClick={handleMassUpdate} className="mass-update-button">
-                Atualizar Tabela em Massa
-            </button>
-            <Table reserva={reservas} pullMarks={pullMarks} />
+            <Table
+                reserva={reservas}
+                serieMode={false}
+                pullMarks={pullMarks}
+                horariosSelecionados={horariosSelecionados}
+                setHorariosSelecionados={setHorariosSelecionados}
+            />
         </div>
     );
 }

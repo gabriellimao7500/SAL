@@ -1,13 +1,7 @@
-DROP PROCEDURE IF EXISTS inserir_reservas;
-
-delete from reserva where `idProfessor` = 3;
-
-DELIMITER $$
-
 CREATE PROCEDURE inserir_reservas()
 BEGIN
-    DECLARE data_inicio DATE DEFAULT '2025-03-31';
-    DECLARE data_fim DATE DEFAULT '2025-06-30';
+    DECLARE data_inicio DATE DEFAULT '2025-06-30';
+    DECLARE data_fim DATE DEFAULT '2025-12-31';
     DECLARE data_atual DATE DEFAULT data_inicio;
 
     WHILE data_atual <= data_fim DO
@@ -494,8 +488,4 @@ BEGIN
 
         SET data_atual = data_atual + INTERVAL 7 DAY;
     END WHILE;
-END $$
-
-DELIMITER;
-
-call inserir_reservas ();
+END

@@ -86,19 +86,13 @@ const AdminDashboard = () => {
     const [labs, setLabs] = useState([]);
     const [labsTipo, setLabsTipo] = useState([]); // Laboratórios filtrados por tipo
     const [loadingLabs, setLoadingLabs] = useState(false);
-    const [labsError, setLabsError] = useState('');
     const fetchLabs = async () => {
         setLoadingLabs(true);
-        setLabsError('');
         try {
             const response = await axios.get('http://192.168.1.210:3333/labs');
             setLabs(response.data);
-            if (!response.data || response.data.length === 0) {
-                setLabsError('Nenhum laboratório encontrado.');
-            }
         } catch (error) {
             setLabs([]);
-            setLabsError('Erro ao buscar laboratórios.');
         } finally {
             setLoadingLabs(false);
         }
@@ -193,35 +187,21 @@ const AdminDashboard = () => {
     // Enviar arquivo para editar agendamentos
     const handleUpload = async () => {
         if (!file) {
-            setUploadStatus(['Selecione um arquivo primeiro.']);
+            setUploadStatus('Selecione um arquivo primeiro.');
             return;
         }
+        const formData = new FormData();
+        formData.append('file', file);
         try {
-            const formData = new FormData();
-            formData.append('file', file);
-
-            const response = await axios.post('http://localhost:3333/schedules/upload', formData, {
+            // Envia para backend (ajuste endpoint conforme necessário)
+            await axios.post('http://localhost:3333/schedules/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-
-            // Usa os passos do backend
-            if (response.data.steps) {
-                setUploadStatus(response.data.steps);
-            } else if (response.data.message) {
-                setUploadStatus([response.data.message]);
-            } else {
-                setUploadStatus(['Arquivo enviado com sucesso!']);
-            }
+            setUploadStatus('Arquivo enviado e agendamentos atualizados!');
         } catch (error) {
-            if (error.response && error.response.data && error.response.data.steps) {
-                setUploadStatus(error.response.data.steps);
-            } else if (error.response && error.response.data && error.response.data.error) {
-                setUploadStatus([error.response.data.error]);
-            } else {
-                setUploadStatus(['Erro ao enviar arquivo.']);
-            }
+            setUploadStatus('Erro ao enviar arquivo.');
             console.error(error);
         }
     };
@@ -285,15 +265,9 @@ const AdminDashboard = () => {
                     <button onClick={handleUpload}>
                         Enviar Arquivo
                     </button>
-                    {uploadStatus && Array.isArray(uploadStatus) && (
-                        <div className={uploadStatus.some(s => s.includes('Erro')) ? 'status-error' : 'status-success'}>
-                            <ol style={{ background: 'none', paddingLeft: '1.2em', margin: 0 }}>
-                                {uploadStatus.map((line, idx) => (
-                                    <li key={idx} style={{ marginBottom: '4px', wordBreak: 'break-word' }}>
-                                        {line}
-                                    </li>
-                                ))}
-                            </ol>
+                    {uploadStatus && (
+                        <div className={uploadStatus.includes('Erro') ? 'status-error' : 'status-success'}>
+                            {uploadStatus}
                         </div>
                     )}
                 </div>

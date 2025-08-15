@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const path = require('path');
 
 const profController = require('./controllers/profControllers');
 const loginController = require('./controllers/loginControllers');
@@ -11,9 +11,23 @@ const reqController = require('./controllers/reqsControllers');
 const conflictsController = require('./controllers/conflictResolutionController');
 
 const autoAgendamentoController = require('./controllers/AutoAgendamentoController');
+const processXlsxController = require('./controllers/processXlsxController');
 
 const router = express.Router();
 router.use(express.json());
+
+// Configuração do multer para manter a extensão original
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        // Mantém a extensão original
+        const ext = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + Date.now() + ext);
+    }
+});
+const upload = multer({ storage: storage });
 
 // Login
 router.post('/login', loginController.velLogin);
@@ -51,5 +65,6 @@ router.post('/mass-update/reject', conflictsController.rejectConflict);
 router.post('/mass-update/reject', conflictsController.resolveConflict);
 
 router.post('/auto-agendamento', autoAgendamentoController.criarAgendamentosEmSerie);
+router.post('/schedules/upload', upload.single('file'), processXlsxController.handleUpload);
 
 module.exports = router;
