@@ -40,7 +40,10 @@ router.put('/updPass/:idProfessor', profController.updateSenha);
 
 // Laboratórios
 router.get('/labs', labsControllers.getAll);
+router.get('/labs/all', labsControllers.getAllLabs);
 router.get('/labsType/:tipoLaboratorio', labsControllers.getDataFromType);
+router.post('/labs/bloquear', labsControllers.bloquearLab);
+router.post('/labs/desbloquear', labsControllers.desbloquearLab);
 
 // Reservas
 router.post('/marks', marksControllers.getData);

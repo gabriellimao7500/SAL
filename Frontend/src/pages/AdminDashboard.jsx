@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import Table from '../components/Table/Table';
 import Select from '../components/Select/Select';
 import axios from 'axios';
 import './AdminDashboard.css'; // Mantém o estilo consistente
 
 const AdminDashboard = () => {
+    // Estado para lista de laboratórios filtrados por tipo
+    const [labsTipo, setLabsTipo] = useState([]);
     // ...existing code...
     const [teachers, setTeachers] = useState([]);
     const [filteredTeachers, setFilteredTeachers] = useState([]);
@@ -85,20 +88,28 @@ const AdminDashboard = () => {
 
     // Função para buscar labs
     const [labs, setLabs] = useState([]);
-    const [labsTipo, setLabsTipo] = useState([]); // Laboratórios filtrados por tipo
+    const [labsStatus, setLabsStatus] = useState({});
     const [loadingLabs, setLoadingLabs] = useState(false);
     const [labsError, setLabsError] = useState('');
+    // State para status de bloqueio de cada laboratório
     const fetchLabs = async () => {
         setLoadingLabs(true);
         setLabsError('');
         try {
-            const response = await axios.get('http://192.168.1.210:3333/labs');
+            const response = await axios.get('http://localhost:3333/labs/all');
             setLabs(response.data);
+            // Inicializa o status de bloqueio de cada laboratório
+            const status = {};
+            response.data.forEach(lab => {
+                status[lab.idLaboratorio] = lab.bloqueado === 1;
+            });
+            setLabsStatus(status);
             if (!response.data || response.data.length === 0) {
                 setLabsError('Nenhum laboratório encontrado.');
             }
         } catch (error) {
             setLabs([]);
+            setLabsStatus({});
             setLabsError('Erro ao buscar laboratórios.');
         } finally {
             setLoadingLabs(false);
@@ -227,6 +238,60 @@ const AdminDashboard = () => {
         }
     };
 
+    const handleBlockLab = async () => {
+        console.log('bloqueando lab');
+
+
+        try {
+            console.log("Requisição");
+
+            const res = await axios.post('http://localhost:3333/labs/bloquear', {
+                tipoLaboratorio: typeLab,
+                numeroLaboratorio: numLab
+            }, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            console.log("Resposta:", res.data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Laboratório bloqueado!',
+                text: res.data.message || 'Nenhum usuário poderá reservar este laboratório até ser desbloqueado.'
+            });
+        } catch (err) {
+            console.log("Erro:", err);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao bloquear',
+                text: err?.response?.data?.message || 'Não foi possível bloquear o laboratório.'
+            });
+        }
+    };
+
+    const handleUnblockLab = async () => {
+        try {
+            const res = await axios.post('http://localhost:3333/labs/desbloquear', {
+                tipoLaboratorio: typeLab,
+                numeroLaboratorio: numLab
+            }, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            console.log("Resposta:", res.data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Laboratório desbloqueado!',
+                text: res.data.message || 'Usuários poderão reservar este laboratório novamente.'
+            });
+        } catch (err) {
+            console.log("Erro:", err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao desbloquear',
+                text: err?.response?.data?.message || 'Não foi possível desbloquear o laboratório.'
+            });
+        }
+    };
+
     return (
         <div className="admin-dashboard-container">
             <header className="dashboard-header">
@@ -265,39 +330,111 @@ const AdminDashboard = () => {
                 </div>
             </div>
             <div className="dashboard-content">
-                <div className="dashboard-card upload-card">
-                    <div className="card-header">
-                        <span className="card-icon">
-                            <svg width="24" height="24" fill="#2563eb" viewBox="0 0 24 24"><path d="M12 16V4m0 0l-4 4m4-4l4 4" /><rect x="4" y="16" width="16" height="4" rx="2" /></svg>
-                        </span>
-                        <h2>Editar Agendamentos via XLSX</h2>
-                    </div>
-                    <div className="upload-file-wrapper">
-                        <input
-                            type="file"
-                            id="file-upload"
-                            className="inputfile"
-                            accept=".xlsx"
-                            onChange={handleFileChange}
-                        />
-                        <label htmlFor="file-upload">Escolher arquivo</label>
-                        {file && <span className="selected-file-name">{file.name}</span>}
-                    </div>
-                    <button onClick={handleUpload}>
-                        Enviar Arquivo
-                    </button>
-                    {uploadStatus && Array.isArray(uploadStatus) && (
-                        <div className={uploadStatus.some(s => s.includes('Erro')) ? 'status-error' : 'status-success'}>
-                            <ol style={{ background: 'none', paddingLeft: '1.2em', margin: 0 }}>
-                                {uploadStatus.map((line, idx) => (
-                                    <li key={idx} style={{ marginBottom: '4px', wordBreak: 'break-word' }}>
-                                        {line}
-                                    </li>
-                                ))}
-                            </ol>
+                <span>
+                    <div className="dashboard-card upload-card">
+                        <div className="card-header">
+                            <span className="card-icon">
+                                <svg width="24" height="24" fill="#2563eb" viewBox="0 0 24 24"><path d="M12 16V4m0 0l-4 4m4-4l4 4" /><rect x="4" y="16" width="16" height="4" rx="2" /></svg>
+                            </span>
+                            <h2>Editar Agendamentos via XLSX</h2>
                         </div>
-                    )}
-                </div>
+                        <div className="upload-file-wrapper">
+                            <input
+                                type="file"
+                                id="file-upload"
+                                className="inputfile"
+                                accept=".xlsx"
+                                onChange={handleFileChange}
+                            />
+                            <label htmlFor="file-upload">Escolher arquivo</label>
+                            {file && <span className="selected-file-name">{file.name}</span>}
+                        </div>
+                        <button onClick={handleUpload}>
+                            Enviar Arquivo
+                        </button>
+                        {uploadStatus && Array.isArray(uploadStatus) && (
+                            <div className={uploadStatus.some(s => s.includes('Erro')) ? 'status-error' : 'status-success'}>
+                                <ol style={{ background: 'none', paddingLeft: '1.2em', margin: 0, overflowY: 'auto', maxHeight: '150px' }}>
+                                    {uploadStatus.map((line, idx) => (
+                                        <li key={idx} style={{ marginBottom: '4px', wordBreak: 'break-word', textAlign: 'left' }}>
+                                            {line}
+                                        </li>
+                                    ))}
+                                </ol>
+                            </div>
+                        )}
+
+                    </div>
+
+                    {/* Card de Bloqueio de Laboratório com Switch controlado por state */}
+                    <div className="dashboard-card block-lab-card">
+                        <div className="card-header">
+                            <span className="card-icon">
+                                <svg width="24" height="24" fill="#ef4444" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" /><path d="M8 12v2a4 4 0 0 0 8 0v-2" /></svg>
+                            </span>
+                            <h2>Bloquear/Desbloquear Laboratórios</h2>
+                        </div>
+                        <div style={{ marginBottom: '12px', maxHeight: '320px', overflowY: 'auto' }}>
+                            <table style={{ width: '100%', color: '#fff', background: 'none', borderCollapse: 'collapse' }}>
+                                <thead>
+                                    <tr style={{ background: '#232323', color: '#ef4444' }}>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Tipo</th>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Número</th>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Bloqueado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {labs.map(lab => (
+                                        <tr key={lab.idLaboratorio} style={{ borderBottom: '1px solid #333' }}>
+                                            <td style={{ padding: '8px' }}>{lab.tipoLaboratorio}</td>
+                                            <td style={{ padding: '8px' }}>{lab.numeroLaboratorio}</td>
+                                            <td style={{ padding: '8px', textAlign: 'center' }}>
+                                                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={labsStatus[lab.idLaboratorio] || false}
+                                                        onChange={async (e) => {
+                                                            const novoStatus = e.target.checked;
+                                                            try {
+                                                                const res = await axios.post(`http://localhost:3333/labs/${novoStatus ? 'bloquear' : 'desbloquear'}`, {
+                                                                    tipoLaboratorio: lab.tipoLaboratorio,
+                                                                    numeroLaboratorio: lab.numeroLaboratorio
+                                                                }, {
+                                                                    headers: { 'Content-Type': 'application/json' }
+                                                                });
+                                                                Swal.fire({
+                                                                    icon: novoStatus ? 'warning' : 'success',
+                                                                    title: novoStatus ? 'Laboratório bloqueado!' : 'Laboratório desbloqueado!',
+                                                                    text: res.data.message || (novoStatus ? 'Nenhum usuário poderá reservar este laboratório até ser desbloqueado.' : 'Agora é possível reservar este laboratório normalmente.')
+                                                                });
+                                                                setLabsStatus(prev => ({ ...prev, [lab.idLaboratorio]: novoStatus }));
+                                                            } catch (err) {
+                                                                Swal.fire({
+                                                                    icon: 'error',
+                                                                    title: 'Erro',
+                                                                    text: err?.response?.data?.message || 'Não foi possível atualizar o status do laboratório.'
+                                                                });
+                                                            }
+                                                        }}
+                                                        style={{ width: '22px', height: '22px' }}
+                                                    />
+                                                    <span style={{ color: labsStatus[lab.idLaboratorio] ? '#ef4444' : '#22c55e', fontWeight: 600 }}>
+                                                        {labsStatus[lab.idLaboratorio] ? 'Bloqueado' : 'Liberado'}
+                                                    </span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style={{ color: '#b3b3b3', fontSize: '0.98rem' }}>
+                            Use o switch para bloquear ou liberar cada laboratório individualmente.
+                        </div>
+                    </div>
+
+                </span>
+
                 <div className="dashboard-card teachers-card">
                     <div className="card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -356,7 +493,11 @@ const AdminDashboard = () => {
                         </table>
                     </div>
                 </div>
+
+
+
             </div>
+
             {/* Modal de edição/adicionar professor */}
             {isModalOpen && (
                 <div
@@ -608,6 +749,7 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             )}
+
         </div>
     );
 };

@@ -1,4 +1,6 @@
+
 const markModels = require('../models/markModels');
+const labsModels = require('../models/labsModels');
 
 
 const createMark = async (req, res) => {
@@ -7,6 +9,12 @@ const createMark = async (req, res) => {
 
         if (!dataReserva || !aulaReserva || !idProfessor || !numeroLaboratorio || !tipoLaboratorio || !motivo) {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
+        }
+
+        // Verifica se o laboratório está bloqueado
+        const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio);
+        if (bloqueado) {
+            return res.status(403).json({ error: 'Este laboratório está bloqueado para reservas.', type: 'lab_blocked' });
         }
 
         const reservaData = {

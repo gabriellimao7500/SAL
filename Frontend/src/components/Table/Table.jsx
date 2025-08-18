@@ -317,10 +317,18 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
             motivo: adminCampos.motivo,
             diaDaSemana: adminCampos.diaDaSemana
         };
-
-        // Enviar reservaData para o servidor ou processá-la conforme necessário
-        console.log("Reserva submetida:", instrucoesReserva);
-
+        axios.post(`${config.apiUrl}/agendar`, instrucoesReserva, {
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(res => {
+                console.log("Reserva submetida:", instrucoesReserva);
+                pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+                Swal.fire({ icon: 'success', title: 'Reserva criada!', text: 'Agendamento realizado com sucesso.' });
+            })
+            .catch(err => {
+                const msg = err?.response?.data?.error || 'Erro ao agendar. Verifique se o laboratório está bloqueado.';
+                Swal.fire({ icon: 'error', title: 'Erro ao agendar', text: msg });
+            });
     }
 
     const getClassName = (index) => {
@@ -397,7 +405,6 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
     const [objDefault, setObjDefault] = useState([{}])
 
     const onReser = async (rowIndex, colIndex, event) => {
-
         const index = rowIndex * 5 + colIndex
         var indie = index
         let aula = Math.floor(indie / 5) + 1;
@@ -448,13 +455,22 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
             setAdminModalOpen(true);
         } else {
             // NÃO ADMIN: modal padrão
+            let data2;
+            if (date && typeof date.setHours === 'function') {
+                date.setHours(0, 0, 0, 0);
+                data2 = date.toISOString();
+            } else {
+                const hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+                data2 = hoje.toISOString();
+            }
             if (target.classList.contains('ocupado')) {
                 var e = target.className;
                 var b = e.split(" ");
                 var bb = parseInt(b[1]);
                 const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
                 setObjDefault(reservasFiltradas)
-                if (formatoISO >= data2) {
+                if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
                     if (target.classList.contains('isYou')) {
                         setType("me")
                     } else {
@@ -466,7 +482,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                     setOnReserva(true)
                 }
             } else {
-                if (formatoISO >= data2) {
+                if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
                     if (localStorage.getItem('periodo') === "Noite" && rowIndex > 1) {
                         erroDeAgendamento('Você só pode agendar uma aula disponivel!')
                     } else {
@@ -478,9 +494,15 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                 }
             }
         }
-        var data2 = date;
-        data2.setHours(0, 0, 0, 0);
-        data2 = data2.toISOString();
+        let data2;
+        if (date && typeof date.setHours === 'function') {
+            date.setHours(0, 0, 0, 0);
+            data2 = date.toISOString();
+        } else {
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+            data2 = hoje.toISOString();
+        }
 
 
 
@@ -493,7 +515,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
             const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
             setObjDefault(reservasFiltradas)
 
-            if (formatoISO >= data2) {
+            if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
                 if (target.classList.contains('isYou')) {
                     setType("me")
                 } else {
@@ -506,7 +528,9 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
             }
 
         } else {
-            if (formatoISO >= data2) {
+            if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
+                console.log('data selecionada: ', formatoISO);
+
                 if (localStorage.getItem('periodo') === "Noite" && rowIndex > 1) {
                     erroDeAgendamento('Você só pode agendar uma aula disponivel!')
                 } else {
