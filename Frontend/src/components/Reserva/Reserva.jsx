@@ -11,7 +11,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
   const [professor, setProfessor] = useState(JSON.parse(sessionStorage.getItem('professor')))
   const [motivo3, setMotivo] = useState('')
   const reservasRef = useRef(null);
-  const {nome, email, motivo } = reserva
+  const { nome, email, motivo } = reserva
   var dt = new Date(date);
   var d = dt.getUTCDate();
   var m = dt.getUTCMonth() + 1;
@@ -38,7 +38,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
+
     if (!professor) {
       // Caso o professor não esteja logado
       Swal.fire({
@@ -49,7 +49,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
       });
       return;
     }
-  
+
     // Logando as informações para depuração
 
     try {
@@ -72,81 +72,114 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
         }
       );
 
-       
 
-        Swal.fire({
-          title: 'Reserva Criada',
-          text: 'Sua reserva foi criada com sucesso!',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        });
-      
+
+      Swal.fire({
+        title: 'Reserva Criada',
+        text: 'Sua reserva foi criada com sucesso!',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+
     } catch (error) {
-      if(error.response.status === 404){
-      Swal.fire({
-        title: 'Limite de Agendamentos Atingido',
-        text: 'Você já fez 3 agendamentos nesta semana. Você só pode fazer novos agendamentos na próxima semana.',
-        icon: 'warning',
-        confirmButtonText: 'OK'
-      });
-    }else{
-      Swal.fire({
-        title: 'Erro ao criar reserva',
-        text: 'Houve um erro ao criar a reserva. Tente novamente mais tarde.',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
+      console.log(error.response.error || error.error);
 
+      switch (error.response?.status) {
+        case 403:
+          Swal.fire({
+            title: 'Proibido',
+            text: error.response.data.error || 'Você já fez 3 agendamentos nesta semana. Você só pode fazer novos agendamentos na próxima semana.',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          });
+          break;
+        // Adicione outros casos conforme necessário
+        case 400:
+          Swal.fire({
+            title: 'Dados Inválidos',
+            text: 'Por favor, verifique os dados fornecidos e tente novamente.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          break;
+
+        case 404:
+          Swal.fire({
+            title: 'Reserva Não Encontrada',
+            text: 'A reserva que você está tentando acessar não foi encontrada.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          break;
+
+        case 500:
+          Swal.fire({
+            title: 'Erro Interno do Servidor',
+            text: 'Houve um erro interno no servidor. Tente novamente mais tarde.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          break;
+
+
+
+        default:
+          Swal.fire({
+            title: 'Erro ao criar reserva',
+            text: 'Houve um erro ao criar a reserva. Tente novamente mais tarde.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+      }
     }
-    }
-  
+
     // Função para clique do botão
     onBotaoClique();
   };
-  
+
 
   const [svgWithClass, setSvgWithClass] = useState('');
 
-  function RemoverAgendamento(){
-      Swal.fire({
-        title: 'Tem certeza?',
-        text: "Você realmente deseja remover este agendamento?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sim, remover',
-        cancelButtonText: 'Cancelar'
+  function RemoverAgendamento() {
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: "Você realmente deseja remover este agendamento?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, remover',
+      cancelButtonText: 'Cancelar'
     }).then((result) => {
-        if (result.isConfirmed) {
-            // função para retirar o agendamento
-              
-              const deleteMark = async()=>{
-                  var url = config.apiUrl;
-                  var idReserva = reserva.idReserva
-                  try {
-                      await axios.delete(`${url}/marks/${idReserva}`);
-                  } catch (error) {
-                      console.log('erro', error);
-                      Swal.fire(
-                        'Erro ao tentar cancelar esse agendamento!',
-                        'Tente novamente mais tarde.',
-                        'error'
-                    );
-                  }
-                pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
-              }
-              deleteMark();
-              console.log(reserva.idReserva)
-              
-      
-          
+      if (result.isConfirmed) {
+        // função para retirar o agendamento
+
+        const deleteMark = async () => {
+          var url = config.apiUrl;
+          var idReserva = reserva.idReserva
+          try {
+            await axios.delete(`${url}/marks/${idReserva}`);
+          } catch (error) {
+            console.log('erro', error);
             Swal.fire(
-                'Agendamento removido!',
-                'Você retirou seu agendamento com sucesso.',
-                'success'
+              'Erro ao tentar cancelar esse agendamento!',
+              'Tente novamente mais tarde.',
+              'error'
             );
+          }
+          pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
         }
+        deleteMark();
+        console.log(reserva.idReserva)
+
+
+
+        Swal.fire(
+          'Agendamento removido!',
+          'Você retirou seu agendamento com sucesso.',
+          'success'
+        );
+      }
     });
   }
 
@@ -168,7 +201,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
             {localStorage.getItem("numLab")}
           </div>
         </section>
-  
+
         {type === "nothing" && (
           <form action="" onSubmit={handleLogin} className={styles.form}>
             <div className={styles.main_input}>
@@ -182,7 +215,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
             <input disabled={motivo3.length > 0 ? false : true} className={styles.submit} type="submit" value="Reservar" />
           </form>
         )}
-  
+
         {type === "other" && (
           <section className={styles.reservado}>
             <section className={styles.inforeserva}>
@@ -198,7 +231,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
                   height={60}
                 />
                 <section className={styles.nameProfessor}>
-                
+
                   <div className={styles.name}>{`${nome.split(" ")[0]} ${nome.split(" ")[1]}`}</div>
                   <div className={styles.email}>{email}</div>
                 </section>
@@ -238,7 +271,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
       </section>
     </section>
   );
-  
+
 }
 
 export default Reserva;

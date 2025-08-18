@@ -388,13 +388,11 @@ const AdminDashboard = () => {
                                         <tr key={lab.idLaboratorio} style={{ borderBottom: '1px solid #333' }}>
                                             <td style={{ padding: '8px' }}>{lab.tipoLaboratorio}</td>
                                             <td style={{ padding: '8px' }}>{lab.numeroLaboratorio}</td>
-                                            <td style={{ padding: '8px', textAlign: 'center' }}>
-                                                <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={labsStatus[lab.idLaboratorio] || false}
-                                                        onChange={async (e) => {
-                                                            const novoStatus = e.target.checked;
+                                            <td style={{ padding: '8px', textAlign: 'left' }}>
+                                                <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
+                                                    <span
+                                                        onClick={async () => {
+                                                            const novoStatus = !labsStatus[lab.idLaboratorio];
                                                             try {
                                                                 const res = await axios.post(`http://localhost:3333/labs/${novoStatus ? 'bloquear' : 'desbloquear'}`, {
                                                                     tipoLaboratorio: lab.tipoLaboratorio,
@@ -416,10 +414,39 @@ const AdminDashboard = () => {
                                                                 });
                                                             }
                                                         }}
-                                                        style={{ width: '22px', height: '22px' }}
-                                                    />
-                                                    <span style={{ color: labsStatus[lab.idLaboratorio] ? '#ef4444' : '#22c55e', fontWeight: 600 }}>
-                                                        {labsStatus[lab.idLaboratorio] ? 'Bloqueado' : 'Liberado'}
+                                                        style={{
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-around',
+                                                            cursor: 'pointer',
+                                                            gap: '10px',
+                                                            width: '100%'
+                                                        }}
+                                                    >
+                                                        <span style={{
+                                                            width: '44px',
+                                                            height: '24px',
+                                                            borderRadius: '12px',
+                                                            background: labsStatus[lab.idLaboratorio] ? '#ef4444' : '#22c55e',
+                                                            position: 'relative',
+                                                            transition: 'background 0.3s',
+                                                            boxShadow: '0 0 4px #0002'
+                                                        }}>
+                                                            <span style={{
+                                                                position: 'absolute',
+                                                                left: labsStatus[lab.idLaboratorio] ? '22px' : '2px',
+                                                                top: '2px',
+                                                                width: '20px',
+                                                                height: '20px',
+                                                                borderRadius: '50%',
+                                                                background: '#fff',
+                                                                boxShadow: '0 1px 4px #0002',
+                                                                transition: 'left 0.3s'
+                                                            }} />
+                                                        </span>
+                                                        <span style={{ color: labsStatus[lab.idLaboratorio] ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
+                                                            {labsStatus[lab.idLaboratorio] ? 'Bloqueado' : 'Liberado'}
+                                                        </span>
                                                     </span>
                                                 </label>
                                             </td>
