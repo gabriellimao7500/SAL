@@ -293,9 +293,35 @@ const AdminDashboard = () => {
     };
 
     return (<span style={{ display: 'block', width: '100vw', height: '100%', color: '#fff', background: '#181818' }}>
-        <header className="dashboard-header">
+        <header className="dashboard-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <h1>Dashboard Administrativa</h1>
+            <a href="/" className="btn-voltar-home">Voltar para Home</a>
         </header>
+        <style>{`
+            .btn-home:hover {
+                background: #232323;
+                color: #8b5cf6;
+                border: 1px solid #232323;
+            }
+            .btn-voltar-home {
+                background: #232323;
+                color: #8b5cf6;
+                border: 1px solid #8b5cf6;
+                border-radius: 8px;
+                padding: 10px 22px;
+                font-weight: 600;
+                font-size: 1.08rem;
+                margin-left: 18px;
+                text-decoration: none;
+                box-shadow: 0 2px 8px #8b5cf633;
+                transition: background 0.2s, color 0.2s, border 0.2s;
+            }
+            .btn-voltar-home:hover {
+                background: #8b5cf6;
+                color: #fff;
+                border: 1px solid #232323;
+            }
+        `}</style>
         <div className="admin-dashboard-container">
             <div className="dashboard-summary-row">
                 <div className="dashboard-summary-card">

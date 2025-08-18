@@ -58,15 +58,6 @@ router.get('/reqs/:idRequisicao', reqController.getDataFromId);
 router.post('/createReqs', reqController.createRequisicao);
 router.delete('/reqs/:idRequisicao', reqController.deleteReq);
 
-
-// Atualização em Massa e conflitos
-router.post('/mass-update/compare-sql-file', upload.single('sqlfile'), conflictsController.compareSqlFile);
-router.post('/mass-update/compare', conflictsController.compareSql);
-router.post('/mass-update/resolve', conflictsController.resolveConflict);
-router.post('/mass-update/accept', conflictsController.acceptConflict);
-router.post('/mass-update/reject', conflictsController.rejectConflict);
-router.post('/mass-update/reject', conflictsController.resolveConflict);
-
 router.post('/auto-agendamento', autoAgendamentoController.criarAgendamentosEmSerie);
 router.post('/schedules/upload', upload.single('file'), processXlsxController.handleUpload);
 
