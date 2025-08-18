@@ -292,11 +292,11 @@ const AdminDashboard = () => {
         }
     };
 
-    return (
+    return (<span style={{ display: 'block', width: '100vw', height: '100%', color: '#fff', background: '#181818' }}>
+        <header className="dashboard-header">
+            <h1>Dashboard Administrativa</h1>
+        </header>
         <div className="admin-dashboard-container">
-            <header className="dashboard-header">
-                <h1>Dashboard Administrativa</h1>
-            </header>
             <div className="dashboard-summary-row">
                 <div className="dashboard-summary-card">
                     <span className="summary-icon" aria-label="Professores">
@@ -778,6 +778,7 @@ const AdminDashboard = () => {
             )}
 
         </div>
+    </span>
     );
 };
 

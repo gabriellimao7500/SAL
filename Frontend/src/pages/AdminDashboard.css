@@ -79,20 +79,26 @@
 
 /* Dashboard Layout */
 .admin-dashboard-container {
+    width: 100%;
     min-height: 100vh;
+    margin-top: 5%;
     background: #181818;
     font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 .dashboard-header {
-    background: #181818;
+    background: #23232375;
     color: #fff;
-    padding: 32px 0 24px 0;
-    text-align: center;
+    margin: 40px;
+    margin-top: 5%;
+    padding: 20px 40px;
+    text-align: left;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.20);
     position: sticky;
+    width: 90vw;
     top: 0;
     z-index: 10;
+    backdrop-filter: blur(8px);
     border-bottom: 1px solid #232323;
 }
 
@@ -113,6 +119,7 @@
     margin: 40px auto;
     max-width: 1200px;
     flex-wrap: wrap;
+
 }
 
 .dashboard-card {
