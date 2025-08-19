@@ -2,6 +2,7 @@ import React from 'react';
 
 const AdminReservaModal = ({ open, campos, editando, onChange, onClose, onSubmit, diaSemana }) => {
     if (!open) return null;
+
     campos.diaDaSemana = diaSemana; // Segunda, terça, quarta, quinta, sexta de acordo com a célula selecionada
 
     // Função para garantir que a diferença entre dataInicio e dataFim seja de pelo menos 7 dias
@@ -174,7 +175,8 @@ const AdminReservaModal = ({ open, campos, editando, onChange, onClose, onSubmit
                             margin: '18px 0 22px 0'
                         }}
                     >
-                        Criar Agendamento para todas as <span style={{ color: '#8b5cf6', fontWeight: 600 }}>{diaSemana}s</span> da Semana até <span style={{ color: '#8b5cf6', fontWeight: 600 }}>{campos.dataFim.replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$3/$2/$1')}</span>
+                        Criar Agendamento para todas as <span style={{ color: '#8b5cf6', fontWeight: 600 }}>
+                            {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'][diaSemana - 1]}s</span> da Semana até <span style={{ color: '#8b5cf6', fontWeight: 600 }}>{campos.dataFim.replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$3/$2/$1')}</span>
                     </p>
                     <button
                         type="submit"

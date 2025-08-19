@@ -21,11 +21,11 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
         observacao: '',
         dataInicio: '',
         dataFim: '',
+        diaDaSemana: 0
     });
     const [editandoAdmin, setEditandoAdmin] = useState(false);
 
-
-
+    let diaDaSemanaGlobal = 0;
 
     const date = new Date();
     const dia = date.getDate();
@@ -303,7 +303,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
         reserva.index = indice
     });
 
-    function submitReserva() {
+    function submitReserva(colIndex) {
         // Lógica para submeter a reserva
         const instrucoesReserva = {
             endDate: adminCampos.dataFim,
@@ -314,10 +314,12 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
             tipoLaboratorio: localStorage.getItem('typeLab'),
             numeroLaboratorio: localStorage.getItem('numLab'),
             svg: "",
-            motivo: adminCampos.motivo,
+            motivo: adminCampos.observacao,
             diaDaSemana: adminCampos.diaDaSemana
         };
-        axios.post(`${config.apiUrl}/agendar`, instrucoesReserva, {
+        console.log("Instruções de Reserva:", instrucoesReserva);
+
+        axios.post(`${config.apiUrl}/createMarksFromTo`, instrucoesReserva, {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(res => {
@@ -409,6 +411,8 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
         var indie = index
         let aula = Math.floor(indie / 5) + 1;
         let diaSem = (indie % 5) + 1;
+        setAdminCampos({ ...adminCampos, diaDaSemana: diaSem });
+        console.log("Dia da semana global:", diaDaSemanaGlobal);
 
         let wp = currentWeek;
         while (aula > 6) {
@@ -431,6 +435,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                 observacao: '',
                 dataInicio: formatoISO.substring(0, 10),
                 dataFim: formatoISO.substring(0, 10),
+                diaDaSemana: diaSem
             };
             if (target.classList.contains('ocupado')) {
                 var e = target.className;
@@ -444,6 +449,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                     campos.observacao = reservasFiltradas[0].motivo || '';
                     campos.dataInicio = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
                     campos.dataFim = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
+
                     setEditandoAdmin(true);
                 } else {
                     setEditandoAdmin(false);
@@ -555,7 +561,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
 
     const toggleHorarioSelecionado = (rowIndex, colIndex) => {
         const aula = rowIndex + 1;
-        const diaSemana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'][colIndex];
+        const diaSemana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'][adminCampos.diaDaSemana - 1];
         const laboratorio = localStorage.getItem('typeLab');
         const periodo = localStorage.getItem('periodo');
         const numeroLaboratorio = localStorage.getItem('numLab');
@@ -667,6 +673,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
             {(() => {
                 const user = JSON.parse(sessionStorage.getItem('professor'));
                 if (user && user.rule === "admin") {
+
                     return (
                         <AdminReservaModal
                             open={adminModalOpen}
@@ -674,8 +681,14 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                             editando={editandoAdmin}
                             onChange={setAdminCampos}
                             onClose={() => setAdminModalOpen(false)}
-                            onSubmit={e => { e.preventDefault(); submitReserva(); setAdminModalOpen(false); }}
-                            diaSemana={aulaAtu ? ['segunda', 'terca', 'quarta', 'quinta', 'sexta'][(objDefault[0]?.index ?? 0) % 5] : ''}
+                            onSubmit={e => {
+                                e.preventDefault();
+                                // Passe o colIndex correto, por exemplo, do objDefault[0]
+                                const colIndex = (objDefault[0]?.index ?? 0) % 5;
+                                submitReserva(colIndex);
+                                setAdminModalOpen(false);
+                            }}
+                            diaSemana={adminCampos.diaDaSemana}
                         />
                     );
                 } else {

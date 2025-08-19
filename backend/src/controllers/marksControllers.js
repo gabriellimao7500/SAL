@@ -1,7 +1,35 @@
-
 const markModels = require('../models/markModels');
 const labsModels = require('../models/labsModels');
 
+
+function calcularDiasSemana(startDate, endDate, dayOfWeek) {
+    // dayOfWeek: 1=segunda, 2=terça, ..., 5=sexta
+    const result = [];
+    let current = new Date(startDate);
+    const end = new Date(endDate);
+    while (current <= end) {
+        if (current.getDay() === dayOfWeek) {
+            result.push(new Date(current));
+        }
+        current.setDate(current.getDate() + 1);
+    }
+    return result;
+}
+
+function calcularDiasSemana(startDate, endDate, dayOfWeek) {
+    // dayOfWeek: 1=segunda, 2=terça, ..., 5=sexta
+    const result = [];
+    let current = new Date(startDate);
+    const end = new Date(endDate);
+
+    while (current <= end) {
+        if (current.getDay() === dayOfWeek - 1) {
+            result.push(new Date(current)); // ou current.toISOString().substring(0,10) para só a data
+        }
+        current.setDate(current.getDate() + 1);
+    }
+    return result;
+}
 
 const createMark = async (req, res) => {
     try {
@@ -43,6 +71,33 @@ const createMark = async (req, res) => {
     }
 
 };
+
+const createMarkFromTo = (req, res) => {
+    // Lógica para criar marcações de um intervalo de tempo
+
+    const instrucoesReserva = {
+        endDate: req.body.endDate,
+        startDate: req.body.startDate,
+        periodo: req.body.periodo,
+        aulaReserva: req.body.aulaReserva,
+        idProfessor: req.body.idProfessor,
+        tipoLaboratorio: req.body.tipoLaboratorio,
+        numeroLaboratorio: req.body.numeroLaboratorio,
+        svg: "",
+        motivo: req.body.motivo,
+        diaDaSemana: req.body.diaDaSemana
+    };
+
+    console.log(instrucoesReserva);
+
+    // Calcula os dias corretos do intervalo
+    const dias = calcularDiasSemana(instrucoesReserva.startDate, instrucoesReserva.endDate, instrucoesReserva.diaDaSemana);
+    // Retorna array de datas em formato ISO (apenas dia)
+    const datasFormatadas = dias.map(d => d.toISOString().substring(0, 10));
+    console.log("Datas calculadas:", datasFormatadas);
+    res.json({ datas: datasFormatadas });
+
+}
 
 const getData = async (req, res) => {
     const { periodo, tipoLaboratorio, numeroLaboratorio } = req.body;
@@ -131,5 +186,6 @@ module.exports = {
     deleteMark,
     getDataFromId,
     updateReserva,
-    executeRawQuery, // exporta o novo método
+    executeRawQuery,
+    createMarkFromTo // exporta o novo método
 }

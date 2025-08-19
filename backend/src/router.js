@@ -51,6 +51,7 @@ router.get('/marks/:idReserva', marksControllers.getDataFromId);
 router.post('/createMarks', marksControllers.createMark);
 router.put('/marks/:idReserva', marksControllers.updateReserva);
 router.delete('/marks/:idReserva', marksControllers.deleteMark);
+router.post('/createMarksFromTo', marksControllers.createMarkFromTo);
 
 // Requisições
 router.get('/reqs', reqController.getData);
