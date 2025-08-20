@@ -37,6 +37,8 @@ const createMark = async (req, res) => {
     try {
         const { dataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo } = req.body;
 
+        console.log("Dados da reserva:", req.body);
+
         if (!dataReserva || !aulaReserva || !idProfessor || !numeroLaboratorio || !tipoLaboratorio || !motivo) {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
         }
@@ -46,9 +48,14 @@ const createMark = async (req, res) => {
         if (bloqueado) {
             return res.status(403).json({ error: 'Este laboratório está bloqueado para reservas.', type: 'lab_blocked' });
         }
+        // de '2025-08-22T03:00:00.000Z' para '2025-08-22'
+
+        let d = new Date(dataReserva);
+        const datasFormatadas = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
 
         const reservaData = {
-            dataReserva,
+            dataReserva: datasFormatadas,
             periodo,
             aulaReserva,
             idProfessor,
