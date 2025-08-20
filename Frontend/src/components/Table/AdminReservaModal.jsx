@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AdminReservaModal = ({ open, campos, editando, onChange, onClose, onSubmit, diaSemana }) => {
+const AdminReservaModal = ({ open, campos, editando, onChange, onClose, onSubmit, diaSemana, onSuccess, onDelete }) => {
     if (!open) return null;
 
     campos.diaDaSemana = diaSemana; // Segunda, terça, quarta, quinta, sexta de acordo com a célula selecionada
@@ -13,6 +13,22 @@ const AdminReservaModal = ({ open, campos, editando, onChange, onClose, onSubmit
         const diff = (fim - inicio) / (1000 * 60 * 60 * 24); // diferença em dias
         return diff >= 7;
     };
+
+    // Função para lidar com o envio do formulário e atualizar o calendário após o sucesso
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            await onSubmit(e);
+            if (onSuccess && typeof onSuccess === 'function') {
+                onSuccess();
+            }
+        } catch (error) {
+            console.error("Erro ao enviar formulário:", error);
+        }
+    };
+
+
 
     return (
         <div
@@ -83,7 +99,7 @@ const AdminReservaModal = ({ open, campos, editando, onChange, onClose, onSubmit
                 >
                     {editando ? 'Editar Agendamento' : 'Criar Agendamento'}
                 </h2>
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleSubmit}>
                     <input
                         type="text"
                         placeholder="Professor"
@@ -178,46 +194,68 @@ const AdminReservaModal = ({ open, campos, editando, onChange, onClose, onSubmit
                         Criar Agendamento para todas as <span style={{ color: '#8b5cf6', fontWeight: 600 }}>
                             {['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'][diaSemana - 1]}s</span> da Semana até <span style={{ color: '#8b5cf6', fontWeight: 600 }}>{campos.dataFim.replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$3/$2/$1')}</span>
                     </p>
-                    <button
-                        type="submit"
-                        onClick={onSubmit}
-                        disabled={!isIntervalValid()}
-                        style={{
-                            background: !isIntervalValid()
-                                ? '#232323'
-                                : 'linear-gradient(90deg, #8b5cf6 60%, #6d28d9 100%)',
-                            color: '#fff',
-                            border: '1.5px solid #8b5cf6',
-                            borderRadius: '8px',
-                            padding: '12px 26px',
-                            fontWeight: '700',
-                            marginRight: '12px',
-                            cursor: !isIntervalValid() ? 'not-allowed' : 'pointer',
-                            fontSize: '1rem',
-                            boxShadow: '0 2px 8px rgba(139,92,246,0.12)',
-                            transition: 'background 0.2s'
-                        }}
-                    >
-                        {editando ? 'Salvar' : 'Criar'}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        style={{
-                            background: '#232323',
-                            color: '#fff',
-                            border: '1.5px solid #8b5cf6',
-                            borderRadius: '8px',
-                            padding: '12px 26px',
-                            fontWeight: '700',
-                            cursor: 'pointer',
-                            fontSize: '1rem',
-                            boxShadow: '0 2px 8px rgba(139,92,246,0.08)',
-                            transition: 'background 0.2s'
-                        }}
-                    >
-                        Cancelar
-                    </button>
+                    <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: 12 }}>
+                        <button
+                            type="submit"
+                            disabled={!isIntervalValid()}
+                            style={{
+                                background: !isIntervalValid()
+                                    ? '#232323'
+                                    : 'linear-gradient(90deg, #8b5cf6 60%, #6d28d9 100%)',
+                                color: '#fff',
+                                border: '1.5px solid #8b5cf6',
+                                borderRadius: '8px',
+                                padding: '12px 26px',
+                                fontWeight: '700',
+                                cursor: !isIntervalValid() ? 'not-allowed' : 'pointer',
+                                fontSize: '1rem',
+                                boxShadow: '0 2px 8px rgba(139,92,246,0.12)',
+                                transition: 'background 0.2s'
+                            }}
+                        >
+                            {editando ? 'Salvar' : 'Criar'}
+                        </button>
+
+                        {editando && (
+                            <button
+                                type="button"
+                                onClick={onDelete}
+                                style={{
+                                    background: '#ef4444',
+                                    color: '#fff',
+                                    border: '1.5px solid rgba(239,68,68,0.9)',
+                                    borderRadius: '8px',
+                                    padding: '12px 16px',
+                                    fontWeight: '700',
+                                    cursor: 'pointer',
+                                    fontSize: '1rem',
+                                    boxShadow: '0 2px 8px rgba(239,68,68,0.12)',
+                                    transition: 'background 0.2s'
+                                }}
+                            >
+                                Apagar
+                            </button>
+                        )}
+
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            style={{
+                                background: '#232323',
+                                color: '#fff',
+                                border: '1.5px solid #8b5cf6',
+                                borderRadius: '8px',
+                                padding: '12px 26px',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                fontSize: '1rem',
+                                boxShadow: '0 2px 8px rgba(139,92,246,0.08)',
+                                transition: 'background 0.2s'
+                            }}
+                        >
+                            Cancelar
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

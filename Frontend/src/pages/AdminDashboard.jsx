@@ -30,6 +30,7 @@ const AdminDashboard = () => {
     const [numLab, setNumLab] = useState(localStorage.getItem('numLab') || 1);
     const [typeLab, setTypeLab] = useState(localStorage.getItem('typeLab') || 'Informática');
     const [loadingMarks, setLoadingMarks] = useState(false);
+    const [adminSelectMode, setAdminSelectMode] = useState(false);
     // Função para buscar agendamentos (pode ser adaptada para o backend real)
     const pullMarks = async (periodoArg, tipoLabArg, numLabArg) => {
         setLoadingMarks(true);
@@ -43,7 +44,7 @@ const AdminDashboard = () => {
         setTypeLab(t);
         setNumLab(n);
         try {
-            const result = await axios.post('http://192.168.1.210:3333/Marks',
+            const result = await axios.post('http://localhost:3333/Marks',
                 JSON.stringify({
                     "periodo": p,
                     "tipoLaboratorio": t,
@@ -55,6 +56,8 @@ const AdminDashboard = () => {
                     }
                 }
             );
+            console.log(result.data);
+
             setReservas(result.data);
         } catch (err) {
             setReservas([]);
@@ -119,7 +122,7 @@ const AdminDashboard = () => {
     // Buscar labs por tipo
     const fetchLabsTipo = async (tipoLab) => {
         try {
-            const response = await axios.get(`http://192.168.1.210:3333/labsType/${tipoLab}`);
+            const response = await axios.get(`http://localhost:3333/labsType/${tipoLab}`);
             setLabsTipo(response.data);
             // Se existir, atualiza o número do laboratório para o primeiro disponível
             if (response.data.length > 0) {
@@ -291,6 +294,8 @@ const AdminDashboard = () => {
             });
         }
     };
+
+    const handleToggleSelectMode = (value) => setAdminSelectMode(typeof value === 'boolean' ? value : !adminSelectMode);
 
     return (<span style={{ display: 'block', width: '100vw', height: '100%', color: '#fff', background: '#181818' }}>
         <header className="dashboard-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -702,8 +707,8 @@ const AdminDashboard = () => {
                     <div className="modal-card" style={{ backgroundColor: '#232323', color: '#fff', padding: '32px 28px', borderRadius: '14px', width: '90vw', maxWidth: '1200px', textAlign: 'center', boxShadow: '0 8px 32px rgba(139,92,246,0.18)', border: '1px solid #333', animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)', position: 'relative' }} onClick={e => e.stopPropagation()}>
                         <button onClick={handleCloseCalendar} style={{ position: 'absolute', top: 12, right: 12, background: 'transparent', border: 'none', color: '#8b5cf6', fontSize: '1.5rem', cursor: 'pointer', transition: 'color 0.2s', zIndex: 2 }} aria-label="Fechar">&#10006;</button>
                         <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>Calendário de Agendamentos</h2>
-                        <div className="select_main" style={{ display: 'flex', gap: '32px', height: '5vh', width: '100%', justifyContent: 'center', margin: '18px 0', alignSelf: 'center' }}>
-                            {/* ...apenas selects de laboratório, tipo e período... */}
+                        <div className="select_main" style={{ display: 'flex', gap: '32px', height: '5vh', width: '100%', justifyContent: 'center', margin: '18px 0', alignSelf: 'center', alignItems: 'center' }}>
+                            {/* ...selects existentes... */}
                             <select
                                 value={numLab}
                                 onChange={e => {
@@ -753,6 +758,39 @@ const AdminDashboard = () => {
                                 <option value="Tarde">Tarde</option>
                                 <option value="Noite">Noite</option>
                             </select>
+                            {/* Switch de seleção para exclusão */}
+                            {JSON.parse(sessionStorage.getItem('professor'))?.rule === "admin" && (
+                                <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', userSelect: 'none', color: '#d1d1d1', marginLeft: 16 }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={adminSelectMode}
+                                        onChange={() => handleToggleSelectMode()}
+                                        style={{ width: 0, height: 0, opacity: 0, position: 'absolute' }}
+                                    />
+                                    <div style={{
+                                        width: 44,
+                                        height: 24,
+                                        background: adminSelectMode ? '#8b5cf6' : '#333',
+                                        borderRadius: 999,
+                                        position: 'relative',
+                                        transition: 'background 0.2s'
+                                    }}>
+                                        <div style={{
+                                            width: 18,
+                                            height: 18,
+                                            background: '#fff',
+                                            borderRadius: '50%',
+                                            position: 'absolute',
+                                            top: 3,
+                                            left: adminSelectMode ? 23 : 3,
+                                            transition: 'left 0.18s'
+                                        }} />
+                                    </div>
+                                    <span style={{ fontSize: '0.95rem', fontWeight: 600, color: adminSelectMode ? '#8b5cf6' : '#bfbfbf' }}>
+                                        Selecionar células para exclusão
+                                    </span>
+                                </label>
+                            )}
                         </div>
 
 
@@ -796,6 +834,8 @@ const AdminDashboard = () => {
                                     serieMode={serieMode}
                                     horariosSelecionados={horariosSelecionados}
                                     setHorariosSelecionados={setHorariosSelecionados}
+                                    adminSelectMode={adminSelectMode}
+                                    handleToggleSelectMode={handleToggleSelectMode}
                                 />
                             </div>
                         </div>

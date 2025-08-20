@@ -11,19 +11,32 @@ import arrow_right from '../../assets/arrow_right.svg'
 
 import axios from 'axios';
 import config from "../../../config"
+import { set } from 'date-fns';
 
-function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorariosSelecionados }) {
+function Table({
+    reserva,
+    pullMarks,
+    serieMode,
+    horariosSelecionados,
+    setHorariosSelecionados,
+    adminSelectMode,
+    handleToggleSelectMode
+}) {
     // Modal customizado para admin
     const [adminModalOpen, setAdminModalOpen] = useState(false);
     const [adminCampos, setAdminCampos] = useState({
         professor: '',
         disciplina: '',
-        observacao: '',
+        motivo: '',
         dataInicio: '',
         dataFim: '',
         diaDaSemana: 0
     });
     const [editandoAdmin, setEditandoAdmin] = useState(false);
+
+    // Controle do modo seleção e células/ids selecionados para exclusão
+    // const [selectedIndices, setSelectedIndices] = useState([]);
+    const [selectedIds, setSelectedIds] = useState([]);
 
     let diaDaSemanaGlobal = 0;
 
@@ -303,18 +316,18 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
         reserva.index = indice
     });
 
-    function submitReserva(colIndex) {
+    function submitReserva() {
         // Lógica para submeter a reserva
         const instrucoesReserva = {
             endDate: adminCampos.dataFim,
             startDate: adminCampos.dataInicio,
             periodo: localStorage.getItem('periodo'),
             aulaReserva: aulaAtu,
-            idProfessor: JSON.parse(sessionStorage.getItem('professor')).id,
+            idProfessor: JSON.parse(sessionStorage.getItem('professor')).idProfessor,
             tipoLaboratorio: localStorage.getItem('typeLab'),
             numeroLaboratorio: localStorage.getItem('numLab'),
             svg: "",
-            motivo: adminCampos.observacao,
+            motivo: adminCampos.motivo,
             diaDaSemana: adminCampos.diaDaSemana
         };
         console.log("Instruções de Reserva:", instrucoesReserva);
@@ -325,13 +338,56 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
             .then(res => {
                 console.log("Reserva submetida:", instrucoesReserva);
                 pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
-                Swal.fire({ icon: 'success', title: 'Reserva criada!', text: 'Agendamento realizado com sucesso.' });
+                //recarrega as reservas
+                if (res.status == 201) {
+                    Swal.fire({ icon: 'success', title: 'Reserva criada!', text: res.data.message });
+                } else { Swal.fire({ icon: 'success', title: 'Reserva criada!', text: 'Agendamento realizado com sucesso.' }) };
             })
             .catch(err => {
                 const msg = err?.response?.data?.error || 'Erro ao agendar. Verifique se o laboratório está bloqueado.';
                 Swal.fire({ icon: 'error', title: 'Erro ao agendar', text: msg });
             });
     }
+
+    const onDelete = async (idReserva) => {
+
+        const startDate = adminCampos.dataInicio;
+        const endDate = adminCampos.dataFim;
+
+        if (!Array.isArray(idReserva)) {
+            if (idReserva.length === 0) {
+                alert('ID da reserva não disponível para exclusão.');
+                return;
+            }
+            console.log("Excluindo reserva:", idReserva);
+            await axios.delete(`${config.apiUrl}/marksFromTo/${startDate}/${endDate}`).catch(err => {
+                console.error(`Erro ao excluir reserva ${idReserva}:`, err);
+                return;
+            });
+            console.log(`Reserva ${idReserva} excluída com sucesso.`);
+
+        } else {
+            console.log("Várias reservas para exclusão");
+
+            for (const reservaId of idReserva) {
+                await axios.delete(`${config.apiUrl}/marks/${reservaId}`).catch(err => {
+                    console.error(`Erro ao excluir reserva ${reservaId}:`, err);
+                    return;
+                });
+                console.log(`Reserva ${reservaId} excluída com sucesso.`);
+            }
+
+        }
+
+        // try {
+        //     await axios.delete(`${config.apiUrl}/marks/${idReserva}`);
+        //     Swal.fire({ icon: 'success', title: 'Reserva excluída!', text: 'A reserva foi excluída com sucesso.' });
+        //     pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+        // } catch (err) {
+        //     console.error('Erro ao excluir reserva:', err);
+        //     Swal.fire({ icon: 'error', title: 'Erro ao excluir', text: 'Não foi possível excluir a reserva. Tente novamente.' });
+        // }
+    };
 
     const getClassName = (index) => {
 
@@ -432,7 +488,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
             let campos = {
                 professor: user?.nome || '',
                 disciplina: '',
-                observacao: '',
+                motivo: '',
                 dataInicio: formatoISO.substring(0, 10),
                 dataFim: formatoISO.substring(0, 10),
                 diaDaSemana: diaSem
@@ -446,10 +502,10 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                 if (reservasFiltradas.length > 0) {
                     campos.professor = reservasFiltradas[0].nome || '';
                     campos.disciplina = reservasFiltradas[0].disciplina || '';
-                    campos.observacao = reservasFiltradas[0].motivo || '';
+                    campos.motivo = reservasFiltradas[0].motivo || '';
                     campos.dataInicio = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
                     campos.dataFim = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
-
+                    campos.idReserva = reservasFiltradas[0].id || reservasFiltradas[0].idReserva;
                     setEditandoAdmin(true);
                 } else {
                     setEditandoAdmin(false);
@@ -549,6 +605,62 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
         }
 
     }
+
+    const handleDelete = async () => {
+        // Tenta obter o id a partir dos campos mais comuns
+        const id = adminCampos.idReserva || adminCampos.id || adminCampos.id_reserva;
+        if (!id) {
+            alert('ID da reserva não disponível para exclusão.');
+            return;
+        }
+        if (!window.confirm('Confirma exclusão desta reserva?')) return;
+
+        try {
+            if (onDelete && typeof onDelete === 'function') {
+                await onDelete(id);
+            } else {
+                console.warn('onDelete não fornecido');
+            }
+            setAdminModalOpen(false);
+            console.log(`Reserva ${id} excluída com sucesso.`);
+        } catch (err) {
+            console.error('Erro ao apagar reserva:', err);
+            alert('Erro ao apagar a reserva. Tente novamente.');
+        }
+    };
+
+    const handleDeleteMany = async (ids) => {
+        console.log(`Tentando excluir reservas: ${ids.join(', ')}`);
+
+        if (!ids.length) {
+            alert('IDs das reservas não disponíveis para exclusão.');
+            return;
+        }
+        if (!window.confirm('Confirma exclusão destas reservas?')) return;
+
+        ids.forEach(async element => {
+            try {
+                let r = await axios.delete(`${config.apiUrl}/marks/${element}`);
+                if (r.status === 200) {
+                    console.log(`Reserva ${element} excluída com sucesso.`);
+
+                } else {
+                    console.error(`Erro ao excluir reserva ${element}:`, r.data);
+                }
+            } catch (err) {
+                console.error('Erro ao apagar reservas:', err);
+                alert(`Erro ao apagar a reserva ${element}. Tente novamente.`);
+            }
+        });
+        setSelectedIds([]);
+        handleToggleSelectMode(false);
+        // Recarrega as reservas após exclusão
+        await pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+        pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+        pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+        setAdminModalOpen(false);
+        console.log(`Reservas excluídas com sucesso.`);
+    };
 
     function erroDeAgendamento(erro) {
         Swal.fire({
@@ -665,47 +777,73 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
         }
     };
 
+    // Função para alternar seleção de célula para exclusão (apenas 1 agendamento por célula)
+    const toggleCellDeletion = (rowIndex, colIndex) => {
+        const globalIndex = (rowIndex * 5 + colIndex) + 30 * currentWeek;
+        const reservasCelula = reserva.filter(r => r.index === globalIndex);
+        if (reservasCelula.length === 0) return;
+        // Seleciona apenas o primeiro agendamento da célula
+        const idCelula = reservasCelula[0].id ?? reservasCelula[0].idReserva;
+        if (!idCelula) return;
 
+        if (selectedIds.includes(idCelula)) {
+            console.log(`Deselecionando célula: ${rowIndex}, ${colIndex} com ID ${idCelula}`);
+            setSelectedIds(prev => prev.filter(id => id !== idCelula));
+        } else {
+            setSelectedIds(prev => [...prev, idCelula]);
+            console.log(`Selecionando célula: ${rowIndex}, ${colIndex} com ID ${idCelula}`);
+        }
+    };
 
     return (
         <section className={styles.calendar}>
             {/* Renderiza apenas o modal correto */}
-            {(() => {
-                const user = JSON.parse(sessionStorage.getItem('professor'));
-                if (user && user.rule === "admin") {
+            {
+                (() => {
+                    const user = JSON.parse(sessionStorage.getItem('professor'));
+                    if (user && user.rule === "admin") {
 
-                    return (
-                        <AdminReservaModal
-                            open={adminModalOpen}
-                            campos={adminCampos}
-                            editando={editandoAdmin}
-                            onChange={setAdminCampos}
-                            onClose={() => setAdminModalOpen(false)}
-                            onSubmit={e => {
-                                e.preventDefault();
-                                // Passe o colIndex correto, por exemplo, do objDefault[0]
-                                const colIndex = (objDefault[0]?.index ?? 0) % 5;
-                                submitReserva(colIndex);
-                                setAdminModalOpen(false);
-                            }}
-                            diaSemana={adminCampos.diaDaSemana}
-                        />
-                    );
-                } else {
-                    return (
-                        <ReservaModal
-                            open={onReserva}
-                            reserva={objDefault[0]}
-                            type={type}
-                            date={dateReserva}
-                            aula={aulaAtu}
-                            pullMarks={pullMarks}
-                            onClose={reservasOff}
-                        />
-                    );
-                }
-            })()}
+                        return (
+                            <AdminReservaModal
+                                open={adminModalOpen}
+                                campos={adminCampos}
+                                editando={editandoAdmin}
+                                onChange={setAdminCampos}
+                                onClose={() => setAdminModalOpen(false)}
+                                onSubmit={e => {
+                                    e.preventDefault();
+                                    // Passe o colIndex correto, por exemplo, do objDefault[0]
+                                    const colIndex = (objDefault[0]?.index ?? 0) % 5;
+                                    submitReserva();
+                                    setAdminModalOpen(false);
+                                }}
+                                onDelete={handleDelete}
+                                diaSemana={adminCampos.diaDaSemana}
+                                onSuccess={() => {
+                                    // Recarregar as reservas após o sucesso
+                                    pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+                                }}
+                            // <-- passa controle para o Table
+                            />
+                        );
+                    } else {
+                        return (
+                            <ReservaModal
+                                open={onReserva}
+                                reserva={objDefault[0]}
+                                type={type}
+                                date={dateReserva}
+                                aula={aulaAtu}
+                                pullMarks={pullMarks}
+                                onClose={reservasOff}
+                            />
+                        );
+                    }
+                })()
+            }
+
             <Hours windowWidth={windowWidth}></Hours>
+
             <div className={styles["schedule-container"]}>
                 <div className={styles["schedule-wrapper"]} style={{ transform: `translateX(-${currentWeek * 100}%)` }}>
                     {weeks.map((week, index) => (
@@ -728,22 +866,36 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                                         {Array(5).fill().map((_, colIndex) => {
                                             const key = `${rowIndex + 1}-${colIndex}`;
                                             const horarioSelecionado = horariosSelecionados.find(h => h.key === key);
+
+                                            const globalIndex = (rowIndex * 5 + colIndex) + 30 * currentWeek;
+                                            // Busca os ids dos agendamentos desta célula
+                                            const reservasCelula = reserva.filter(r => r.index === globalIndex);
+                                            const idCelula = reservasCelula[0]?.id ?? reservasCelula[0]?.idReserva;
+                                            const isMarkedForDeletion = adminSelectMode && idCelula && selectedIds.includes(idCelula);
+
                                             return (
                                                 <td key={colIndex}>
                                                     <div
                                                         className={
-                                                            `${getClassName((rowIndex * 5 + colIndex) + 30 * currentWeek)} indice ` +
+                                                            `${getClassName(globalIndex)} indice ` +
                                                             `${serieMode && horarioSelecionado ? styles.selected : ''} ` +
                                                             `${horarioSelecionado && horarioSelecionado.sobrescrever ? styles.sobrescrever : ''}`
                                                         }
                                                         onClick={(event) => {
-                                                            if (serieMode) {
+                                                            if (adminSelectMode) {
+                                                                toggleCellDeletion(rowIndex, colIndex);
+                                                            } else if (serieMode) {
                                                                 toggleHorarioSelecionado(rowIndex, colIndex);
                                                             } else {
                                                                 onReser(rowIndex, colIndex, event);
                                                             }
                                                         }}
                                                         type={type}
+                                                        style={
+                                                            isMarkedForDeletion
+                                                                ? { outline: '3px dashed rgba(239,68,68,0.9)', outlineOffset: '-6px' }
+                                                                : undefined
+                                                        }
                                                     />
                                                 </td>
                                             );
@@ -759,6 +911,46 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                     <div>{renderYearLabel()}</div>
                 </div>
             </div>
+
+            {/* Botão flutuante para excluir selecionadas (visível só para admin e em modo seleção) */}
+            {
+                adminSelectMode && (
+                    <div style={{ position: 'fixed', right: 20, bottom: 90, zIndex: 11000 }}>
+                        <button
+                            onClick={() => handleDeleteMany(selectedIds)}
+                            style={{
+                                background: '#ef4444',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: 10,
+                                padding: '12px 16px',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                boxShadow: '0 6px 20px rgba(239,68,68,0.18)'
+                            }}
+                        >
+                            Excluir selecionadas ({selectedIds.length})
+                        </button>
+                        <button
+                            onClick={() => { handleToggleSelectMode(false); setSelectedIds([]); }}
+                            style={{
+                                marginTop: 8,
+                                background: '#333',
+                                color: '#fff',
+                                border: '1px solid #8b5cf6',
+                                borderRadius: 8,
+                                padding: '8px 12px',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                            }}
+                        >
+                            Cancelar seleção
+                        </button>
+                    </div>
+                )
+            }
+
             <div className={styles.navigation}>
                 <button id="ir" onClick={() => changeWeek(1)} disabled={nextDisabled}>
                     <img src={arrow_right} alt="svg" />
@@ -767,7 +959,7 @@ function Table({ reserva, pullMarks, serieMode, horariosSelecionados, setHorario
                     <img src={arrow_left} alt="svg" />
                 </button>
             </div>
-        </section>
+        </section >
     );
 }
 

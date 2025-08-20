@@ -8,6 +8,8 @@ const createReserva = async (reservaData) => {
 
     const formattedDataReserva = format(new Date(dataReserva), 'yyyy-MM-dd');
 
+    console.log('Data da reserva formatada:', formattedDataReserva);
+
     const callQuery = `
         CALL sp_createReserva(?, ?, ?, ?, ?, ?, ?, @result);
     `;
@@ -22,6 +24,8 @@ const createReserva = async (reservaData) => {
         if (result === 'Limite de 3 agendamentos por semana atingido para este professor.') {
             return { error: result, type: 'reservation_limit' };
         }
+        console.log("Resultado é: ", result);
+
 
         return { message: result };
     } catch (err) {
@@ -45,6 +49,7 @@ const getData = async (periodo, tipoLaboratorio, numeroLaboratorio) => {
 };
 
 const deleteReserva = async (idReserva) => {
+    console.log("[DATABASE MODEL] Deletando reserva:", idReserva);
 
     const query = 'DELETE FROM reserva WHERE idReserva = ?';
     const values = [idReserva];
@@ -102,11 +107,32 @@ const executeRawQuery = async (query) => {
     }
 };
 
+const deleteReservasExistentes = async (aulaReserva, periodo, dataReserva) => {
+    //apaga a reserva se existir
+    const values = [aulaReserva, periodo, dataReserva];
+    // First check if record exists
+    const checkQuery = 'SELECT COUNT(*) as count FROM reserva WHERE aulaReserva = ? AND periodo = ? AND dataReserva = ?';
+    const [rows] = await connection.execute(checkQuery, values);
+
+    if (rows[0].count > 0) {
+        const query = 'DELETE FROM reserva WHERE aulaReserva = ? AND periodo = ? AND dataReserva = ?';
+        try {
+            const [result] = await connection.execute(query, values);
+            return result.affectedRows; // Retorna o número de linhas afetadas
+        } catch (err) {
+            console.error('Erro ao deletar reservas existentes:', err);
+            throw err;
+        }
+    }
+
+};
+
 module.exports = {
     createReserva,
     getData,
     deleteReserva,
     getDataFromDate,
     updateReserva,
-    executeRawQuery, // exporta o novo método
+    executeRawQuery,
+    deleteReservasExistentes
 };

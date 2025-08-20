@@ -39,7 +39,7 @@ const AdminDashboard = () => {
         setTypeLab(t);
         setNumLab(n);
         try {
-            const result = await axios.post('http://192.168.1.210:3333/Marks',
+            const result = await axios.post('http://localhost:3333/Marks',
                 JSON.stringify({
                     "periodo": p,
                     "tipoLaboratorio": t,
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
     const fetchLabs = async () => {
         setLoadingLabs(true);
         try {
-            const response = await axios.get('http://192.168.1.210:3333/labs');
+            const response = await axios.get('http://localhost:3333/labs');
             setLabs(response.data);
         } catch (error) {
             setLabs([]);
@@ -101,7 +101,7 @@ const AdminDashboard = () => {
     // Buscar labs por tipo
     const fetchLabsTipo = async (tipoLab) => {
         try {
-            const response = await axios.get(`http://192.168.1.210:3333/labsType/${tipoLab}`);
+            const response = await axios.get(`http://localhost:3333/labsType/${tipoLab}`);
             setLabsTipo(response.data);
             // Se existir, atualiza o número do laboratório para o primeiro disponível
             if (response.data.length > 0) {

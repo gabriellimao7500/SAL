@@ -1,30 +1,28 @@
 const markModels = require('../models/markModels');
 const labsModels = require('../models/labsModels');
 
-
 function calcularDiasSemana(startDate, endDate, dayOfWeek) {
     // dayOfWeek: 1=segunda, 2=terça, ..., 5=sexta
     const result = [];
-    let current = new Date(startDate);
-    const end = new Date(endDate);
+
+    // Converte entrada para data no fuso local com hora 00:00 para evitar deslocamentos por timezone
+    function toLocalDate(dateInput) {
+        if (typeof dateInput === 'string') {
+            const parts = dateInput.split('-').map(Number);
+            if (parts.length === 3) {
+                return new Date(parts[0], parts[1] - 1, parts[2]);
+            }
+        }
+        const d = new Date(dateInput);
+        return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
+
+    let current = toLocalDate(startDate);
+    const end = toLocalDate(endDate);
+
     while (current <= end) {
         if (current.getDay() === dayOfWeek) {
-            result.push(new Date(current));
-        }
-        current.setDate(current.getDate() + 1);
-    }
-    return result;
-}
-
-function calcularDiasSemana(startDate, endDate, dayOfWeek) {
-    // dayOfWeek: 1=segunda, 2=terça, ..., 5=sexta
-    const result = [];
-    let current = new Date(startDate);
-    const end = new Date(endDate);
-
-    while (current <= end) {
-        if (current.getDay() === dayOfWeek - 1) {
-            result.push(new Date(current)); // ou current.toISOString().substring(0,10) para só a data
+            result.push(new Date(current)); // data local (sem hora)
         }
         current.setDate(current.getDate() + 1);
     }
@@ -55,6 +53,8 @@ const createMark = async (req, res) => {
             motivo
         };
 
+
+
         const createdReserva = await markModels.createReserva(reservaData);
         console.log("Reserva criada com sucesso: ", createdReserva);
         if (createdReserva.error) {
@@ -72,7 +72,7 @@ const createMark = async (req, res) => {
 
 };
 
-const createMarkFromTo = (req, res) => {
+const createMarkFromTo = async (req, res) => {
     // Lógica para criar marcações de um intervalo de tempo
 
     const instrucoesReserva = {
@@ -92,11 +92,41 @@ const createMarkFromTo = (req, res) => {
 
     // Calcula os dias corretos do intervalo
     const dias = calcularDiasSemana(instrucoesReserva.startDate, instrucoesReserva.endDate, instrucoesReserva.diaDaSemana);
-    // Retorna array de datas em formato ISO (apenas dia)
-    const datasFormatadas = dias.map(d => d.toISOString().substring(0, 10));
+    // Retorna array de datas em formato local (apenas dia) para evitar deslocamento por timezone
+    const pad = (n) => n < 10 ? '0' + n : String(n);
+    const datasFormatadas = dias.map(d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`);
     console.log("Datas calculadas:", datasFormatadas);
-    res.json({ datas: datasFormatadas });
 
+    //Criando reservas com base nas datas encontradas
+    const reservasCriadas = await Promise.all(datasFormatadas.map(async (data) => {
+        const reservaData = {
+            dataReserva: data,
+            periodo: instrucoesReserva.periodo,
+            aulaReserva: instrucoesReserva.aulaReserva,
+            idProfessor: instrucoesReserva.idProfessor,
+            tipoLaboratorio: instrucoesReserva.tipoLaboratorio,
+            numeroLaboratorio: instrucoesReserva.numeroLaboratorio,
+            svg: "",
+            motivo: instrucoesReserva.motivo,
+            idProfessor: instrucoesReserva.idProfessor
+        };
+
+        //Primeiro apaga as reservas existentes usando o numero da aula, horário e dia
+        console.log("Deletando reserva: ", reservaData);
+
+        await markModels.deleteReservasExistentes(reservaData.aulaReserva, reservaData.periodo, reservaData.dataReserva);
+
+        console.log(
+            "Fazendo reserva para o professor id: ", instrucoesReserva.idProfessor,
+            " na aula: ", instrucoesReserva.aulaReserva,
+            " com motivo: ", instrucoesReserva.motivo
+        );
+
+        return await markModels.createReserva(reservaData);
+    }));
+
+    console.log("Reservas criadas:", reservasCriadas);
+    res.status(201).json({ message: "Reservas criadas com sucesso.", reservas: reservasCriadas });
 }
 
 const getData = async (req, res) => {
@@ -113,6 +143,7 @@ const getData = async (req, res) => {
 
 const deleteMark = async (req, res) => {
     const { idReserva } = req.params;
+    console.log("[DATABASE] Deletando reserva:", idReserva);
 
     if (!idReserva) {
         return res.status(400).json({ error: 'ID não fornecido.' });
@@ -122,8 +153,10 @@ const deleteMark = async (req, res) => {
         const result = await markModels.deleteReserva(Number(idReserva)); // Converta o ID para número
 
         if (result > 0) {
+            console.log("[DATABASE] Reserva deletada com sucesso:", idReserva);
             return res.status(200).json({ message: 'Reserva deletada com sucesso.' });
         } else {
+            console.log("[DATABASE] Reserva não encontrada:", idReserva);
             return res.status(404).json({ error: 'Reserva não encontrada.' });
         }
     } catch (err) {
