@@ -4,6 +4,10 @@ const labsModels = require('../models/labsModels');
 function calcularDiasSemana(startDate, endDate, dayOfWeek) {
     // dayOfWeek: 1=segunda, 2=terça, ..., 5=sexta
     const result = [];
+    dayOfWeek = dayOfWeek - 1;
+    console.log("Dados para calculo");
+    console.log("Data de Inicio: ", startDate, " e data de fim: ", endDate);
+    console.log("Dia da Semana: ", dayOfWeek);
 
     // Converte entrada para data no fuso local com hora 00:00 para evitar deslocamentos por timezone
     function toLocalDate(dateInput) {
@@ -88,7 +92,8 @@ const createMarkFromTo = async (req, res) => {
         diaDaSemana: req.body.diaDaSemana
     };
 
-    console.log(instrucoesReserva);
+    console.log("Data de Inicio: ", instrucoesReserva.startDate, " e data de fim: ", instrucoesReserva.endDate);
+    //console.log(instrucoesReserva);
 
     // Calcula os dias corretos do intervalo
     const dias = calcularDiasSemana(instrucoesReserva.startDate, instrucoesReserva.endDate, instrucoesReserva.diaDaSemana);
@@ -105,24 +110,31 @@ const createMarkFromTo = async (req, res) => {
             aulaReserva: instrucoesReserva.aulaReserva,
             idProfessor: instrucoesReserva.idProfessor,
             tipoLaboratorio: instrucoesReserva.tipoLaboratorio,
-            numeroLaboratorio: instrucoesReserva.numeroLaboratorio,
+            numeroLaboratorio: Number(instrucoesReserva.numeroLaboratorio),
             svg: "",
             motivo: instrucoesReserva.motivo,
             idProfessor: instrucoesReserva.idProfessor
         };
 
-        //Primeiro apaga as reservas existentes usando o numero da aula, horário e dia
-        console.log("Deletando reserva: ", reservaData);
 
-        await markModels.deleteReservasExistentes(reservaData.aulaReserva, reservaData.periodo, reservaData.dataReserva);
+        //Primeiro apaga as reservas existentes usando o numero da aula, horário, dia e laboratório
 
-        console.log(
-            "Fazendo reserva para o professor id: ", instrucoesReserva.idProfessor,
-            " na aula: ", instrucoesReserva.aulaReserva,
-            " com motivo: ", instrucoesReserva.motivo
-        );
+        // Ajusta a data para +1 dia (mantendo formato YYYY-MM-DD)
+        const parts = reservaData.dataReserva.split('-').map(Number);
+        const tempDate = new Date(parts[0], parts[1] - 1, parts[2]);
+        tempDate.setDate(tempDate.getDate() + 1);
+        const dataMaisUm = `${tempDate.getFullYear()}-${pad(tempDate.getMonth() + 1)}-${pad(tempDate.getDate())}`;
 
-        return await markModels.createReserva(reservaData);
+        //console.log("Deletando reserva: ", reservaData.dataReserva);
+        await markModels.deleteReservasExistentes(reservaData.aulaReserva, reservaData.periodo, reservaData.dataReserva, reservaData.numeroLaboratorio);
+
+        // console.log(
+        //     "Fazendo reserva para o professor id: ", instrucoesReserva.idProfessor,
+        //     " na aula: ", instrucoesReserva.aulaReserva,
+        //     " com motivo: ", instrucoesReserva.motivo
+        // );
+
+        return await markModels.createReserva({ dataReserva: dataMaisUm, ...reservaData });
     }));
 
     console.log("Reservas criadas:", reservasCriadas);

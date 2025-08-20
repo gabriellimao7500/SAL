@@ -3,10 +3,13 @@ const { format, startOfWeek, endOfWeek } = require('date-fns');
 
 const createReserva = async (reservaData) => {
     const { dataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo } = reservaData;
-    console.log('Dados da reserva:', reservaData);
+    //console.log('Dados da reserva:', reservaData);
 
 
-    const formattedDataReserva = format(new Date(dataReserva), 'yyyy-MM-dd');
+    const [y, m, d] = dataReserva.split('-').map(Number);
+    const data = new Date(y, m - 1, d); // cria no horário local
+    const formattedDataReserva = format(data, 'yyyy-MM-dd');
+
 
     console.log('Data da reserva formatada:', formattedDataReserva);
 
@@ -24,7 +27,7 @@ const createReserva = async (reservaData) => {
         if (result === 'Limite de 3 agendamentos por semana atingido para este professor.') {
             return { error: result, type: 'reservation_limit' };
         }
-        console.log("Resultado é: ", result);
+        console.log("Reserva do dia ", formattedDataReserva, " feita.");
 
 
         return { message: result };
@@ -107,22 +110,32 @@ const executeRawQuery = async (query) => {
     }
 };
 
-const deleteReservasExistentes = async (aulaReserva, periodo, dataReserva) => {
+const deleteReservasExistentes = async (aulaReserva, periodo, dataReserva, idLaboratorio) => {
     //apaga a reserva se existir
-    const values = [aulaReserva, periodo, dataReserva];
-    // First check if record exists
-    const checkQuery = 'SELECT COUNT(*) as count FROM reserva WHERE aulaReserva = ? AND periodo = ? AND dataReserva = ?';
-    const [rows] = await connection.execute(checkQuery, values);
+    const values = [aulaReserva, periodo, dataReserva, idLaboratorio];
+    console.log("Dados para delete:", values);
 
-    if (rows[0].count > 0) {
-        const query = 'DELETE FROM reserva WHERE aulaReserva = ? AND periodo = ? AND dataReserva = ?';
+    // First check if record exists
+    const checkQuery = 'SELECT * FROM reserva WHERE aulaReserva = ? AND periodo = ? AND dataReserva = ? AND idLaboratorio = ?';
+    let r = await connection.execute(checkQuery, values);
+    // console.log("Resultado: ", r);
+
+    const [rows] = r;
+
+    if (rows.length > 0) {
+        console.log("Reserva existente encontrada. Deletando...");
+        const query = 'DELETE FROM reserva WHERE aulaReserva = ? AND periodo = ? AND dataReserva = ? AND idLaboratorio = ?';
         try {
             const [result] = await connection.execute(query, values);
+            console.log(`Reserva ${dataReserva} Deletada.`);
+
             return result.affectedRows; // Retorna o número de linhas afetadas
         } catch (err) {
             console.error('Erro ao deletar reservas existentes:', err);
             throw err;
         }
+    } else {
+        console.log("Nenhuma reserva existente encontrada.");
     }
 
 };

@@ -316,7 +316,7 @@ function Table({
         reserva.index = indice
     });
 
-    function submitReserva() {
+    function submitReserva(correcaoDia = 0) {
         // Lógica para submeter a reserva
         const instrucoesReserva = {
             endDate: adminCampos.dataFim,
@@ -328,7 +328,7 @@ function Table({
             numeroLaboratorio: localStorage.getItem('numLab'),
             svg: "",
             motivo: adminCampos.motivo,
-            diaDaSemana: adminCampos.diaDaSemana
+            diaDaSemana: adminCampos.diaDaSemana + correcaoDia
         };
         console.log("Instruções de Reserva:", instrucoesReserva);
 
@@ -814,7 +814,7 @@ function Table({
                                     e.preventDefault();
                                     // Passe o colIndex correto, por exemplo, do objDefault[0]
                                     const colIndex = (objDefault[0]?.index ?? 0) % 5;
-                                    submitReserva();
+                                    submitReserva(1);
                                     setAdminModalOpen(false);
                                 }}
                                 onDelete={handleDelete}
