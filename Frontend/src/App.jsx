@@ -7,7 +7,6 @@ import SelectLab from './pages/SelectLab'
 import Labs from './pages/Labs'
 import AboutUs from './pages/AboutUs/AboutUs'
 import HowToUse from './pages/HowToUse'
-import AdminTeachers from './pages/AdminTeachers'
 import AdminDashboard from './pages/AdminDashboard'
 import { Navigate } from 'react-router-dom'
 
@@ -31,7 +30,6 @@ function App() {
         <Route path='/Labs' element={<Labs />}></Route>
         <Route path='/AboutUs' element={<AboutUs />}></Route>
         <Route path='/HowToUse' element={<HowToUse />}></Route>
-        <Route path='/admin/teachers' element={<AdminTeachers />} />
         <Route path='/adminDashboard' element={isAdminLogged() ? <AdminDashboard /> : <Navigate to='/' replace />} />
       </Routes>
     </Router>
