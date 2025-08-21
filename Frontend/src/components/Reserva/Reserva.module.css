@@ -1,4 +1,4 @@
-.blur{
+.blur {
     width: 100vw;
     height: 100vh;
     bottom: 0;
@@ -10,18 +10,18 @@
     justify-content: center;
 }
 
-.reservas{
+.reservas {
     width: 440px;
     height: 540px;
     border-radius: 8px;
-    background: linear-gradient(to bottom, rgba(100,107,193,0.95),rgba(47,50,91,0.95));
+    background: linear-gradient(to bottom, rgba(100, 107, 193, 0.95), rgba(47, 50, 91, 0.95));
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
 }
 
 
-.reservado{
+.reservado {
     width: 100%;
     height: 100%;
     display: flex;
@@ -29,22 +29,26 @@
     align-items: center;
 }
 
-.hours{
+.hours {
     width: 100%;
-    height: 24%;
+    height: 50vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     font-size: 20px;
+    margin-top: 3%;
 }
-.periodo{
+
+.periodo {
     font-weight: 600;
 }
-.time{
+
+.time {
     font-weight: 300;
 }
 
-.submit{
+.submit {
     font-size: 16px;
     font-weight: bolder;
     border-radius: 8px;
@@ -53,32 +57,40 @@
     height: 40px;
     color: #333;
     border: none;
-    cursor: url("../../../public/hand.png"),pointer;
+    cursor: url("../../../public/hand.png"), pointer;
     transition: 150ms ease-out;
-}.submit:hover{
+}
+
+.submit:hover {
     color: #000;
     background-color: rgba(255, 255, 255, 0.85);
     transition: 150ms ease-in;
 }
-.submit:disabled{
-    background-color: #777;
-    color: #999;
-}.submit:disabled:hover{
+
+.submit:disabled {
     background-color: #777;
     color: #999;
 }
-.svg{
+
+.submit:disabled:hover {
+    background-color: #777;
+    color: #999;
+}
+
+.svg {
     width: 40px;
     height: 40px;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
-.labinfo{
+
+.labinfo {
     display: flex;
     align-items: center;
     justify-content: space-around;
     width: 80%;
 }
-.labname{
+
+.labname {
     font-size: 18px;
     font-weight: 300;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -86,7 +98,8 @@
     align-items: center;
     gap: 4px;
 }
-.Reservado_por{
+
+.Reservado_por {
     margin-top: 20px;
     font-size: 16px;
     font-weight: bold;
@@ -94,7 +107,8 @@
     display: flex;
     align-items: start;
 }
-.inforeserva{
+
+.inforeserva {
     width: 90%;
     display: flex;
     flex-direction: column;
@@ -102,16 +116,19 @@
     padding-inline: 10%;
     padding-top: 20px;
 }
-.img{
+
+.img {
     border-radius: 50%;
     object-fit: cover;
 }
-.nameProfessor{
+
+.nameProfessor {
     display: flex;
     flex-direction: column;
     align-items: start;
 }
-.userinfo{
+
+.userinfo {
     margin-top: 20px;
     width: 100%;
     display: flex;
@@ -119,19 +136,22 @@
     justify-content: center;
     gap: 20px;
 }
-.logado{
+
+.logado {
     margin-top: 20px;
 }
 
-.name{
+.name {
     font-size: 18px;
     font-weight: bold;
-}.email{
+}
+
+.email {
     font-size: 14px;
     font-weight: 100;
 }
 
-.main_input{
+.main_input {
     margin-top: 40px;
     width: 105%;
     height: 220px;
@@ -144,14 +164,15 @@
     padding: 20px;
     align-items: start;
 }
-.input{
+
+.input {
     padding: 20px;
     width: 100%;
     height: 200%;
     resize: none;
     color: black;
     font-weight: 500;
-    font-size: 18px; 
+    font-size: 18px;
     background: none;
     outline: none;
     border: none;
@@ -160,34 +181,34 @@
 
 .input::-webkit-scrollbar {
     width: 10px;
-  }
-  
+}
+
 .input::-webkit-scrollbar-track {
-  background: #999;
-  border: 1px solid #666; 
-  border-radius: 50px;
+    background: #999;
+    border: 1px solid #666;
+    border-radius: 50px;
 }
 
 .input::-webkit-scrollbar-thumb {
-  background: #666;
-  border: 1px solid #333;
-  border-radius: 50px;
-}   
+    background: #666;
+    border: 1px solid #333;
+    border-radius: 50px;
+}
 
-.motivo{
+.motivo {
     margin-left: 8px;
     color: #2D2F55;
     font-size: 16px;
     font-weight: bold;
 }
 
-.form{
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.cancelar{
+.cancelar {
     width: 110%;
     margin-top: 10px;
     background-color: #ff3162;

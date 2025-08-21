@@ -186,7 +186,7 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
   return (
     <section className={visible ? styles.blur : "none"}>
       <section ref={reservasRef} className={styles.reservas}>
-        <section className={type === "nothing" ? `${styles.hours}` : `${styles.hours} ${styles.logado}`}>
+        <section className={type === "nothing" ? `${styles.hours}` : `${styles.logado} ${styles.logado} `}>
           <div className={styles.periodo}>
             {localStorage.getItem("periodo")}: {aula}° aula
           </div>
