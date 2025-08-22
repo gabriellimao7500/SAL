@@ -4,6 +4,7 @@ import Table from '../components/Table/Table';
 import Select from '../components/Select/Select';
 import axios from 'axios';
 import './AdminDashboard.css'; // Mantém o estilo consistente
+import config from "../../config";
 
 const AdminDashboard = () => {
     // Estado para lista de laboratórios filtrados por tipo
