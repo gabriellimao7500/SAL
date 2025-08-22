@@ -1,22 +1,22 @@
 -- Active: 1739237217105@@127.0.0.1@3306@sal
-CREATE DATABASE sal;
+-- CREATE DATABASE sal;
 USE sal;
 
 -- Criar tabela professor
-CREATE TABLE professor (
-    idProfessor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    email VARCHAR(50) NOT NULL UNIQUE,
-    senha VARCHAR(16) NOT NULL,
-    rule ENUM('comum', 'admin') NOT NULL,
-    imagem LONGBLOB
-);
+-- CREATE TABLE professor (
+    -- idProfessor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    -- nome VARCHAR(50) NOT NULL,
+    -- email VARCHAR(50) NOT NULL UNIQUE,
+   -- senha VARCHAR(16) NOT NULL,
+     -- rule ENUM('comum', 'admin') NOT NULL,
+    -- imagem LONGBLOB
+-- );
 
 
 
 
 
---alter table para adcionar o campo rule
+-- alter table para adcionar o campo rule
 
 ALTER TABLE professor ADD COLUMN rule ENUM('comum', 'admin') NOT NULL;
 
@@ -31,7 +31,7 @@ ALTER TABLE professor ADD COLUMN rule ENUM('comum', 'admin') NOT NULL;
 
 
 
-SELECT * FROM professor
+SELECT * FROM professor;
 
 -- Criar tabela laboratorio
 CREATE TABLE laboratorio (

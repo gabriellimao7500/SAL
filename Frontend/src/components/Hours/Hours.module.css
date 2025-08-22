@@ -1,13 +1,15 @@
-.hours{
+.hours {
     display: flex;
+    margin-top: 4%;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 50vh;
+}
+
+.hours div {
+    display: block;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-}
 
-.hours div{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin-top: 36px;
 }

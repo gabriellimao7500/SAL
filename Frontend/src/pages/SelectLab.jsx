@@ -1,11 +1,11 @@
 import Header from "../components/header/Header"
 import Carousel from "../components/Carousel/Carousel"
 
-function SelectLab(){
+function SelectLab() {
     return (
         <>
-        <Header></Header>
-        <Carousel></Carousel>
+            <Header></Header>
+            <Carousel></Carousel>
         </>
     )
 }
