@@ -4,3 +4,5 @@ Frontend/node_modules/
 .env
 backend/.env
 Frontend/.env
+Frontend/build
+Frontend/dist

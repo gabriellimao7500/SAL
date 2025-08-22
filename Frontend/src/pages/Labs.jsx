@@ -19,7 +19,7 @@ function Labs() {
 
     const pullMarks = async (periodo2, tipo2 = tipo2, numLab2) => {
 
-        const result = await axios.post(`${config.apiUrl}:3333/Marks`,
+        const result = await axios.post(`${config.apiUrl}/Marks`,
             JSON.stringify({
                 "periodo": periodo2,
                 "tipoLaboratorio": tipo2,
