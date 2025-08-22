@@ -406,7 +406,10 @@ const AdminDashboard = () => {
                             <h2>Bloquear/Desbloquear Laboratórios</h2>
                         </div>
                         <div style={{ marginBottom: '12px', maxHeight: '320px', overflowY: 'auto' }}>
-                            <table style={{ width: '100%', color: '#fff', background: 'none', borderCollapse: 'collapse' }}>
+                            <table
+                                style={{ width: '100%', color: '#fff', background: 'none', borderCollapse: 'collapse' }}
+
+                            >
                                 <thead>
                                     <tr style={{ background: '#232323', color: '#ef4444' }}>
                                         <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Tipo</th>
@@ -836,6 +839,7 @@ const AdminDashboard = () => {
                                     setHorariosSelecionados={setHorariosSelecionados}
                                     adminSelectMode={adminSelectMode}
                                     handleToggleSelectMode={handleToggleSelectMode}
+                                    adminMode={true}
                                 />
                             </div>
                         </div>

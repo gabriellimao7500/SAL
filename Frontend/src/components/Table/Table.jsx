@@ -20,7 +20,8 @@ function Table({
     horariosSelecionados,
     setHorariosSelecionados,
     adminSelectMode,
-    handleToggleSelectMode
+    handleToggleSelectMode,
+    adminMode = false
 }) {
     // Modal customizado para admin
     const [adminModalOpen, setAdminModalOpen] = useState(false);
@@ -81,14 +82,14 @@ function Table({
 
 
 
-    if (JSON.parse(sessionStorage.getItem('professor'))) {
-        let user = JSON.parse(sessionStorage.getItem('professor'));
-        if (user.rule === "admin") {
-            semanasPraMais = 52;
-        } else {
-            semanasPraMais = 2;
-        }
-    }
+    // if (JSON.parse(sessionStorage.getItem('professor'))) {
+    //     let user = JSON.parse(sessionStorage.getItem('professor'));
+    //     if (user.rule === "admin") {
+    //         semanasPraMais = 52;
+    //     } else {
+    //         semanasPraMais = 2;
+    //     }
+    // }
 
 
     const ebb = getWeeksPassed(a, m, d);
@@ -800,8 +801,8 @@ function Table({
             {/* Renderiza apenas o modal correto */}
             {
                 (() => {
-                    const user = JSON.parse(sessionStorage.getItem('professor'));
-                    if (user && user.rule === "admin") {
+
+                    if (adminMode) {
 
                         return (
                             <AdminReservaModal
