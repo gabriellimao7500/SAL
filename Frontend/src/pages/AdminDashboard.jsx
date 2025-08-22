@@ -44,7 +44,7 @@ const AdminDashboard = () => {
         setTypeLab(t);
         setNumLab(n);
         try {
-            const result = await axios.post(`${config.apiUrl}:3333/Marks`,
+            const result = await axios.post(`${config.apiUrl}/Marks`,
                 JSON.stringify({
                     "periodo": p,
                     "tipoLaboratorio": t,
@@ -81,7 +81,7 @@ const AdminDashboard = () => {
     // Buscar professores
     const fetchTeachers = async () => {
         try {
-            const response = await axios.get(`${config.apiUrl}:3333/teachers`);
+            const response = await axios.get(`${config.apiUrl}/teachers`);
             setTeachers(response.data);
             setFilteredTeachers(response.data);
         } catch (error) {
@@ -99,7 +99,7 @@ const AdminDashboard = () => {
         setLoadingLabs(true);
         setLabsError('');
         try {
-            const response = await axios.get(`${config.apiUrl}:3333/labs/all`);
+            const response = await axios.get(`${config.apiUrl}/labs/all`);
             setLabs(response.data);
             // Inicializa o status de bloqueio de cada laboratório
             const status = {};
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
     // Buscar labs por tipo
     const fetchLabsTipo = async (tipoLab) => {
         try {
-            const response = await axios.get(`${config.apiUrl}:3333/labsType/${tipoLab}`);
+            const response = await axios.get(`${config.apiUrl}/labsType/${tipoLab}`);
             setLabsTipo(response.data);
             // Se existir, atualiza o número do laboratório para o primeiro disponível
             if (response.data.length > 0) {
@@ -159,7 +159,7 @@ const AdminDashboard = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`${config.apiUrl}:3333/teachers/${editingId}`, form);
+            await axios.put(`${config.apiUrl}/teachers/${editingId}`, form);
             setIsModalOpen(false);
             setForm({ name: '', email: '', senha: '' });
             setEditingId(null);
@@ -172,7 +172,7 @@ const AdminDashboard = () => {
     // Excluir professor
     const handleDelete = async () => {
         try {
-            await axios.delete(`${config.apiUrl}:3333/teachers/${editingId}`, {
+            await axios.delete(`${config.apiUrl}/teachers/${editingId}`, {
                 data: { name: form.name, email: form.email }
             });
             closeModal();
@@ -215,7 +215,7 @@ const AdminDashboard = () => {
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await axios.post(`${config.apiUrl}:3333/schedules/upload`, formData, {
+            const response = await axios.post(`${config.apiUrl}/schedules/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -248,7 +248,7 @@ const AdminDashboard = () => {
         try {
             console.log("Requisição");
 
-            const res = await axios.post(`${config.apiUrl}:3333/labs/bloquear`, {
+            const res = await axios.post(`${config.apiUrl}/labs/bloquear`, {
                 tipoLaboratorio: typeLab,
                 numeroLaboratorio: numLab
             }, {
@@ -273,7 +273,7 @@ const AdminDashboard = () => {
 
     const handleUnblockLab = async () => {
         try {
-            const res = await axios.post(`${config.apiUrl}:3333/labs/desbloquear`, {
+            const res = await axios.post(`${config.apiUrl}/labs/desbloquear`, {
                 tipoLaboratorio: typeLab,
                 numeroLaboratorio: numLab
             }, {
@@ -428,7 +428,7 @@ const AdminDashboard = () => {
                                                         onClick={async () => {
                                                             const novoStatus = !labsStatus[lab.idLaboratorio];
                                                             try {
-                                                                const res = await axios.post(`${config.apiUrl}:3333/labs/${novoStatus ? 'bloquear' : 'desbloquear'}`, {
+                                                                const res = await axios.post(`${config.apiUrl}/labs/${novoStatus ? 'bloquear' : 'desbloquear'}`, {
                                                                     tipoLaboratorio: lab.tipoLaboratorio,
                                                                     numeroLaboratorio: lab.numeroLaboratorio
                                                                 }, {
