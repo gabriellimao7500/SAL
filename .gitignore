@@ -6,3 +6,4 @@ Frontend/.env
 backend/.env
 Frontend/build
 Frontend/dist
+Frontend/config.js
