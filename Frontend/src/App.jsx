@@ -30,7 +30,7 @@ function App() {
         <Route path='/Labs' element={<Labs />}></Route>
         <Route path='/AboutUs' element={<AboutUs />}></Route>
         <Route path='/HowToUse' element={<HowToUse />}></Route>
-        <Route path='/adminDashboard' element={isAdminLogged() ? <AdminDashboard /> : <Navigate to='/' replace />} />
+        <Route path='/adminDashboard' element={<AdminDashboard />} />
       </Routes>
     </Router>
   )
