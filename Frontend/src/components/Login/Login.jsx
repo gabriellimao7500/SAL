@@ -13,7 +13,7 @@ function Login() {
   const navigate = useNavigate();
 
 
-  
+
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
@@ -27,16 +27,16 @@ function Login() {
       );
 
       if (Array.isArray(response.data) && response.data.length === 1) {
-        
+
         sessionStorage.setItem('professor', JSON.stringify(response.data[0]));
-        
-        
+
+
         // Remove parâmetros da URL sem recarregar a página
         const cleanUrl = window.location.origin + window.location.pathname;
         window.history.replaceState({}, document.title, cleanUrl);
         var profNome = JSON.parse(sessionStorage.getItem('professor')).nome;
         var primeiroNome = profNome.split(" ")[0];
-        
+
         // Exibe o SweetAlert de sucesso
         Swal.fire({
           title: 'Login realizado com sucesso!',
@@ -55,9 +55,26 @@ function Login() {
     } catch (error) {
       if (!error?.response) {
         console.log('erro ao acessar o servidor');
+        Swal.fire({
+          title: 'Erro de conexão',
+          text: 'Não foi possível conectar ao servidor. Tente novamente mais tarde.',
+          icon: 'error',
+          timer: 2000,
+          showConfirmButton: false
+        })
       } else if (error.response.status === 401) {
-        setIncorrect(true);
-        setTimeout(() => setIncorrect(false), 2000);
+
+        Swal.fire({
+          title: 'Erro de autenticação',
+          text: 'Usuário ou senha inválidos. Tente novamente.',
+          icon: 'error',
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
+          setIncorrect(true);
+          setTimeout(() => setIncorrect(false), 2000);
+        });
+
       }
     }
   };
@@ -69,20 +86,20 @@ function Login() {
         <h1>Login</h1>
         <form className='inputs' onSubmit={handleLogin}>
           <Inputs
-            text="email" 
-            type="text" 
-            name="email" 
+            text="email"
+            type="email"
+            name="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-          <Inputs 
-            text="password" 
-            type="password" 
-            name="senha" 
+          <Inputs
+            text="password"
+            type="password"
+            name="senha"
             value={senha}
-            onChange={(e) => setSenha(e.target.value)} 
-            required 
+            onChange={(e) => setSenha(e.target.value)}
+            required
           />
           <button className='enviar' type='submit'>Login</button>
         </form>
