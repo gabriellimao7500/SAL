@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Hamburguer from '../Hamburguer/Hamburguer';
 import { Link } from 'react-router-dom';
 
-function Header({ Labs }) {
+function Header() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const [isAdmin, setIsAdmin] = useState(false);

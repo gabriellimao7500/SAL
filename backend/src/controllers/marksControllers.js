@@ -232,6 +232,18 @@ const executeRawQuery = async (query) => {
     }
 };
 
+const getMarkOfTheHour = async (req, res) => {
+    const { periodo, aulaReserva, idLaboratorio, dia } = req.params;
+
+    try {
+        const marks = await markModels.getMarkOfTheHour(periodo, aulaReserva, idLaboratorio, dia);
+        return res.status(200).json(marks);
+    } catch (error) {
+        console.error('Erro ao obter dados:', error);
+        return res.status(500).json({ message: "Erro ao obter dados" });
+    }
+};
+
 module.exports = {
     createMark,
     getData,
@@ -239,5 +251,6 @@ module.exports = {
     getDataFromId,
     updateReserva,
     executeRawQuery,
-    createMarkFromTo // exporta o novo método
+    createMarkFromTo,
+    getMarkOfTheHour
 }

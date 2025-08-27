@@ -140,10 +140,20 @@ const deleteReservasExistentes = async (aulaReserva, periodo, dataReserva, idLab
 
 };
 
+
+const getMarkOfTheHour = async (periodo, aulaReserva, idLaboratorio, dia) => {
+    console.log("Obtendo marcação da hora:", { periodo, aulaReserva, idLaboratorio, dia });
+
+    const query = "SELECT * FROM reserva WHERE periodo = ? AND aulaReserva = ? AND idLaboratorio = ? AND dataReserva = ?";
+    const [marks] = await connection.execute(query, [periodo, aulaReserva, idLaboratorio, dia]);
+    return marks;
+};
+
 module.exports = {
     createReserva,
     getData,
     deleteReserva,
+    getMarkOfTheHour,
     getDataFromDate,
     updateReserva,
     executeRawQuery,

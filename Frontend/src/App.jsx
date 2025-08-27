@@ -9,6 +9,7 @@ import AboutUs from './pages/AboutUs/AboutUs'
 import HowToUse from './pages/HowToUse'
 import AdminDashboard from './pages/AdminDashboard'
 import { Navigate } from 'react-router-dom'
+import OverviewPage from './pages/Overview'
 
 function isAdminLogged() {
   if (JSON.parse(sessionStorage.getItem('professor'))) {
@@ -25,7 +26,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<OverviewPage />} />
         <Route path='/SelectLab' element={<SelectLab />} />
         <Route path='/Labs' element={<Labs />}></Route>
         <Route path='/AboutUs' element={<AboutUs />}></Route>

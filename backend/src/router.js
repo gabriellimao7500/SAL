@@ -52,6 +52,7 @@ router.post('/createMarks', marksControllers.createMark);
 router.put('/marks/:idReserva', marksControllers.updateReserva);
 router.delete('/marks/:idReserva', marksControllers.deleteMark);
 router.post('/createMarksFromTo', marksControllers.createMarkFromTo);
+router.get('/marks/of/:idLaboratorio/:aulaReserva/:periodo/:dia', marksControllers.getMarkOfTheHour);
 
 // Requisições
 router.get('/reqs', reqController.getData);
