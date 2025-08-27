@@ -108,28 +108,43 @@ export default function OverviewPage() {
 
 
     return (
-        <div style={{ minHeight: "100vh", background: "#f7f7f7", }}>
+        <div style={{ background: "#000", height: "100vh" }}>
             <Header />
-            <div style={{ padding: 20, fontFamily: "Arial, sans-serif", maxWidth: 1200, margin: "0 auto", overflowY: 'auto' }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <h2>Visão Geral dos Laboratórios</h2>
+            <div style={{
+                padding: 24, fontFamily: "Arial, sans-serif",
+                margin: "0 auto", height: '80vh',
+                display: 'flex',
+                width: '100vw',
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center"
+            }}>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 16, width: '100vw' }}>
+                    <h2 style={{ color: "#646BC1", fontWeight: 700, fontSize: 28 }}>Visão Geral dos Laboratórios</h2>
                 </div>
-
                 {error && (
-                    <div style={{ marginTop: 12, color: "crimson" }}>Erro: {error}</div>
+                    <div style={{ marginTop: 12, color: "#ff6b6b" }}>Erro: {error}</div>
                 )}
-
-                <div style={{ marginTop: 18 }}>
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
-                            gap: 24,
-                            overflowY: 'auto',
-                            height: 'calc(100vh - 200px)',
-                        }}
-                    >
-                        {loading ? <p style={{ gridColumn: "1 / -1", color: "gray" }}>Carregando...</p> : (labs.map((lab) => (
+                <div
+                    style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 28,
+                        height: "100%",
+                        alignItems: 'flex-start',
+                        justifyContent: "space-around",
+                        width: "90vw",
+                        background: "#181818",
+                        borderRadius: 16,
+                        padding: 24,
+                        overflowY: "auto",
+                        paddingBottom: 24,
+                    }}
+                >
+                    {loading ? (
+                        <p style={{ color: "#646BC1", fontWeight: 500 }}>Carregando...</p>
+                    ) : (
+                        labs.map((lab) => (
                             <LabScheduleCard
                                 key={lab.idLaboratorio}
                                 lab={{
@@ -142,10 +157,10 @@ export default function OverviewPage() {
                                 currentContent={lab.reservas ? lab.reservas.motivo : "Sem reserva"}
                                 nextContent={null}
                             />
-                        )))}
-                    </div>
+                        ))
+                    )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

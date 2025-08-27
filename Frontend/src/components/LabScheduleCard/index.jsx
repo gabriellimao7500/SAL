@@ -17,26 +17,27 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
         <div
             style={{
                 borderRadius: 12,
-                boxShadow: "0 2px 12px 0 rgba(0,0,0,0.08)",
-                background: "#fff",
-                overflow: "hidden",
+                boxShadow: "0 2px 12px rgba(2,6,23,0.7)",
+                backgroundColor: "#0b1220",
+                width: "15vw",
                 border: "none",
                 display: "flex",
                 flexDirection: "column",
-                minHeight: 260,
+
+                color: "#e6eef8",
             }}
         >
-            {/* Header azul */}
+            {/* Header azul (tema escuro) */}
             <div style={{
-                background: "#2563eb",
+                background: "#0f1724",
                 color: "#fff",
                 padding: "16px 18px 10px 18px",
-                borderBottom: "1px solid #e5e7eb",
+                borderBottom: "1px solid rgba(255,255,255,0.04)",
                 textAlign: "left"
             }}>
-                <div style={{ fontWeight: 700, fontSize: 18, textAlign: "left" }}>{lab.name}</div>
-                <div style={{ fontSize: 13, opacity: 0.95, textAlign: "left" }}>{lab.location}</div>
-                <div style={{ fontSize: 13, marginTop: 4, opacity: 0.85, textAlign: "left" }}>
+                <div style={{ fontWeight: 700, fontSize: 18, textAlign: "left", color: "#fff" }}>{lab.name}</div>
+                <div style={{ fontSize: 13, opacity: 0.9, textAlign: "left", color: "#9ca3af" }}>{lab.location}</div>
+                <div style={{ fontSize: 13, marginTop: 4, opacity: 0.85, textAlign: "left", color: "#cbd5e1" }}>
                     Current time: {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </div>
             </div>
@@ -50,7 +51,7 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                         marginBottom: 8,
                         display: "flex",
                         alignItems: "center",
-                        color: "#16a34a",
+                        color: "#86efac",
                         textAlign: "left"
                     }}>
                         <span style={{
@@ -58,20 +59,21 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                             width: 10,
                             height: 10,
                             borderRadius: "50%",
-                            background: "#22c55e",
+                            background: "#34d399",
+                            boxShadow: "0 0 8px rgba(52,211,153,0.12)",
                             marginRight: 8,
                         }} />
-                        Current Class
+                        Aula Atual
                     </div>
                     <div style={{
-                        background: "#e9faef",
+                        background: "#062a1f",
                         borderRadius: 8,
                         padding: "14px 16px",
                         fontSize: 14,
-                        border: "1px solid #bbf7d0",
+                        border: "1px solid #064e3b",
                         marginBottom: 0,
                         minHeight: 70,
-                        color: "#166534",
+                        color: "#d1fae5",
                         boxSizing: "border-box",
                         textAlign: "left"
                     }}>
@@ -86,7 +88,7 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                         marginBottom: 8,
                         display: "flex",
                         alignItems: "center",
-                        color: "#2563eb",
+                        color: "#93c5fd",
                         textAlign: "left"
                     }}>
                         <span style={{
@@ -97,16 +99,16 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                             background: "#2563eb",
                             marginRight: 8,
                         }} />
-                        Next Class
+                        Próxima Aula
                     </div>
                     <div style={{
-                        background: "#f3f8fe",
+                        background: "#071226",
                         borderRadius: 8,
                         padding: "14px 16px",
                         fontSize: 14,
-                        border: "1px solid #bfdbfe",
+                        border: "1px solid #1f2937",
                         minHeight: 70,
-                        color: "#1e40af",
+                        color: "#cbd5e1",
                         boxSizing: "border-box",
                         textAlign: "left"
                     }}>
