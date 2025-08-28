@@ -118,7 +118,7 @@ export default function OverviewPage() {
     ];
 
     return (
-        <div style={{ background: "#000000", height: "100vh", overflowY: "auto" }}>
+        <div style={{ background: "#000000", height: "100vh" }}>
             <Header />
             <div style={{
                 padding: 24, fontFamily: "Arial, sans-serif",
@@ -128,7 +128,7 @@ export default function OverviewPage() {
                 flexDirection: "column",
                 justifyContent: "flex-start",
                 alignItems: "center",
-                height: "100%"
+                height: "90%"
             }}>
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 16, width: '100vw' }}>
                     <h2 style={{ color: "#646BC1", fontWeight: 700, fontSize: 28 }}>Visão Geral dos Laboratórios</h2>
@@ -143,54 +143,41 @@ export default function OverviewPage() {
                     <div id="labs-container" style={{
                         display: "flex",
                         gap: 28,
+                        borderRadius: 12,
                         flexWrap: "wrap",
-                        justifyContent: "space-evenly",
+                        justifyContent: "space-around",
                         alignItems: "flex-start",
-                        width: "100vw",
-
+                        width: "95vw",
+                        padding: "40px 30px",
                         overflowY: "auto",
+                        background: "#181818",
 
                     }}>
                         {/* <h3 style={{ color: "#646BC1", fontWeight: 700, fontSize: 24 }}>{tipo}</h3> */}
                         {//ordeno de acordo com meu vetor
                             tiposOrdenados.map((tipo) => (
 
-                                <div id={`labs-${tipo}`}
-                                    style={{
-                                        display: "flex",
-                                        flexWrap: "wrap",
-                                        flexDirection: "row",
-                                        alignItems: 'flex-start',
-                                        justifyContent: "space-around",
-                                        maxWidth: "40vw",
-                                        padding: 16,
-                                        gap: 16,
-                                        maxHeight: "50vh",
-                                        background: "#181818",
-                                        borderRadius: 16,
-                                        overflowY: "auto",
-                                    }}
-                                >
 
 
 
-                                    {labsPorTipo[tipo].map((lab) => (
-                                        <LabScheduleCard
-                                            key={lab.idLaboratorio}
-                                            lab={{
-                                                id: lab.idLaboratorio,
-                                                name: `${lab.tipoLaboratorio} ${lab.numeroLaboratorio}`,
-                                                location: lab.bloqueado ? "Bloqueado" : "Disponível",
-                                                svg: lab.svg,
-                                                reserva: lab.reservas,
-                                            }}
-                                            currentContent={lab.reservas ? lab.reservas.motivo : "Sem reserva"}
-                                            nextContent={null}
-                                        />
-                                    ))}
+
+                                labsPorTipo[tipo].map((lab) => (
+                                    <LabScheduleCard
+                                        key={lab.idLaboratorio}
+                                        lab={{
+                                            id: lab.idLaboratorio,
+                                            name: `${lab.tipoLaboratorio} ${lab.numeroLaboratorio}`,
+                                            location: lab.bloqueado ? "Bloqueado" : "Disponível",
+                                            svg: lab.svg,
+                                            reserva: lab.reservas,
+                                        }}
+                                        currentContent={lab.reservas ? lab.reservas.motivo : "Sem reserva"}
+                                        nextContent={null}
+                                    />
+                                ))
 
 
-                                </div>
+
                             ))}
                     </div>
                 )}

@@ -23,7 +23,6 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                 border: "none",
                 display: "flex",
                 flexDirection: "column",
-
                 color: "#e6eef8",
             }}
         >
