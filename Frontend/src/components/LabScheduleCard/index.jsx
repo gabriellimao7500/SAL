@@ -38,7 +38,7 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                 <div style={{ fontWeight: 700, fontSize: 18, textAlign: "left", color: "#fff" }}>{lab.name}</div>
                 <div style={{ fontSize: 13, opacity: 0.9, textAlign: "left", color: "#9ca3af" }}>{lab.location}</div>
                 <div style={{ fontSize: 13, marginTop: 4, opacity: 0.85, textAlign: "left", color: "#cbd5e1" }}>
-                    Current time: {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    Última Atualização: {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </div>
             </div>
             {/* Conteúdo */}

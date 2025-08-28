@@ -106,9 +106,19 @@ export default function OverviewPage() {
 
     }, [periodo]);
 
+    const labsPorTipo = labs.reduce((acc, lab) => {
+        if (!acc[lab.tipoLaboratorio]) acc[lab.tipoLaboratorio] = [];
+        acc[lab.tipoLaboratorio].push(lab);
+        return acc;
+    }, {});
+    const tipos = Object.keys(labsPorTipo);
+    const tiposOrdenados = [
+        ...tipos.filter(t => t === "Informática"),
+        ...tipos.filter(t => t !== "Informática").sort()
+    ];
 
     return (
-        <div style={{ background: "#000", height: "100vh" }}>
+        <div style={{ background: "#000000", height: "100vh", overflowY: "auto" }}>
             <Header />
             <div style={{
                 padding: 24, fontFamily: "Arial, sans-serif",
@@ -116,51 +126,128 @@ export default function OverviewPage() {
                 display: 'flex',
                 width: '100vw',
                 flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center"
+                justifyContent: "flex-start",
+                alignItems: "center",
+                height: "100%"
             }}>
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 16, width: '100vw' }}>
                     <h2 style={{ color: "#646BC1", fontWeight: 700, fontSize: 28 }}>Visão Geral dos Laboratórios</h2>
                 </div>
+
                 {error && (
-                    <div style={{ marginTop: 12, color: "#ff6b6b" }}>Erro: {error}</div>
+                    <div style={{ marginTop: 12, color: "crimson" }}>Erro: {error}</div>
                 )}
-                <div
-                    style={{
+                {loading ? (
+                    <p style={{ color: "#646BC1", fontWeight: 500 }}>Carregando...</p>
+                ) : (
+                    <div id="labs-container" style={{
                         display: "flex",
-                        flexWrap: "wrap",
                         gap: 28,
-                        height: "100%",
-                        alignItems: 'flex-start',
-                        justifyContent: "space-around",
-                        width: "90vw",
-                        background: "#181818",
-                        borderRadius: 16,
-                        padding: 24,
+                        flexWrap: "wrap",
+                        justifyContent: "space-evenly",
+                        alignItems: "flex-start",
+                        width: "100vw",
+
                         overflowY: "auto",
-                        paddingBottom: 24,
-                    }}
-                >
-                    {loading ? (
-                        <p style={{ color: "#646BC1", fontWeight: 500 }}>Carregando...</p>
-                    ) : (
-                        labs.map((lab) => (
-                            <LabScheduleCard
-                                key={lab.idLaboratorio}
-                                lab={{
-                                    id: lab.idLaboratorio,
-                                    name: `${lab.tipoLaboratorio} ${lab.numeroLaboratorio}`,
-                                    location: lab.bloqueado ? "Bloqueado" : "Disponível",
-                                    svg: lab.svg,
-                                    reserva: lab.reservas,
-                                }}
-                                currentContent={lab.reservas ? lab.reservas.motivo : "Sem reserva"}
-                                nextContent={null}
-                            />
-                        ))
-                    )}
-                </div>
+
+                    }}>
+                        {/* <h3 style={{ color: "#646BC1", fontWeight: 700, fontSize: 24 }}>{tipo}</h3> */}
+                        {//ordeno de acordo com meu vetor
+                            tiposOrdenados.map((tipo) => (
+
+                                <div id={`labs-${tipo}`}
+                                    style={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        flexDirection: "row",
+                                        alignItems: 'flex-start',
+                                        justifyContent: "space-around",
+                                        maxWidth: "40vw",
+                                        padding: 16,
+                                        gap: 16,
+                                        maxHeight: "50vh",
+                                        background: "#181818",
+                                        borderRadius: 16,
+                                        overflowY: "auto",
+                                    }}
+                                >
+
+
+
+                                    {labsPorTipo[tipo].map((lab) => (
+                                        <LabScheduleCard
+                                            key={lab.idLaboratorio}
+                                            lab={{
+                                                id: lab.idLaboratorio,
+                                                name: `${lab.tipoLaboratorio} ${lab.numeroLaboratorio}`,
+                                                location: lab.bloqueado ? "Bloqueado" : "Disponível",
+                                                svg: lab.svg,
+                                                reserva: lab.reservas,
+                                            }}
+                                            currentContent={lab.reservas ? lab.reservas.motivo : "Sem reserva"}
+                                            nextContent={null}
+                                        />
+                                    ))}
+
+
+                                </div>
+                            ))}
+                    </div>
+                )}
             </div>
         </div >
     );
 }
+
+
+/*
+ (() => {
+                        const tipos = Object.keys(labsPorTipo);
+                        const tiposOrdenados = [
+                            ...tipos.filter(t => t === "Informática"),
+                            ...tipos.filter(t => t !== "Informática").sort()
+                        ];
+                        return tiposOrdenados.map((tipo) => (
+                            <div key={tipo} style={{ marginBottom: 36 }}>
+                                <h3 style={{ color: "#646BC1", fontWeight: 600, fontSize: 22, marginBottom: 12, marginLeft: 8 }}>{tipo}</h3>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        gap: 28,
+                                        justifyContent: "flex-start",
+                                        alignItems: "flex-start",
+                                        minHeight: 120,
+                                        width: "100%",
+                                        background: "#f7f7f7",
+                                        borderRadius: 16,
+                                        padding: 24,
+                                        boxSizing: "border-box"
+                                    }}>
+                                    {labsPorTipo[tipo].map((lab) => (
+                                        <div key={lab.idLaboratorio} style={{
+                                            flex: "1 1 calc(50% - 28px)",
+                                            maxWidth: "calc(50% - 28px)",
+                                            minWidth: 260,
+                                            display: "flex",
+                                            justifyContent: "center"
+                                        }}>
+                                            <LabScheduleCard
+                                                lab={{
+                                                    id: lab.idLaboratorio,
+                                                    name: `${lab.tipoLaboratorio} ${lab.numeroLaboratorio}`,
+                                                    location: lab.bloqueado ? "Bloqueado" : "Disponível",
+                                                    svg: lab.svg,
+                                                    reserva: lab.reservas,
+                                                }}
+                                                currentContent={lab.reservas ? lab.reservas.motivo : "Sem reserva"}
+                                                nextContent={null}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ));
+                    })()
+                )}
+*/
