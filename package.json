@@ -19,7 +19,7 @@
     "nodemailer": "^6.9.14",
     "nodemon": "^3.1.4",
     "sweetalert2": "^11.15.10",
-    "swiper": "^11.1.9"
+    "swiper": "^11.2.10"
   },
   "devDependencies": {
     "vite": "^5.4.0"

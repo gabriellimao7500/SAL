@@ -68,6 +68,21 @@ export default function OverviewPage() {
     const [periodo, setPeriodo] = useState("Manhã"); // Pode ser "Manhã", "Tarde" ou "Noite"
     const [labsReservas, setLabsReservas] = useState([]);
 
+    //verifica o periodo de acordo com a hora quando o componente carrega, manhã, tarde ou noite
+    useEffect(() => {
+        const agora = new Date();
+        const hora = agora.getHours();
+        console.log(`A hora atual é: ${hora}`);
+
+        if (hora < 12) {
+            setPeriodo("Manhã");
+        } else if (hora < 18) {
+            setPeriodo("Tarde");
+        } else {
+            setPeriodo("Noite");
+        }
+    }, []);
+
 
     useEffect(() => {
         async function fetchLabs() {

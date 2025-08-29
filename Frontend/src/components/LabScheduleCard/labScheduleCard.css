@@ -1,0 +1,67 @@
+.textArea-old {
+    border-radius: 8px;
+    margin: 10px 24px;
+    font-size: 14px;
+    border: 1px solid #444444;
+    margin-bottom: 0;
+    min-height: 50px;
+    max-height: 70px;
+    max-width: 80%;
+    color: #9ca3af;
+    box-sizing: border-box;
+    text-align: left;
+    align-self: center;
+    background-color: #0f1724;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    /* Para WebKit (Chrome, Safari) adicione fora deste bloco:
+       .textArea-old::-webkit-scrollbar { display: none; } */
+}
+
+.textArea-current {
+    border-radius: 8px;
+    margin: 10px 24px;
+    font-size: 14px;
+    border: 1px solid #064e3b;
+    margin-bottom: 0;
+    height: 70px;
+    max-width: 80%;
+    color: #d1fae5;
+    box-sizing: border-box;
+    text-align: left;
+    align-self: center;
+    background-color: #062a1f;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    /* Para WebKit (Chrome, Safari) adicione fora deste bloco:
+       .textArea-old::-webkit-scrollbar { display: none; } */
+}
+
+.textArea-next {
+    border-radius: 8px;
+    margin: 10px 24px;
+    font-size: 14px;
+    border: 1px solid #1f2937;
+    margin-bottom: 0;
+    min-height: 50px;
+    max-height: 70px;
+    max-width: 80%;
+    color: #cbd5e1;
+    box-sizing: border-box;
+    text-align: left;
+    align-self: center;
+    background-color: #071226;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    /* Para WebKit (Chrome, Safari) adicione fora deste bloco:
+       .textArea-old::-webkit-scrollbar { display: none; } */
+}
