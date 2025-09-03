@@ -142,11 +142,16 @@ const deleteReservasExistentes = async (aulaReserva, periodo, dataReserva, idLab
 
 
 const getMarkOfTheHour = async (periodo, aulaReserva, idLaboratorio, dia) => {
-    console.log("Obtendo marcação da hora:", { periodo, aulaReserva, idLaboratorio, dia });
+    try {
+        console.log("Obtendo marcação da hora:", { periodo, aulaReserva, idLaboratorio, dia });
 
-    const query = "SELECT * FROM reserva WHERE periodo = ? AND aulaReserva = ? AND idLaboratorio = ? AND dataReserva = ?";
-    const [marks] = await connection.execute(query, [periodo, aulaReserva, idLaboratorio, dia]);
-    return marks;
+        const query = "SELECT * FROM reserva WHERE periodo = ? AND aulaReserva = ? AND idLaboratorio = ? AND dataReserva = ?";
+        const [marks] = await connection.execute(query, [periodo, aulaReserva, idLaboratorio, dia]);
+        return marks;
+    } catch (error) {
+        console.error("Erro ao obter marcação da hora:", error);
+        throw error;
+    }
 };
 
 module.exports = {

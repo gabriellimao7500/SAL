@@ -4,18 +4,33 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import './labScheduleCard.css'
+
+
+
+const horarios = {
+    'Manhã': ['07:00 - 07:50', '07:50 - 08:40', '08:40 - 09:30', '09:50 - 10:40', '10:40 - 11:30', '11:30 - 12:20'],
+    'Tarde': ['13:00 - 13:50', '13:50 - 14:40', '14:40 - 15:30', '15:50 - 16:40', '16:40 - 17:30', '17:30 - 18:20'],
+    'Noite': ['19:00 - 21:05', '21:05 - 23:00']
+};
+
 /**
  * Card de exibição do status do laboratório.
  *
  * @component
  * @param {Object} props
  * @param {{ id: string, name: string, location: string }} props.lab - Dados do laboratório.
- * @param {React.ReactNode} props.currentContent - Conteúdo da seção "Aula Atual".
- * @param {React.ReactNode} props.nextContent - Conteúdo da seção "Próxima Aula".
+ * @param {React.ReactNode} props.currentlab - Conteúdo da seção "Aula Atual".
+ * @param {React.ReactNode} props.nextlab - Conteúdo da seção "Próxima Aula".
  * @returns {JSX.Element}
  */
-export function LabScheduleCard({ lab, currentContent, nextContent }) {
-    //console.log(lab.reservas);
+export function LabScheduleCard({ lab, horarioAula, horarios }) {
+    // (lab.next == undefined) || (lab.previous == undefined) || (lab.current == undefined) ? (console.log("Trabalhando com lab: ", lab)) : null
+
+    // console.log("Conteúdo current:", lab.current);
+    console.log("Conteúdo previous:", lab.previous);
+    // console.log("Conteúdo next:", lab.next);
+
+    console.log("a aula anterior é ",);
 
 
     return (
@@ -60,7 +75,7 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                         "--swiper-navigation-size": "20px",
                         "--swiper-navigation-top-offset": "50%",
                         "--swiper-navigation-sides-offset": "0px",
-                        justifyContent: "center",
+                        justifylab: "center",
                         display: "flex",
 
 
@@ -85,9 +100,9 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
 
                 // autoplay={{ delay: 1000 }}
                 >
-                    <SwiperSlide virtualIndex={0}>
+                    {horarioAula > 1 ? <SwiperSlide virtualIndex={0}>
                         {/* Aula Anterior */}
-                        <div styles={{ display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "center" }}>
+                        <div styles={{ display: "flex", flexDirection: "column", justifylab: "space-between", alignItems: "center" }}>
 
                             <div style={{
                                 fontWeight: 600,
@@ -110,17 +125,19 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                                     marginRight: 8,
                                 }} />
                                 Aula Anterior
+                                <i style={{ border: "1px solid #cbd5e1", marginLeft: 8, color: "#cbd5e1", fontWeight: 500, fontSize: 12, background: "rgba(0,0,0,0.5)", padding: "1px 4px", borderRadius: "4px" }}>
+                                    {` ${horarios[horarioAula - 1]}`}</i>
                             </div>
 
                             <div className="textArea-old">
-                                {currentContent ? <div style={{ padding: "14px 16px", }}>{currentContent}</div> : <div>Nenhum conteúdo disponível</div>}
+                                {lab.previous ? <div style={{ padding: "14px 16px", }}>{lab.previous.motivo}</div> : <div>Nenhum conteúdo disponível</div>}
                             </div>
                         </div>
-                    </SwiperSlide>
+                    </SwiperSlide> : <></>}
 
                     <SwiperSlide virtualIndex={1}>
                         {/* Aula Atual */}
-                        <div styles={{ display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "center" }}>
+                        <div styles={{ display: "flex", flexDirection: "column", justifylab: "space-between", alignItems: "center" }}>
                             <div style={{
                                 fontWeight: 600,
                                 fontSize: 15,
@@ -139,17 +156,20 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                                     boxShadow: "0 0 8px rgba(52,211,153,0.12)",
                                     marginRight: 8,
                                 }} />
-                                Aula Atual
+                                Aula Atual  <span style={{
+                                    border: "1px solid #86efac", marginLeft: 8, color: "#86efac", fontWeight: 500, fontSize: 12,
+                                    background: "rgba(0,0,0,0.5)", padding: "1px 4px", borderRadius: "4px"
+                                }}>{` ${horarios[horarioAula]}`}</span>
                             </div>
                             <div className="textArea-current">
-                                {currentContent ? <div style={{ padding: "14px 16px", }}>{currentContent}</div> : <div>Nenhum conteúdo disponível</div>}
+                                <div style={{ padding: "14px 16px", }}>{lab.current.motivo}</div>
                             </div>
                         </div>
                     </SwiperSlide>
 
-                    <SwiperSlide virtualIndex={2}>
+                    {lab.next != null ? <SwiperSlide virtualIndex={2}>
                         {/* Próxima Aula */}
-                        <div styles={{ display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "center" }}>
+                        <div styles={{ display: "flex", flexDirection: "column", justifylab: "space-between", alignItems: "center" }}>
                             <div style={{
                                 fontWeight: 600,
                                 fontSize: 15,
@@ -167,13 +187,15 @@ export function LabScheduleCard({ lab, currentContent, nextContent }) {
                                     background: "#2563eb",
                                     marginRight: 8,
                                 }} />
-                                Próxima Aula
+                                Próxima Aula {`${horarios[horarioAula + 1]}`}
                             </div>
                             <div className="textArea-next">
-                                {nextContent ? <div style={{ padding: "14px 16px", }}>{nextContent}</div> : <div style={{ padding: "14px 16px", }}>Nenhum conteúdo disponível</div>}
+
+                                <div style={{ padding: "14px 16px", }}>{lab.next.motivo}</div>
+
                             </div>
                         </div>
-                    </SwiperSlide>
+                    </SwiperSlide> : <></>}
 
                 </Swiper>
             </div>

@@ -53,7 +53,10 @@ async function fetchAulaForLab(periodo, aulaReserva, idLaboratorio, dia) {
         const res = await fetch(`http://localhost:3333/marks/of/${idLaboratorio}/${aulaReserva}/${periodo}/${dia}`);
         if (!res.ok) throw new Error("Erro ao buscar aula");
         const data = await res.json();
-        return data;
+        //console.log("Esse é data 0", data[0]);
+
+        const newData = data[0] == undefined ? [{ motivo: "Sem reserva" }] : data;
+        return newData;
     } catch (err) {
         console.error(err);
         return null;
@@ -67,6 +70,13 @@ export default function OverviewPage() {
     const [todasReservas, setTodasReservas] = useState([]);
     const [periodo, setPeriodo] = useState("Manhã"); // Pode ser "Manhã", "Tarde" ou "Noite"
     const [labsReservas, setLabsReservas] = useState([]);
+
+
+    const horarios = {
+        'Manhã': ['07:00 - 07:50', '07:50 - 08:40', '08:40 - 09:30', '09:50 - 10:40', '10:40 - 11:30', '11:30 - 12:20'],
+        'Tarde': ['13:00 - 13:50', '13:50 - 14:40', '14:40 - 15:30', '15:50 - 16:40', '16:40 - 17:30', '17:30 - 18:20'],
+        'Noite': ['19:00 - 21:05', '21:05 - 23:00']
+    };
 
     //verifica o periodo de acordo com a hora quando o componente carrega, manhã, tarde ou noite
     useEffect(() => {
@@ -97,17 +107,38 @@ export default function OverviewPage() {
                 const aulaAtual = getAulaAtual().aulaAtual;
                 const diaAtual = getAulaAtual().dia;
 
+                console.log(`Aula Atual: ${aulaAtual}, Dia Atual: ${diaAtual}`);
+
                 // Aguarda todas as reservas e monta o array de labs já com reservas
                 const labsComReservas = await Promise.all(
                     data.map(async (lab) => {
                         const reservaData = await fetchAulaForLab(periodo, aulaAtual, lab.idLaboratorio, diaAtual);
+                        //Busca a aula anterior se for maior que 1 e deixa nulo caso for menor ou igual a 1 e maior ou igual a 6
+                        let aulaAnterior = null;
+                        if (aulaAtual >= 1) {
+                            let r = await fetchAulaForLab(periodo, aulaAtual - 1, lab.idLaboratorio, diaAtual);
+
+                            console.log("Essa é aula anterior do lab ", lab.idLaboratorio, r);
+
+                            aulaAnterior = r;
+                        }
+                        // console.log("Esse é aula anterior", aulaAnterior);
+                        let proximaAula = null;
+                        if (aulaAtual <= 6) {
+                            proximaAula = await fetchAulaForLab(periodo, aulaAtual + 1, lab.idLaboratorio, diaAtual);
+                        }
+                        // console.log("Esse é proxima aula", proximaAula);
+
                         return {
                             ...lab,
-                            reservas: reservaData[0],
+                            current: reservaData[0],
+                            previous: aulaAnterior[0],
+                            next: proximaAula[0],
                         };
                     })
                 );
-                console.log(labsComReservas);
+
+                // console.log(labsComReservas);
 
                 setLabs(labsComReservas);
                 setLoading(false);
@@ -133,7 +164,7 @@ export default function OverviewPage() {
     ];
 
     return (
-        <div style={{ background: "#000000", height: "100vh" }}>
+        <div style={{ background: "#181818", height: "100vh" }}>
             <Header />
             <div style={{
                 padding: 24, fontFamily: "Arial, sans-serif",
@@ -184,10 +215,16 @@ export default function OverviewPage() {
                                             name: `${lab.tipoLaboratorio} ${lab.numeroLaboratorio}`,
                                             location: lab.bloqueado ? "Bloqueado" : "Disponível",
                                             svg: lab.svg,
-                                            reserva: lab.reservas,
+                                            current: lab.current,
+                                            previous: lab.previous,
+                                            next: lab.next
+
+
                                         }}
-                                        currentContent={lab.reservas ? lab.reservas.motivo : "Sem reserva"}
-                                        nextContent={null}
+                                        // content={lab}
+
+                                        horarioAula={getAulaAtual().aulaAtual - 1}
+                                        horarios={horarios[periodo]}
                                     />
                                 ))
 

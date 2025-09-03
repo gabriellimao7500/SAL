@@ -5,7 +5,8 @@
     border: 1px solid #444444;
     margin-bottom: 0;
     min-height: 50px;
-    max-height: 70px;
+    height: 150px;
+
     max-width: 80%;
     color: #9ca3af;
     box-sizing: border-box;
@@ -27,7 +28,7 @@
     font-size: 14px;
     border: 1px solid #064e3b;
     margin-bottom: 0;
-    height: 70px;
+    height: 150px;
     max-width: 80%;
     color: #d1fae5;
     box-sizing: border-box;
@@ -50,7 +51,8 @@
     border: 1px solid #1f2937;
     margin-bottom: 0;
     min-height: 50px;
-    max-height: 70px;
+    height: 150px;
+
     max-width: 80%;
     color: #cbd5e1;
     box-sizing: border-box;
