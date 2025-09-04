@@ -26,12 +26,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<OverviewPage />} />
+        <Route path='/' element={<Home />} />
         <Route path='/SelectLab' element={<SelectLab />} />
         <Route path='/Labs' element={<Labs />}></Route>
         <Route path='/AboutUs' element={<AboutUs />}></Route>
         <Route path='/HowToUse' element={<HowToUse />}></Route>
         <Route path='/adminDashboard' element={<AdminDashboard />} />
+        <Route path='/overview' element={< OverviewPage />} />
       </Routes>
     </Router>
   )

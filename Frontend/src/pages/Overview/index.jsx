@@ -82,7 +82,7 @@ export default function OverviewPage() {
     useEffect(() => {
         const agora = new Date();
         const hora = agora.getHours();
-        console.log(`A hora atual é: ${hora}`);
+        //console.log(`A hora atual é: ${hora}`);
 
         if (hora < 12) {
             setPeriodo("Manhã");
@@ -107,7 +107,7 @@ export default function OverviewPage() {
                 const aulaAtual = getAulaAtual().aulaAtual;
                 const diaAtual = getAulaAtual().dia;
 
-                console.log(`Aula Atual: ${aulaAtual}, Dia Atual: ${diaAtual}`);
+                // console.log(`Aula Atual: ${aulaAtual}, Dia Atual: ${diaAtual}`);
 
                 // Aguarda todas as reservas e monta o array de labs já com reservas
                 const labsComReservas = await Promise.all(
@@ -118,7 +118,7 @@ export default function OverviewPage() {
                         if (aulaAtual >= 1) {
                             let r = await fetchAulaForLab(periodo, aulaAtual - 1, lab.idLaboratorio, diaAtual);
 
-                            console.log("Essa é aula anterior do lab ", lab.idLaboratorio, r);
+                            //console.log("Essa é aula anterior do lab ", lab.idLaboratorio, r);
 
                             aulaAnterior = r;
                         }
@@ -197,7 +197,7 @@ export default function OverviewPage() {
                 ) : (
                     <div id="labs-container" style={{
                         display: "flex",
-                        gap: 28,
+                        gap: 20,
                         borderRadius: 12,
                         flexWrap: "wrap",
                         justifyContent: "space-around",

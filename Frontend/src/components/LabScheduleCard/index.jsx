@@ -27,10 +27,10 @@ export function LabScheduleCard({ lab, horarioAula, horarios }) {
     // (lab.next == undefined) || (lab.previous == undefined) || (lab.current == undefined) ? (console.log("Trabalhando com lab: ", lab)) : null
 
     // console.log("Conteúdo current:", lab.current);
-    console.log("Conteúdo previous:", lab.previous);
-    // console.log("Conteúdo next:", lab.next);
+    // console.log("Conteúdo previous:", lab.previous);
+    // // console.log("Conteúdo next:", lab.next);
 
-    console.log("a aula anterior é ",);
+    // console.log("a aula anterior é ",);
 
 
     return (
