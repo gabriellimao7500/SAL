@@ -127,7 +127,16 @@ export default function OverviewPage() {
                         if (aulaAtual <= 6) {
                             proximaAula = await fetchAulaForLab(periodo, aulaAtual + 1, lab.idLaboratorio, diaAtual);
                         }
+
+
+                        if (aulaAtual == 1) {
+                            aulaAnterior = null;
+                        }
                         // console.log("Esse é proxima aula", proximaAula);
+                        if (aulaAtual == 6) {
+                            proximaAula = null
+                        }
+
 
                         return {
                             ...lab,

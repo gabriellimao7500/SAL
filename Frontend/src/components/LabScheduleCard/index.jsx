@@ -73,7 +73,7 @@ export function LabScheduleCard({ lab, horarioAula, horarios }) {
                     loop={true}
                     style={{
                         "--swiper-navigation-size": "20px",
-                        "--swiper-navigation-top-offset": "50%",
+                        "--swiper-navigation-top-offset": "57%",
                         "--swiper-navigation-sides-offset": "0px",
                         justifylab: "center",
                         display: "flex",
@@ -81,6 +81,7 @@ export function LabScheduleCard({ lab, horarioAula, horarios }) {
 
                     }}
                     centeredSlides={true}
+                    initialSlide={1}
 
                 // onSlideChange={() => console.log('slide change')}
                 // onSwiper={(swiper) => console.log(swiper)}
@@ -100,7 +101,7 @@ export function LabScheduleCard({ lab, horarioAula, horarios }) {
 
                 // autoplay={{ delay: 1000 }}
                 >
-                    {horarioAula > 1 ? <SwiperSlide virtualIndex={0}>
+                    {lab.previous != null ? <SwiperSlide virtualIndex={0}>
                         {/* Aula Anterior */}
                         <div styles={{ display: "flex", flexDirection: "column", justifylab: "space-between", alignItems: "center" }}>
 
