@@ -335,12 +335,13 @@ const AdminDashboard = () => {
 
     const handleToggleSelectMode = (value) => setAdminSelectMode(typeof value === 'boolean' ? value : !adminSelectMode);
 
-    return (<span style={{ display: 'block', width: '100vw', height: '100%', color: '#fff', background: '#181818' }}>
-        <header className="dashboard-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <h1>Dashboard Administrativa</h1>
-            <a href="/" className="btn-voltar-home">Voltar para Home</a>
-        </header>
-        <style>{`
+    return (
+        <span style={{ display: 'block', width: '100vw', height: '100%', color: '#fff', background: '#181818' }}>
+            <header className="dashboard-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h1>Dashboard Administrativa</h1>
+                <a href="/" className="btn-voltar-home">Voltar para Home</a>
+            </header>
+            <style>{`
             .btn-home:hover {
                 background: #232323;
                 color: #8b5cf6;
@@ -365,590 +366,590 @@ const AdminDashboard = () => {
                 border: 1px solid #232323;
             }
         `}</style>
-        <div className="admin-dashboard-container">
-            <div className="dashboard-summary-row">
-                <div className="dashboard-summary-card">
-                    <span className="summary-icon" aria-label="Professores">
-                        {/* Ícone de usuário */}
-                        <svg width="32" height="32" fill="#2563eb" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 20v-1a7 7 0 0 1 14 0v1" /></svg>
-                    </span>
-                    <div>
-                        <div className="summary-title">Total de Professores</div>
-                        <div className="summary-value">{teachers.length}</div>
-                    </div>
-                </div>
-                <div className="dashboard-summary-card" style={{ cursor: 'pointer' }} onClick={handleOpenCalendar}>
-                    <span className="summary-icon" aria-label="Agendamentos">
-                        {/* Ícone de calendário */}
-                        <svg width="32" height="32" fill="#22c55e" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4" /><path d="M3 10h18" /></svg>
-                    </span>
-                    <div>
-                        <div className="summary-title">Agendamentos XLSX</div>
-                        <div className="summary-value">Alterar</div>
-                    </div>
-                </div>
-                <div className="dashboard-summary-card dashboard-graph-placeholder">
-                    <span className="summary-icon" aria-label="Gráfico">
-                        {/* Ícone de gráfico */}
-                        <svg width="32" height="32" fill="#f59e42" viewBox="0 0 24 24"><rect x="4" y="13" width="4" height="7" /><rect x="10" y="9" width="4" height="11" /><rect x="16" y="5" width="4" height="15" /></svg>
-                    </span>
-                    <div>
-                        <div className="summary-title">Gráficos</div>
-                        <div className="summary-value">Em breve</div>
-                    </div>
-                </div>
-            </div>
-            <div className="dashboard-content">
-                <span>
-                    <div className="dashboard-card upload-card">
-                        <div className="card-header">
-                            <span className="card-icon">
-                                <svg width="24" height="24" fill="#2563eb" viewBox="0 0 24 24"><path d="M12 16V4m0 0l-4 4m4-4l4 4" /><rect x="4" y="16" width="16" height="4" rx="2" /></svg>
-                            </span>
-                            <h2>Editar Agendamentos via XLSX</h2>
+            <div className="admin-dashboard-container">
+                <div className="dashboard-summary-row">
+                    <div className="dashboard-summary-card">
+                        <span className="summary-icon" aria-label="Professores">
+                            {/* Ícone de usuário */}
+                            <svg width="32" height="32" fill="#2563eb" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 20v-1a7 7 0 0 1 14 0v1" /></svg>
+                        </span>
+                        <div>
+                            <div className="summary-title">Total de Professores</div>
+                            <div className="summary-value">{teachers.length}</div>
                         </div>
-                        <div className="upload-file-wrapper">
-                            <input
-                                type="file"
-                                id="file-upload"
-                                className="inputfile"
-                                accept=".xlsx"
-                                onChange={handleFileChange}
-                            />
-                            <label htmlFor="file-upload">Escolher arquivo</label>
-                            {file && <span className="selected-file-name">{file.name}</span>}
+                    </div>
+                    <div className="dashboard-summary-card" style={{ cursor: 'pointer' }} onClick={handleOpenCalendar}>
+                        <span className="summary-icon" aria-label="Agendamentos">
+                            {/* Ícone de calendário */}
+                            <svg width="32" height="32" fill="#22c55e" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4" /><path d="M3 10h18" /></svg>
+                        </span>
+                        <div>
+                            <div className="summary-title">Agendamentos XLSX</div>
+                            <div className="summary-value">Alterar</div>
                         </div>
-                        <button onClick={handleUpload}>
-                            Enviar Arquivo
-                        </button>
-                        {uploadStatus && Array.isArray(uploadStatus) && (
-                            <div className={uploadStatus.some(s => s.includes('Erro')) ? 'status-error' : 'status-success'}>
-                                <ol style={{ background: 'none', paddingLeft: '1.2em', margin: 0, overflowY: 'auto', maxHeight: '150px' }}>
-                                    {uploadStatus.map((line, idx) => (
-                                        <li key={idx} style={{ marginBottom: '4px', wordBreak: 'break-word', textAlign: 'left' }}>
-                                            {line}
-                                        </li>
-                                    ))}
-                                </ol>
+                    </div>
+                    <div className="dashboard-summary-card dashboard-graph-placeholder">
+                        <span className="summary-icon" aria-label="Gráfico">
+                            {/* Ícone de gráfico */}
+                            <svg width="32" height="32" fill="#f59e42" viewBox="0 0 24 24"><rect x="4" y="13" width="4" height="7" /><rect x="10" y="9" width="4" height="11" /><rect x="16" y="5" width="4" height="15" /></svg>
+                        </span>
+                        <div>
+                            <div className="summary-title">Gráficos</div>
+                            <div className="summary-value">Em breve</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="dashboard-content">
+                    <span>
+                        <div className="dashboard-card upload-card">
+                            <div className="card-header">
+                                <span className="card-icon">
+                                    <svg width="24" height="24" fill="#2563eb" viewBox="0 0 24 24"><path d="M12 16V4m0 0l-4 4m4-4l4 4" /><rect x="4" y="16" width="16" height="4" rx="2" /></svg>
+                                </span>
+                                <h2>Editar Agendamentos via XLSX</h2>
                             </div>
-                        )}
+                            <div className="upload-file-wrapper">
+                                <input
+                                    type="file"
+                                    id="file-upload"
+                                    className="inputfile"
+                                    accept=".xlsx"
+                                    onChange={handleFileChange}
+                                />
+                                <label htmlFor="file-upload">Escolher arquivo</label>
+                                {file && <span className="selected-file-name">{file.name}</span>}
+                            </div>
+                            <button onClick={handleUpload}>
+                                Enviar Arquivo
+                            </button>
+                            {uploadStatus && Array.isArray(uploadStatus) && (
+                                <div className={uploadStatus.some(s => s.includes('Erro')) ? 'status-error' : 'status-success'}>
+                                    <ol style={{ background: 'none', paddingLeft: '1.2em', margin: 0, overflowY: 'auto', maxHeight: '150px' }}>
+                                        {uploadStatus.map((line, idx) => (
+                                            <li key={idx} style={{ marginBottom: '4px', wordBreak: 'break-word', textAlign: 'left' }}>
+                                                {line}
+                                            </li>
+                                        ))}
+                                    </ol>
+                                </div>
+                            )}
 
-                    </div>
-
-                    {/* Card de Bloqueio de Laboratório com Switch controlado por state */}
-                    <div className="dashboard-card block-lab-card">
-                        <div className="card-header">
-                            <span className="card-icon">
-                                <svg width="24" height="24" fill="#ef4444" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" /><path d="M8 12v2a4 4 0 0 0 8 0v-2" /></svg>
-                            </span>
-                            <h2>Bloquear/Desbloquear Laboratórios</h2>
                         </div>
-                        <div style={{ marginBottom: '12px', maxHeight: '320px', overflowY: 'auto' }}>
-                            <table
-                                style={{ width: '100%', color: '#fff', background: 'none', borderCollapse: 'collapse' }}
 
+                        {/* Card de Bloqueio de Laboratório com Switch controlado por state */}
+                        <div className="dashboard-card block-lab-card">
+                            <div className="card-header">
+                                <span className="card-icon">
+                                    <svg width="24" height="24" fill="#ef4444" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3" /><path d="M8 12v2a4 4 0 0 0 8 0v-2" /></svg>
+                                </span>
+                                <h2>Bloquear/Desbloquear Laboratórios</h2>
+                            </div>
+                            <div style={{ marginBottom: '12px', maxHeight: '320px', overflowY: 'auto' }}>
+                                <table
+                                    style={{ width: '100%', color: '#fff', background: 'none', borderCollapse: 'collapse' }}
+
+                                >
+                                    <thead>
+                                        <tr style={{ background: '#232323', color: '#ef4444' }}>
+                                            <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Nome</th>
+                                            <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Manhã</th>
+                                            <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Tarde</th>
+                                            <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Noite</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {labs.map(lab => (
+                                            <tr key={lab.idLaboratorio} style={{ borderBottom: '1px solid #333' }}>
+                                                <td style={{ padding: '8px' }}>{`${lab.tipoLaboratorio} ${lab.numeroLaboratorio}`}</td>
+
+                                                <td style={{ padding: '8px', textAlign: 'left' }}>
+                                                    <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
+                                                        <span
+                                                            onClick={() => handleToggleLabPeriod(lab, 'manha')}
+                                                            style={{
+                                                                display: 'inline-flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-around',
+                                                                cursor: 'pointer',
+                                                                gap: '10px',
+                                                                width: '100%'
+                                                            }}
+                                                        >
+                                                            <span style={{
+                                                                width: '44px',
+                                                                height: '24px',
+                                                                borderRadius: '12px',
+                                                                background: labsStatus[lab.idLaboratorio]?.manha ? '#ef4444' : '#22c55e',
+                                                                position: 'relative',
+                                                                transition: 'background 0.3s',
+                                                                boxShadow: '0 0 4px #0002'
+                                                            }}>
+                                                                <span style={{
+                                                                    position: 'absolute',
+                                                                    left: labsStatus[lab.idLaboratorio]?.manha ? '22px' : '2px',
+                                                                    top: '2px',
+                                                                    width: '20px',
+                                                                    height: '20px',
+                                                                    borderRadius: '50%',
+                                                                    background: '#fff',
+                                                                    boxShadow: '0 1px 4px #0002',
+                                                                    transition: 'left 0.3s'
+                                                                }} />
+                                                            </span>
+                                                            <span style={{ color: labsStatus[lab.idLaboratorio]?.manha ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
+                                                                {labsStatus[lab.idLaboratorio]?.manha ? 'Bloqueado' : 'Liberado'}
+                                                            </span>
+                                                        </span>
+                                                    </label>
+                                                </td>
+
+                                                <td style={{ padding: '8px', textAlign: 'left' }}>
+                                                    <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
+                                                        <span
+                                                            onClick={() => handleToggleLabPeriod(lab, 'tarde')}
+                                                            style={{
+                                                                display: 'inline-flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-around',
+                                                                cursor: 'pointer',
+                                                                gap: '10px',
+                                                                width: '100%'
+                                                            }}
+                                                        >
+                                                            <span style={{
+                                                                width: '44px',
+                                                                height: '24px',
+                                                                borderRadius: '12px',
+                                                                background: labsStatus[lab.idLaboratorio]?.tarde ? '#ef4444' : '#22c55e',
+                                                                position: 'relative',
+                                                                transition: 'background 0.3s',
+                                                                boxShadow: '0 0 4px #0002'
+                                                            }}>
+                                                                <span style={{
+                                                                    position: 'absolute',
+                                                                    left: labsStatus[lab.idLaboratorio]?.tarde ? '22px' : '2px',
+                                                                    top: '2px',
+                                                                    width: '20px',
+                                                                    height: '20px',
+                                                                    borderRadius: '50%',
+                                                                    background: '#fff',
+                                                                    boxShadow: '0 1px 4px #0002',
+                                                                    transition: 'left 0.3s'
+                                                                }} />
+                                                            </span>
+                                                            <span style={{ color: labsStatus[lab.idLaboratorio]?.tarde ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
+                                                                {labsStatus[lab.idLaboratorio]?.tarde ? 'Bloqueado' : 'Liberado'}
+                                                            </span>
+                                                        </span>
+                                                    </label>
+                                                </td>
+
+                                                <td style={{ padding: '8px', textAlign: 'left' }}>
+                                                    <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
+                                                        <span
+                                                            onClick={() => handleToggleLabPeriod(lab, 'noite')}
+                                                            style={{
+                                                                display: 'inline-flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-around',
+                                                                cursor: 'pointer',
+                                                                gap: '10px',
+                                                                width: '100%'
+                                                            }}
+                                                        >
+                                                            <span style={{
+                                                                width: '44px',
+                                                                height: '24px',
+                                                                borderRadius: '12px',
+                                                                background: labsStatus[lab.idLaboratorio]?.noite ? '#ef4444' : '#22c55e',
+                                                                position: 'relative',
+                                                                transition: 'background 0.3s',
+                                                                boxShadow: '0 0 4px #0002'
+                                                            }}>
+                                                                <span style={{
+                                                                    position: 'absolute',
+                                                                    left: labsStatus[lab.idLaboratorio]?.noite ? '22px' : '2px',
+                                                                    top: '2px',
+                                                                    width: '20px',
+                                                                    height: '20px',
+                                                                    borderRadius: '50%',
+                                                                    background: '#fff',
+                                                                    boxShadow: '0 1px 4px #0002',
+                                                                    transition: 'left 0.3s'
+                                                                }} />
+                                                            </span>
+                                                            <span style={{ color: labsStatus[lab.idLaboratorio]?.noite ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
+                                                                {labsStatus[lab.idLaboratorio]?.noite ? 'Bloqueado' : 'Liberado'}
+                                                            </span>
+                                                        </span>
+                                                    </label>
+                                                </td>
+
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style={{ color: '#b3b3b3', fontSize: '0.98rem' }}>
+                                Use o switch para bloquear ou liberar cada laboratório individualmente.
+                            </div>
+                        </div>
+
+                    </span>
+
+                    <div className="dashboard-card teachers-card">
+                        <div className="card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span className="card-icon">
+                                    <svg width="24" height="24" fill="#22c55e" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 20v-1a7 7 0 0 1 14 0v1" /></svg>
+                                </span>
+                                <h2>Professores</h2>
+                            </div>
+                            <button
+                                onClick={handleAdd}
+                                style={{
+                                    background: 'transparent',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    padding: '6px',
+                                    borderRadius: '50%',
+                                    transition: 'background 0.2s'
+                                }}
+                                title="Adicionar Professor"
                             >
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="#8b5cf6">
+                                    <circle cx="12" cy="12" r="11" fill="#181818" stroke="#8b5cf6" strokeWidth="2" />
+                                    <path d="M12 8v8M8 12h8" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" />
+                                </svg>
+                            </button>
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Buscar por nome"
+                            value={searchTerm}
+                            onChange={handleSearch}
+                        />
+                        <div className="teachers-table-wrapper">
+                            <table className="teachers-table-no-border">
                                 <thead>
-                                    <tr style={{ background: '#232323', color: '#ef4444' }}>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Nome</th>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Manhã</th>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Tarde</th>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Noite</th>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Nome</th>
+                                        <th>Email</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {labs.map(lab => (
-                                        <tr key={lab.idLaboratorio} style={{ borderBottom: '1px solid #333' }}>
-                                            <td style={{ padding: '8px' }}>{`${lab.tipoLaboratorio} ${lab.numeroLaboratorio}`}</td>
-
-                                            <td style={{ padding: '8px', textAlign: 'left' }}>
-                                                <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
-                                                    <span
-                                                        onClick={() => handleToggleLabPeriod(lab, 'manha')}
-                                                        style={{
-                                                            display: 'inline-flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'space-around',
-                                                            cursor: 'pointer',
-                                                            gap: '10px',
-                                                            width: '100%'
-                                                        }}
-                                                    >
-                                                        <span style={{
-                                                            width: '44px',
-                                                            height: '24px',
-                                                            borderRadius: '12px',
-                                                            background: labsStatus[lab.idLaboratorio]?.manha ? '#ef4444' : '#22c55e',
-                                                            position: 'relative',
-                                                            transition: 'background 0.3s',
-                                                            boxShadow: '0 0 4px #0002'
-                                                        }}>
-                                                            <span style={{
-                                                                position: 'absolute',
-                                                                left: labsStatus[lab.idLaboratorio]?.manha ? '22px' : '2px',
-                                                                top: '2px',
-                                                                width: '20px',
-                                                                height: '20px',
-                                                                borderRadius: '50%',
-                                                                background: '#fff',
-                                                                boxShadow: '0 1px 4px #0002',
-                                                                transition: 'left 0.3s'
-                                                            }} />
-                                                        </span>
-                                                        <span style={{ color: labsStatus[lab.idLaboratorio]?.manha ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
-                                                            {labsStatus[lab.idLaboratorio]?.manha ? 'Bloqueado' : 'Liberado'}
-                                                        </span>
-                                                    </span>
-                                                </label>
-                                            </td>
-
-                                            <td style={{ padding: '8px', textAlign: 'left' }}>
-                                                <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
-                                                    <span
-                                                        onClick={() => handleToggleLabPeriod(lab, 'tarde')}
-                                                        style={{
-                                                            display: 'inline-flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'space-around',
-                                                            cursor: 'pointer',
-                                                            gap: '10px',
-                                                            width: '100%'
-                                                        }}
-                                                    >
-                                                        <span style={{
-                                                            width: '44px',
-                                                            height: '24px',
-                                                            borderRadius: '12px',
-                                                            background: labsStatus[lab.idLaboratorio]?.tarde ? '#ef4444' : '#22c55e',
-                                                            position: 'relative',
-                                                            transition: 'background 0.3s',
-                                                            boxShadow: '0 0 4px #0002'
-                                                        }}>
-                                                            <span style={{
-                                                                position: 'absolute',
-                                                                left: labsStatus[lab.idLaboratorio]?.tarde ? '22px' : '2px',
-                                                                top: '2px',
-                                                                width: '20px',
-                                                                height: '20px',
-                                                                borderRadius: '50%',
-                                                                background: '#fff',
-                                                                boxShadow: '0 1px 4px #0002',
-                                                                transition: 'left 0.3s'
-                                                            }} />
-                                                        </span>
-                                                        <span style={{ color: labsStatus[lab.idLaboratorio]?.tarde ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
-                                                            {labsStatus[lab.idLaboratorio]?.tarde ? 'Bloqueado' : 'Liberado'}
-                                                        </span>
-                                                    </span>
-                                                </label>
-                                            </td>
-
-                                            <td style={{ padding: '8px', textAlign: 'left' }}>
-                                                <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
-                                                    <span
-                                                        onClick={() => handleToggleLabPeriod(lab, 'noite')}
-                                                        style={{
-                                                            display: 'inline-flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'space-around',
-                                                            cursor: 'pointer',
-                                                            gap: '10px',
-                                                            width: '100%'
-                                                        }}
-                                                    >
-                                                        <span style={{
-                                                            width: '44px',
-                                                            height: '24px',
-                                                            borderRadius: '12px',
-                                                            background: labsStatus[lab.idLaboratorio]?.noite ? '#ef4444' : '#22c55e',
-                                                            position: 'relative',
-                                                            transition: 'background 0.3s',
-                                                            boxShadow: '0 0 4px #0002'
-                                                        }}>
-                                                            <span style={{
-                                                                position: 'absolute',
-                                                                left: labsStatus[lab.idLaboratorio]?.noite ? '22px' : '2px',
-                                                                top: '2px',
-                                                                width: '20px',
-                                                                height: '20px',
-                                                                borderRadius: '50%',
-                                                                background: '#fff',
-                                                                boxShadow: '0 1px 4px #0002',
-                                                                transition: 'left 0.3s'
-                                                            }} />
-                                                        </span>
-                                                        <span style={{ color: labsStatus[lab.idLaboratorio]?.noite ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
-                                                            {labsStatus[lab.idLaboratorio]?.noite ? 'Bloqueado' : 'Liberado'}
-                                                        </span>
-                                                    </span>
-                                                </label>
-                                            </td>
-
+                                    {filteredTeachers.map((teacher) => (
+                                        <tr
+                                            key={teacher.idProfessor}
+                                            style={{ cursor: 'pointer', transition: 'background 0.2s' }}
+                                            onClick={() => handleEdit(teacher)}
+                                            className="teacher-row"
+                                        >
+                                            <td>{teacher.idProfessor}</td>
+                                            <td style={{ color: '#e5e5e5', fontWeight: 500 }}>{teacher.nome}</td>
+                                            <td>{teacher.email}</td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                         </div>
-                        <div style={{ color: '#b3b3b3', fontSize: '0.98rem' }}>
-                            Use o switch para bloquear ou liberar cada laboratório individualmente.
-                        </div>
                     </div>
 
-                </span>
 
-                <div className="dashboard-card teachers-card">
-                    <div className="card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span className="card-icon">
-                                <svg width="24" height="24" fill="#22c55e" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 20v-1a7 7 0 0 1 14 0v1" /></svg>
-                            </span>
-                            <h2>Professores</h2>
-                        </div>
-                        <button
-                            onClick={handleAdd}
-                            style={{
-                                background: 'transparent',
-                                border: 'none',
-                                cursor: 'pointer',
-                                padding: '6px',
-                                borderRadius: '50%',
-                                transition: 'background 0.2s'
-                            }}
-                            title="Adicionar Professor"
-                        >
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="#8b5cf6">
-                                <circle cx="12" cy="12" r="11" fill="#181818" stroke="#8b5cf6" strokeWidth="2" />
-                                <path d="M12 8v8M8 12h8" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" />
-                            </svg>
-                        </button>
-                    </div>
-                    <input
-                        type="text"
-                        placeholder="Buscar por nome"
-                        value={searchTerm}
-                        onChange={handleSearch}
-                    />
-                    <div className="teachers-table-wrapper">
-                        <table className="teachers-table-no-border">
-                            <thead>
-                                <tr>
-                                    <th>id</th>
-                                    <th>Nome</th>
-                                    <th>Email</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredTeachers.map((teacher) => (
-                                    <tr
-                                        key={teacher.idProfessor}
-                                        style={{ cursor: 'pointer', transition: 'background 0.2s' }}
-                                        onClick={() => handleEdit(teacher)}
-                                        className="teacher-row"
-                                    >
-                                        <td>{teacher.idProfessor}</td>
-                                        <td style={{ color: '#e5e5e5', fontWeight: 500 }}>{teacher.nome}</td>
-                                        <td>{teacher.email}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+
                 </div>
 
-
-
-            </div>
-
-            {/* Modal de edição/adicionar professor */}
-            {isModalOpen && (
-                <div
-                    className={"modal-fade-in modal-overlay"}
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 9999,
-                        transition: 'opacity 0.4s'
-                    }}
-                    onClick={closeModal}
-                >
+                {/* Modal de edição/adicionar professor */}
+                {isModalOpen && (
                     <div
-                        className="modal-card"
+                        className={"modal-fade-in modal-overlay"}
                         style={{
-                            backgroundColor: '#232323',
-                            color: '#fff',
-                            padding: '32px 28px',
-                            borderRadius: '14px',
-                            width: '400px',
-                            textAlign: 'center',
-                            boxShadow: '0 8px 32px rgba(139,92,246,0.18)',
-                            border: '1px solid #333',
-                            animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)',
-                            position: 'relative'
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            zIndex: 9999,
+                            transition: 'opacity 0.4s'
                         }}
-                        onClick={e => e.stopPropagation()}
+                        onClick={closeModal}
                     >
-                        <button
-                            onClick={closeModal}
+                        <div
+                            className="modal-card"
                             style={{
-                                position: 'absolute',
-                                top: 12,
-                                right: 12,
-                                background: 'transparent',
-                                border: 'none',
-                                color: '#8b5cf6',
-                                fontSize: '1.5rem',
-                                cursor: 'pointer',
-                                transition: 'color 0.2s',
-                                zIndex: 2
+                                backgroundColor: '#232323',
+                                color: '#fff',
+                                padding: '32px 28px',
+                                borderRadius: '14px',
+                                width: '400px',
+                                textAlign: 'center',
+                                boxShadow: '0 8px 32px rgba(139,92,246,0.18)',
+                                border: '1px solid #333',
+                                animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)',
+                                position: 'relative'
                             }}
-                            aria-label="Fechar"
+                            onClick={e => e.stopPropagation()}
                         >
-                            &#10006;
-                        </button>
-                        <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>{editingId ? 'Editar Professor' : 'Adicionar Professor'}</h2>
-                        <form onSubmit={handleSubmit}>
-                            <input
-                                type="text"
-                                placeholder="Nome"
-                                value={form.name}
-                                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                required
-                                style={{
-                                    marginBottom: '12px',
-                                    padding: '10px',
-                                    width: '90%',
-                                    borderRadius: '6px',
-                                    border: '1px solid #8b5cf6',
-                                    background: '#181818',
-                                    color: '#fff'
-                                }}
-                            />
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={form.email}
-                                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                required
-                                style={{
-                                    marginBottom: '12px',
-                                    padding: '10px',
-                                    width: '90%',
-                                    borderRadius: '6px',
-                                    border: '1px solid #8b5cf6',
-                                    background: '#181818',
-                                    color: '#fff'
-                                }}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Senha"
-                                value={form.senha}
-                                onChange={(e) => setForm({ ...form, senha: e.target.value })}
-                                required
-                                style={{
-                                    marginBottom: '12px',
-                                    padding: '10px',
-                                    width: '90%',
-                                    borderRadius: '6px',
-                                    border: '1px solid #8b5cf6',
-                                    background: '#181818',
-                                    color: '#fff'
-                                }}
-                            />
-                            <button type="submit" style={{
-                                background: '#8b5cf6',
-                                color: '#fff',
-                                border: 'none',
-                                borderRadius: '6px',
-                                padding: '10px 22px',
-                                fontWeight: '600',
-                                marginRight: '10px',
-                                cursor: 'pointer',
-                                transition: 'background 0.2s'
-                            }}>{editingId ? 'Salvar' : 'Adicionar'}</button>
-                            <button type="button" onClick={closeModal} style={{
-                                background: '#232323',
-                                color: '#fff',
-                                border: '1px solid #8b5cf6',
-                                borderRadius: '6px',
-                                padding: '10px 22px',
-                                fontWeight: '600',
-                                cursor: 'pointer',
-                                transition: 'background 0.2s'
-                            }}>Cancelar</button>
-                        </form>
-                        {editingId && (
                             <button
-                                onClick={handleDelete}
+                                onClick={closeModal}
                                 style={{
-                                    marginTop: '20px',
-                                    backgroundColor: '#ef4444',
-                                    color: 'white',
+                                    position: 'absolute',
+                                    top: 12,
+                                    right: 12,
+                                    background: 'transparent',
                                     border: 'none',
-                                    padding: '10px 20px',
-                                    borderRadius: '6px',
+                                    color: '#8b5cf6',
+                                    fontSize: '1.5rem',
                                     cursor: 'pointer',
-                                    fontWeight: '600'
+                                    transition: 'color 0.2s',
+                                    zIndex: 2
                                 }}
+                                aria-label="Fechar"
                             >
-                                Excluir
+                                &#10006;
                             </button>
-                        )}
-                    </div>
-                </div>
-            )}
-            {/* Modal do calendário/agendamentos */}
-            {isCalendarOpen && (
-                <div className="modal-fade-in modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999 }} onClick={handleCloseCalendar}>
-                    <div className="modal-card" style={{ backgroundColor: '#232323', color: '#fff', padding: '32px 28px', borderRadius: '14px', width: '90vw', maxWidth: '1200px', textAlign: 'center', boxShadow: '0 8px 32px rgba(139,92,246,0.18)', border: '1px solid #333', animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)', position: 'relative' }} onClick={e => e.stopPropagation()}>
-                        <button onClick={handleCloseCalendar} style={{ position: 'absolute', top: 12, right: 12, background: 'transparent', border: 'none', color: '#8b5cf6', fontSize: '1.5rem', cursor: 'pointer', transition: 'color 0.2s', zIndex: 2 }} aria-label="Fechar">&#10006;</button>
-                        <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>Calendário de Agendamentos</h2>
-                        <div className="select_main" style={{ display: 'flex', gap: '32px', height: '5vh', width: '100%', justifyContent: 'center', margin: '18px 0', alignSelf: 'center', alignItems: 'center' }}>
-                            {/* ...selects existentes... */}
-                            <select
-                                value={numLab}
-                                onChange={e => {
-                                    const value = Number(e.target.value); // Converte para número
-                                    setNumLab(value);
-                                    pullMarks(periodo, typeLab, value);
-                                }}
-                                style={{ padding: '8px', borderRadius: '6px', border: '1px solid #8b5cf6', background: '#181818', color: '#fff' }}
-                            >
-                                {labsTipo.length > 0
-                                    ? labsTipo.map(lab => (
-                                        <option key={lab.idLab} value={lab.numeroLaboratorio}>
-                                            Nº {lab.numeroLaboratorio}
-                                        </option>
-                                    ))
-                                    : labs.filter(lab => lab.tipoLaboratorio === typeLab).map(lab => (
-                                        <option key={lab.idLab} value={lab.numeroLaboratorio}>
-                                            Nº {lab.numeroLaboratorio}
-                                        </option>
-                                    ))
-                                }
-                            </select>
-
-                            <select
-                                value={typeLab}
-                                onChange={async e => {
-                                    const tipo = e.target.value;
-                                    setTypeLab(tipo);
-                                    await fetchLabsTipo(tipo);
-                                }}
-                                style={{ padding: '8px', borderRadius: '6px', border: '1px solid #8b5cf6', background: '#181818', color: '#fff' }}
-                            >
-                                {/* Preenche com tipos únicos */}
-                                {[...new Set(labs.map(lab => lab.tipoLaboratorio))].map(tipo => (
-                                    <option key={tipo} value={tipo}>{tipo}</option>
-                                ))}
-                            </select>
-                            <select
-                                value={periodo}
-                                onChange={e => {
-                                    setPeriodo(e.target.value);
-                                    pullMarks(e.target.value, typeLab, numLab);
-                                }}
-                                style={{ padding: '8px', borderRadius: '6px', border: '1px solid #8b5cf6', background: '#181818', color: '#fff' }}
-                            >
-                                <option value="Manhã">Manhã</option>
-                                <option value="Tarde">Tarde</option>
-                                <option value="Noite">Noite</option>
-                            </select>
-                            {/* Switch de seleção para exclusão */}
-                            {JSON.parse(sessionStorage.getItem('professor'))?.rule === "admin" && (
-                                <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', userSelect: 'none', color: '#d1d1d1', marginLeft: 16 }}>
-                                    <input
-                                        type="checkbox"
-                                        checked={adminSelectMode}
-                                        onChange={() => handleToggleSelectMode()}
-                                        style={{ width: 0, height: 0, opacity: 0, position: 'absolute' }}
-                                    />
-                                    <div style={{
-                                        width: 44,
-                                        height: 24,
-                                        background: adminSelectMode ? '#8b5cf6' : '#333',
-                                        borderRadius: 999,
-                                        position: 'relative',
-                                        transition: 'background 0.2s'
-                                    }}>
-                                        <div style={{
-                                            width: 18,
-                                            height: 18,
-                                            background: '#fff',
-                                            borderRadius: '50%',
-                                            position: 'absolute',
-                                            top: 3,
-                                            left: adminSelectMode ? 23 : 3,
-                                            transition: 'left 0.18s'
-                                        }} />
-                                    </div>
-                                    <span style={{ fontSize: '0.95rem', fontWeight: 600, color: adminSelectMode ? '#8b5cf6' : '#bfbfbf' }}>
-                                        Selecionar células para exclusão
-                                    </span>
-                                </label>
+                            <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>{editingId ? 'Editar Professor' : 'Adicionar Professor'}</h2>
+                            <form onSubmit={handleSubmit}>
+                                <input
+                                    type="text"
+                                    placeholder="Nome"
+                                    value={form.name}
+                                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                                    required
+                                    style={{
+                                        marginBottom: '12px',
+                                        padding: '10px',
+                                        width: '90%',
+                                        borderRadius: '6px',
+                                        border: '1px solid #8b5cf6',
+                                        background: '#181818',
+                                        color: '#fff'
+                                    }}
+                                />
+                                <input
+                                    type="email"
+                                    placeholder="Email"
+                                    value={form.email}
+                                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                    required
+                                    style={{
+                                        marginBottom: '12px',
+                                        padding: '10px',
+                                        width: '90%',
+                                        borderRadius: '6px',
+                                        border: '1px solid #8b5cf6',
+                                        background: '#181818',
+                                        color: '#fff'
+                                    }}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Senha"
+                                    value={form.senha}
+                                    onChange={(e) => setForm({ ...form, senha: e.target.value })}
+                                    required
+                                    style={{
+                                        marginBottom: '12px',
+                                        padding: '10px',
+                                        width: '90%',
+                                        borderRadius: '6px',
+                                        border: '1px solid #8b5cf6',
+                                        background: '#181818',
+                                        color: '#fff'
+                                    }}
+                                />
+                                <button type="submit" style={{
+                                    background: '#8b5cf6',
+                                    color: '#fff',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    padding: '10px 22px',
+                                    fontWeight: '600',
+                                    marginRight: '10px',
+                                    cursor: 'pointer',
+                                    transition: 'background 0.2s'
+                                }}>{editingId ? 'Salvar' : 'Adicionar'}</button>
+                                <button type="button" onClick={closeModal} style={{
+                                    background: '#232323',
+                                    color: '#fff',
+                                    border: '1px solid #8b5cf6',
+                                    borderRadius: '6px',
+                                    padding: '10px 22px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'background 0.2s'
+                                }}>Cancelar</button>
+                            </form>
+                            {editingId && (
+                                <button
+                                    onClick={handleDelete}
+                                    style={{
+                                        marginTop: '20px',
+                                        backgroundColor: '#ef4444',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '10px 20px',
+                                        borderRadius: '6px',
+                                        cursor: 'pointer',
+                                        fontWeight: '600'
+                                    }}
+                                >
+                                    Excluir
+                                </button>
                             )}
                         </div>
+                    </div>
+                )}
+                {/* Modal do calendário/agendamentos */}
+                {isCalendarOpen && (
+                    <div className="modal-fade-in modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999 }} onClick={handleCloseCalendar}>
+                        <div className="modal-card" style={{ backgroundColor: '#232323', color: '#fff', padding: '32px 28px', borderRadius: '14px', width: '90vw', maxWidth: '1200px', textAlign: 'center', boxShadow: '0 8px 32px rgba(139,92,246,0.18)', border: '1px solid #333', animation: 'fadeInUp 0.5s cubic-bezier(.77,.2,.32,1)', position: 'relative' }} onClick={e => e.stopPropagation()}>
+                            <button onClick={handleCloseCalendar} style={{ position: 'absolute', top: 12, right: 12, background: 'transparent', border: 'none', color: '#8b5cf6', fontSize: '1.5rem', cursor: 'pointer', transition: 'color 0.2s', zIndex: 2 }} aria-label="Fechar">&#10006;</button>
+                            <h2 style={{ color: '#8b5cf6', marginBottom: '18px' }}>Calendário de Agendamentos</h2>
+                            <div className="select_main" style={{ display: 'flex', gap: '32px', height: '5vh', width: '100%', justifyContent: 'center', margin: '18px 0', alignSelf: 'center', alignItems: 'center' }}>
+                                {/* ...selects existentes... */}
+                                <select
+                                    value={numLab}
+                                    onChange={e => {
+                                        const value = Number(e.target.value); // Converte para número
+                                        setNumLab(value);
+                                        pullMarks(periodo, typeLab, value);
+                                    }}
+                                    style={{ padding: '8px', borderRadius: '6px', border: '1px solid #8b5cf6', background: '#181818', color: '#fff' }}
+                                >
+                                    {labsTipo.length > 0
+                                        ? labsTipo.map(lab => (
+                                            <option key={lab.idLab} value={lab.numeroLaboratorio}>
+                                                Nº {lab.numeroLaboratorio}
+                                            </option>
+                                        ))
+                                        : labs.filter(lab => lab.tipoLaboratorio === typeLab).map(lab => (
+                                            <option key={lab.idLab} value={lab.numeroLaboratorio}>
+                                                Nº {lab.numeroLaboratorio}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
+
+                                <select
+                                    value={typeLab}
+                                    onChange={async e => {
+                                        const tipo = e.target.value;
+                                        setTypeLab(tipo);
+                                        await fetchLabsTipo(tipo);
+                                    }}
+                                    style={{ padding: '8px', borderRadius: '6px', border: '1px solid #8b5cf6', background: '#181818', color: '#fff' }}
+                                >
+                                    {/* Preenche com tipos únicos */}
+                                    {[...new Set(labs.map(lab => lab.tipoLaboratorio))].map(tipo => (
+                                        <option key={tipo} value={tipo}>{tipo}</option>
+                                    ))}
+                                </select>
+                                <select
+                                    value={periodo}
+                                    onChange={e => {
+                                        setPeriodo(e.target.value);
+                                        pullMarks(e.target.value, typeLab, numLab);
+                                    }}
+                                    style={{ padding: '8px', borderRadius: '6px', border: '1px solid #8b5cf6', background: '#181818', color: '#fff' }}
+                                >
+                                    <option value="Manhã">Manhã</option>
+                                    <option value="Tarde">Tarde</option>
+                                    <option value="Noite">Noite</option>
+                                </select>
+                                {/* Switch de seleção para exclusão */}
+                                {JSON.parse(sessionStorage.getItem('professor'))?.rule === "admin" && (
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', userSelect: 'none', color: '#d1d1d1', marginLeft: 16 }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={adminSelectMode}
+                                            onChange={() => handleToggleSelectMode()}
+                                            style={{ width: 0, height: 0, opacity: 0, position: 'absolute' }}
+                                        />
+                                        <div style={{
+                                            width: 44,
+                                            height: 24,
+                                            background: adminSelectMode ? '#8b5cf6' : '#333',
+                                            borderRadius: 999,
+                                            position: 'relative',
+                                            transition: 'background 0.2s'
+                                        }}>
+                                            <div style={{
+                                                width: 18,
+                                                height: 18,
+                                                background: '#fff',
+                                                borderRadius: '50%',
+                                                position: 'absolute',
+                                                top: 3,
+                                                left: adminSelectMode ? 23 : 3,
+                                                transition: 'left 0.18s'
+                                            }} />
+                                        </div>
+                                        <span style={{ fontSize: '0.95rem', fontWeight: 600, color: adminSelectMode ? '#8b5cf6' : '#bfbfbf' }}>
+                                            Selecionar células para exclusão
+                                        </span>
+                                    </label>
+                                )}
+                            </div>
 
 
 
-                        {/* Table Calendar */}
-                        <div style={{ position: 'relative', height: '50vh' }}>
-                            {/* Loader sobreposto */}
-                            {loadingMarks && (
-                                <div style={{
-                                    position: 'absolute',
-                                    top: 0, left: 0, right: 0, bottom: 0,
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    background: 'rgba(35,35,35,0.85)',
-                                    zIndex: 2,
-                                    transition: 'opacity 0.4s',
-                                    opacity: loadingMarks ? 1 : 0,
-                                    pointerEvents: 'all',
-                                    height: '100%'
-                                }}>
-                                    <svg width="48" height="48" viewBox="0 0 50 50">
-                                        <circle cx="25" cy="25" r="20" fill="none" stroke="#8b5cf6" strokeWidth="5" strokeDasharray="31.4 31.4" strokeLinecap="round">
-                                            <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite" />
-                                        </circle>
-                                    </svg>
+                            {/* Table Calendar */}
+                            <div style={{ position: 'relative', height: '50vh' }}>
+                                {/* Loader sobreposto */}
+                                {loadingMarks && (
+                                    <div style={{
+                                        position: 'absolute',
+                                        top: 0, left: 0, right: 0, bottom: 0,
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        background: 'rgba(35,35,35,0.85)',
+                                        zIndex: 2,
+                                        transition: 'opacity 0.4s',
+                                        opacity: loadingMarks ? 1 : 0,
+                                        pointerEvents: 'all',
+                                        height: '100%'
+                                    }}>
+                                        <svg width="48" height="48" viewBox="0 0 50 50">
+                                            <circle cx="25" cy="25" r="20" fill="none" stroke="#8b5cf6" strokeWidth="5" strokeDasharray="31.4 31.4" strokeLinecap="round">
+                                                <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite" />
+                                            </circle>
+                                        </svg>
+                                    </div>
+                                )}
+                                {/* Calendário sempre renderizado, mas invisível durante loading */}
+                                <div
+                                    style={{
+                                        opacity: loadingMarks ? 0 : 1,
+                                        transition: 'opacity 0.4s',
+                                        pointerEvents: loadingMarks ? 'none' : 'auto',
+                                        height: '100%'
+                                    }}
+                                >
+                                    <Table
+                                        reserva={reservas}
+                                        pullMarks={pullMarks}
+                                        serieMode={serieMode}
+                                        horariosSelecionados={horariosSelecionados}
+                                        setHorariosSelecionados={setHorariosSelecionados}
+                                        adminSelectMode={adminSelectMode}
+                                        handleToggleSelectMode={handleToggleSelectMode}
+                                        adminMode={true}
+                                    />
                                 </div>
-                            )}
-                            {/* Calendário sempre renderizado, mas invisível durante loading */}
-                            <div
-                                style={{
-                                    opacity: loadingMarks ? 0 : 1,
-                                    transition: 'opacity 0.4s',
-                                    pointerEvents: loadingMarks ? 'none' : 'auto',
-                                    height: '100%'
-                                }}
-                            >
-                                <Table
-                                    reserva={reservas}
-                                    pullMarks={pullMarks}
-                                    serieMode={serieMode}
-                                    horariosSelecionados={horariosSelecionados}
-                                    setHorariosSelecionados={setHorariosSelecionados}
-                                    adminSelectMode={adminSelectMode}
-                                    handleToggleSelectMode={handleToggleSelectMode}
-                                    adminMode={true}
-                                />
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
 
-        </div>
-    </span>
+            </div>
+        </span>
     );
 };
 
