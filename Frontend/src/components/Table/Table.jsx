@@ -82,14 +82,14 @@ function Table({
 
 
 
-    // if (JSON.parse(sessionStorage.getItem('professor'))) {
-    //     let user = JSON.parse(sessionStorage.getItem('professor'));
-    //     if (user.rule === "admin") {
-    //         semanasPraMais = 52;
-    //     } else {
-    //         semanasPraMais = 2;
-    //     }
-    // }
+    if (JSON.parse(sessionStorage.getItem('professor'))) {
+        let user = JSON.parse(sessionStorage.getItem('professor'));
+        if (user.rule === "admin") {
+            semanasPraMais = 52;
+        } else {
+            semanasPraMais = 2;
+        }
+    }
 
 
     const ebb = getWeeksPassed(a, m, d);
@@ -99,7 +99,12 @@ function Table({
     const [realWeek, setRealWeek] = useState(wp);
     const [currentWeek, setCurrentWeek] = useState(ebb);
     const [isTransition, setIsTransition] = useState(m === 12 ? false : true);
-    const [currentMes, setCurrentMes] = useState(currentWeek % 52 >= 48 ? 11 : currentWeek % 52 >= 44 ? 10 : currentWeek % 52 >= 40 ? 9 : currentWeek % 52 >= 35 ? 8 : currentWeek % 52 >= 31 ? 7 : currentWeek % 52 >= 26 ? 6 : currentWeek % 52 >= 22 ? 5 : currentWeek % 52 >= 18 ? 4 : currentWeek % 52 >= 13 ? 3 : currentWeek % 52 >= 9 ? 2 : currentWeek % 52 >= 5 ? 1 : currentWeek % 52 === 0 && !isTransition ? 11 : 0);
+    const [currentMes, setCurrentMes] = useState(() => {
+        // Calcula a data do primeiro dia da semana atual
+        const initialDate = new Date(ano, mes, day);
+        initialDate.setDate(initialDate.getDate() + (ebb * 7));
+        return initialDate.getMonth();
+    });
     const [currentAno, setCurrentAno] = useState(ano + yearPlus);
     const [prevDisabled, setPrevDisabled] = useState(true);
     const [nextDisabled, setNextDisabled] = useState(false);
