@@ -95,63 +95,105 @@ export default function OverviewPage() {
     }, []);
 
 
+    // Função para buscar labs (pode ser chamada manualmente ou pelo timer)
+    const fetchLabs = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await fetch(`${config.apiUrl}/labs/all`);
+            if (!res.ok) throw new Error("Erro ao buscar laboratórios");
+            const data = await res.json();
+
+            const aulaAtual = getAulaAtual().aulaAtual;
+            const diaAtual = getAulaAtual().dia;
+
+            const labsComReservas = await Promise.all(
+                data.map(async (lab) => {
+                    const reservaData = await fetchAulaForLab(periodo, aulaAtual, lab.idLaboratorio, diaAtual);
+                    let aulaAnterior = null;
+                    if (aulaAtual >= 1) {
+                        let r = await fetchAulaForLab(periodo, aulaAtual - 1, lab.idLaboratorio, diaAtual);
+                        aulaAnterior = r;
+                    }
+                    let proximaAula = null;
+                    if (aulaAtual <= 6) {
+                        proximaAula = await fetchAulaForLab(periodo, aulaAtual + 1, lab.idLaboratorio, diaAtual);
+                    }
+                    if (aulaAtual == 1) {
+                        aulaAnterior = null;
+                    }
+                    if (aulaAtual == 6) {
+                        proximaAula = null;
+                    }
+                    return {
+                        ...lab,
+                        current: Array.isArray(reservaData) && reservaData[0] ? reservaData[0] : { motivo: "Sem reserva" },
+                        previous: Array.isArray(aulaAnterior) && aulaAnterior && aulaAnterior[0] ? aulaAnterior[0] : { motivo: "Sem reserva" },
+                        next: Array.isArray(proximaAula) && proximaAula && proximaAula[0] ? proximaAula[0] : { motivo: "Sem reserva" },
+                    };
+                })
+            );
+            setLabs(labsComReservas);
+            setLoading(false);
+        } catch (err) {
+            setError(err.message || String(err));
+            setLoading(false);
+        }
+    };
+
+    // Atualiza labs ao mudar o período
     useEffect(() => {
-        async function fetchLabs() {
+        fetchLabs();
+    }, [periodo]);
 
-            setLoading(true);
-            setError(null);
-            try {
-                const res = await fetch(`${config.apiUrl}/labs/all`);
-                if (!res.ok) throw new Error("Erro ao buscar laboratórios");
-                const data = await res.json();
+    // Atualiza labs automaticamente ao virar o horário de aula
+    useEffect(() => {
+        // Pega todos os horários de início das aulas do período atual
+        const horariosInicio = horarios[periodo].map(h => {
+            const [inicio] = h.split(' - ');
+            const [hStr, mStr] = inicio.split(':');
+            return { hora: parseInt(hStr, 10), minuto: parseInt(mStr, 10) };
+        });
 
-                const aulaAtual = getAulaAtual().aulaAtual;
-                const diaAtual = getAulaAtual().dia;
-
-                // console.log(`Aula Atual: ${aulaAtual}, Dia Atual: ${diaAtual}`);
-
-                // Aguarda todas as reservas e monta o array de labs já com reservas
-
-                const labsComReservas = await Promise.all(
-                    data.map(async (lab) => {
-                        const reservaData = await fetchAulaForLab(periodo, aulaAtual, lab.idLaboratorio, diaAtual);
-                        //Busca a aula anterior se for maior que 1 e deixa nulo caso for menor ou igual a 1 e maior ou igual a 6
-                        let aulaAnterior = null;
-                        if (aulaAtual >= 1) {
-                            let r = await fetchAulaForLab(periodo, aulaAtual - 1, lab.idLaboratorio, diaAtual);
-                            aulaAnterior = r;
-                        }
-                        let proximaAula = null;
-                        if (aulaAtual <= 6) {
-                            proximaAula = await fetchAulaForLab(periodo, aulaAtual + 1, lab.idLaboratorio, diaAtual);
-                        }
-                        if (aulaAtual == 1) {
-                            aulaAnterior = null;
-                        }
-                        if (aulaAtual == 6) {
-                            proximaAula = null;
-                        }
-                        return {
-                            ...lab,
-                            current: Array.isArray(reservaData) && reservaData[0] ? reservaData[0] : { motivo: "Sem reserva" },
-                            previous: Array.isArray(aulaAnterior) && aulaAnterior && aulaAnterior[0] ? aulaAnterior[0] : { motivo: "Sem reserva" },
-                            next: Array.isArray(proximaAula) && proximaAula && proximaAula[0] ? proximaAula[0] : { motivo: "Sem reserva" },
-                        };
-                    })
-                );
-
-                // console.log(labsComReservas);
-
-                setLabs(labsComReservas);
-                setLoading(false);
-            } catch (err) {
-                setError(err.message || String(err));
-                setLoading(false);
+        function getProximoHorario() {
+            const agora = new Date();
+            for (let i = 0; i < horariosInicio.length; i++) {
+                const { hora, minuto } = horariosInicio[i];
+                if (
+                    agora.getHours() < hora ||
+                    (agora.getHours() === hora && agora.getMinutes() < minuto)
+                ) {
+                    return { hora, minuto };
+                }
             }
+            // Se já passou de todos, retorna o primeiro do próximo dia
+            return horariosInicio[0];
         }
 
-        fetchLabs();
+        // Calcula quanto tempo falta para o próximo horário de início de aula
+        function msAteProximoHorario() {
+            const agora = new Date();
+            const { hora, minuto } = getProximoHorario();
+            let proximo = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), hora, minuto, 0, 0);
+            if (proximo <= agora) {
+                // Se já passou, agenda para o próximo dia
+                proximo.setDate(proximo.getDate() + 1);
+            }
+            return proximo - agora;
+        }
 
+        let timeoutId = null;
+        function agendarAtualizacao() {
+            const ms = msAteProximoHorario();
+            timeoutId = setTimeout(() => {
+                fetchLabs();
+                agendarAtualizacao(); // agenda novamente para o próximo horário
+            }, ms + 1000); // +1s para garantir que já virou
+        }
+        agendarAtualizacao();
+        return () => {
+            if (timeoutId) clearTimeout(timeoutId);
+        };
     }, [periodo]);
 
     const labsPorTipo = labs.reduce((acc, lab) => {

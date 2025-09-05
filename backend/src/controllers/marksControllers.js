@@ -83,11 +83,11 @@ const createMark = async (req, res) => {
 
 
         const createdReserva = await markModels.createReserva(reservaData);
-        console.log("Reserva criada com sucesso: ", createdReserva);
         if (createdReserva.error) {
             return res.status(403).json({ error: createdReserva.error, type: 'reservation_limit' });
         }
 
+        console.log("Reserva criada com sucesso: ", createdReserva);
         return res.status(201).json({
             message: 'Reserva criada com sucesso.',
             reserva: createdReserva
