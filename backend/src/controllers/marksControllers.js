@@ -43,6 +43,21 @@ const createMark = async (req, res) => {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
         }
 
+        switch (periodo) {
+            case 'Manhã':
+                periodo = 'manha';
+                break;
+            case 'Tarde':
+                periodo = 'tarde';
+                break;
+            case 'Noite':
+                periodo = 'noite';
+                // Lógica para o período da noite
+                break;
+            default:
+                return res.status(400).json({ error: 'Período inválido.' });
+        }
+
         // Verifica se o laboratório está bloqueado
         const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio, periodo);
         if (bloqueado) {
