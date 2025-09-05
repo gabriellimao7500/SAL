@@ -111,6 +111,7 @@ export default function OverviewPage() {
                 // console.log(`Aula Atual: ${aulaAtual}, Dia Atual: ${diaAtual}`);
 
                 // Aguarda todas as reservas e monta o array de labs já com reservas
+
                 const labsComReservas = await Promise.all(
                     data.map(async (lab) => {
                         const reservaData = await fetchAulaForLab(periodo, aulaAtual, lab.idLaboratorio, diaAtual);
@@ -118,32 +119,23 @@ export default function OverviewPage() {
                         let aulaAnterior = null;
                         if (aulaAtual >= 1) {
                             let r = await fetchAulaForLab(periodo, aulaAtual - 1, lab.idLaboratorio, diaAtual);
-
-                            //console.log("Essa é aula anterior do lab ", lab.idLaboratorio, r);
-
                             aulaAnterior = r;
                         }
-                        // console.log("Esse é aula anterior", aulaAnterior);
                         let proximaAula = null;
                         if (aulaAtual <= 6) {
                             proximaAula = await fetchAulaForLab(periodo, aulaAtual + 1, lab.idLaboratorio, diaAtual);
                         }
-
-
                         if (aulaAtual == 1) {
                             aulaAnterior = null;
                         }
-                        // console.log("Esse é proxima aula", proximaAula);
                         if (aulaAtual == 6) {
-                            proximaAula = null
+                            proximaAula = null;
                         }
-
-
                         return {
                             ...lab,
-                            current: reservaData[0],
-                            previous: aulaAnterior[0],
-                            next: proximaAula[0],
+                            current: Array.isArray(reservaData) && reservaData[0] ? reservaData[0] : { motivo: "Sem reserva" },
+                            previous: Array.isArray(aulaAnterior) && aulaAnterior && aulaAnterior[0] ? aulaAnterior[0] : { motivo: "Sem reserva" },
+                            next: Array.isArray(proximaAula) && proximaAula && proximaAula[0] ? proximaAula[0] : { motivo: "Sem reserva" },
                         };
                     })
                 );

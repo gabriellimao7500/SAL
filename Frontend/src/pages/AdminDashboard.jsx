@@ -450,18 +450,17 @@ const AdminDashboard = () => {
                             >
                                 <thead>
                                     <tr style={{ background: '#232323', color: '#ef4444' }}>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Tipo</th>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Número</th>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Bloqueado (Manhã)</th>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Bloqueado (Tarde)</th>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Bloqueado (Noite)</th>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Nome</th>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Manhã</th>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Tarde</th>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Noite</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {labs.map(lab => (
                                         <tr key={lab.idLaboratorio} style={{ borderBottom: '1px solid #333' }}>
-                                            <td style={{ padding: '8px' }}>{lab.tipoLaboratorio}</td>
-                                            <td style={{ padding: '8px' }}>{lab.numeroLaboratorio}</td>
+                                            <td style={{ padding: '8px' }}>{`${lab.tipoLaboratorio} ${lab.numeroLaboratorio}`}</td>
+
                                             <td style={{ padding: '8px', textAlign: 'left' }}>
                                                 <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
                                                     <span

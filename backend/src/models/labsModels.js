@@ -57,7 +57,10 @@ const isLabBloqueado = async (tipoLaboratorio, numeroLaboratorio, periodo) => {
     let column = `bloqueado_${periodo}`;
     const query = `SELECT ${column} FROM laboratorio WHERE tipoLaboratorio = ? AND numeroLaboratorio = ? LIMIT 1;`;
     const [rows] = await connection.execute(query, [tipoLaboratorio, numeroLaboratorio]);
-    return rows.length > 0 && rows[0][column] === 1;
+    if (!rows || rows.length === 0 || rows[0] == null) {
+        return false; // ou lance um erro, se preferir
+    }
+    return rows[0][column] === 1;
 };
 
 module.exports = {
