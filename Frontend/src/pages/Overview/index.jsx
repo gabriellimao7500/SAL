@@ -51,7 +51,7 @@ function getAulaAtual() {
 
 async function fetchAulaForLab(periodo, aulaReserva, idLaboratorio, dia) {
     try {
-        const res = await fetch(`http://${config.apiUrl}/marks/of/${idLaboratorio}/${aulaReserva}/${periodo}/${dia}`);
+        const res = await fetch(`${config.apiUrl}/marks/of/${idLaboratorio}/${aulaReserva}/${periodo}/${dia}`);
         if (!res.ok) throw new Error("Erro ao buscar aula");
         const data = await res.json();
         //console.log("Esse é data 0", data[0]);
@@ -101,7 +101,7 @@ export default function OverviewPage() {
             setLoading(true);
             setError(null);
             try {
-                const res = await fetch(`http://${config.apiUrl}/labs/all`);
+                const res = await fetch(`${config.apiUrl}/labs/all`);
                 if (!res.ok) throw new Error("Erro ao buscar laboratórios");
                 const data = await res.json();
 
