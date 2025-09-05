@@ -45,10 +45,10 @@ function Header() {
           <div className="spacing_3"></div>
           <h1>
             <Link to="/">
-              <img src="../../logo.svg" alt="" width={windowWidth > 430 ? '40' : '60'} />
+              <img src="/logo.svg" alt="" width={windowWidth > 430 ? '40' : '60'} />
               <div className="logo_SAL">
                 <div className='logo_beta'>{windowWidth > 430 ? 'S.A.L' : ''}</div>
-                {windowWidth > 430 ? (<img src="../../beta.svg" alt="" width={50} />) : ''}
+                {windowWidth > 430 ? (<img src="/beta.svg" alt="" width={50} />) : ''}
               </div>
 
             </Link>
