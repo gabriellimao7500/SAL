@@ -42,16 +42,17 @@ const createMark = async (req, res) => {
         if (!dataReserva || !aulaReserva || !idProfessor || !numeroLaboratorio || !tipoLaboratorio || !motivo) {
             return res.status(400).json({ error: 'Dados insuficientes para criar a reserva.' });
         }
+        let newPeriodo = periodo;
 
         switch (periodo) {
             case 'Manhã':
-                periodo = 'manha';
+                newPeriodo = 'manha';
                 break;
             case 'Tarde':
-                periodo = 'tarde';
+                newPeriodo = 'tarde';
                 break;
             case 'Noite':
-                periodo = 'noite';
+                newPeriodo = 'noite';
                 // Lógica para o período da noite
                 break;
             default:
@@ -59,7 +60,7 @@ const createMark = async (req, res) => {
         }
 
         // Verifica se o laboratório está bloqueado
-        const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio, periodo);
+        const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio, newPeriodo);
         if (bloqueado) {
             return res.status(403).json({ error: 'Este laboratório está bloqueado para reservas.', type: 'lab_blocked' });
         }
