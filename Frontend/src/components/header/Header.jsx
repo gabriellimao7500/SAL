@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Hamburguer from '../Hamburguer/Hamburguer';
 import { Link } from 'react-router-dom';
 
-function Header({ Labs }) {
+function Header() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const [isAdmin, setIsAdmin] = useState(false);
@@ -69,6 +69,22 @@ function Header({ Labs }) {
             <div>conosco</div>
           </div>
         </a>
+        <Link to="/overview" className='button-admin' style={{
+          background: '#00b969',
+          color: '#fff',
+          border: '1px solid #77ffc3',
+          borderRadius: '8px',
+          padding: '10px 22px',
+          fontWeight: 600,
+          fontSize: '1.08rem',
+          marginLeft: '12px',
+          textDecoration: 'none',
+          boxShadow: '0 2px 8px #8b5cf633',
+          transition: 'background 0.2s, color 0.2s, border 0.2s'
+        }}>
+          Visão Geral
+
+        </Link>
         {isAdmin && (<>
 
           <Link to="/AdminDashboard" className='button-admin' style={{
