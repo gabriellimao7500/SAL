@@ -31,22 +31,33 @@ const getAllLabs = async () => {
 };
 
 // Métodos para bloqueio usando atributo na tabela laboratorio
-const bloquearLab = async (tipoLaboratorio, numeroLaboratorio) => {
-    const query = `UPDATE laboratorio SET bloqueado = 1 WHERE tipoLaboratorio = ? AND numeroLaboratorio = ?;`;
-    await connection.execute(query, [tipoLaboratorio, numeroLaboratorio]);
+const bloquearLab = async (tipoLaboratorio, numeroLaboratorio, periodo) => {
+    const allowedPeriods = ['manha', 'tarde', 'noite'];
+    if (!allowedPeriods.includes(periodo)) {
+        throw new Error('Período inválido');
+    }
+    const column = `bloqueado_${periodo}`;
+    const sql = `UPDATE laboratorio SET ${column} = ? WHERE tipoLaboratorio = ? AND numeroLaboratorio = ?`;
+    await connection.execute(sql, [1, tipoLaboratorio, numeroLaboratorio]);
     return true;
 };
 
-const desbloquearLab = async (tipoLaboratorio, numeroLaboratorio) => {
-    const query = `UPDATE laboratorio SET bloqueado = 0 WHERE tipoLaboratorio = ? AND numeroLaboratorio = ?;`;
-    await connection.execute(query, [tipoLaboratorio, numeroLaboratorio]);
+const desbloquearLab = async (tipoLaboratorio, numeroLaboratorio, periodo) => {
+    const allowedPeriods = ['manha', 'tarde', 'noite'];
+    if (!allowedPeriods.includes(periodo)) {
+        throw new Error('Período inválido');
+    }
+    const column = `bloqueado_${periodo}`;
+    const sql = `UPDATE laboratorio SET ${column} = ? WHERE tipoLaboratorio = ? AND numeroLaboratorio = ?`;
+    await connection.execute(sql, [0, tipoLaboratorio, numeroLaboratorio]);
     return true;
 };
 
-const isLabBloqueado = async (tipoLaboratorio, numeroLaboratorio) => {
-    const query = `SELECT bloqueado FROM laboratorio WHERE tipoLaboratorio = ? AND numeroLaboratorio = ? LIMIT 1;`;
+const isLabBloqueado = async (tipoLaboratorio, numeroLaboratorio, periodo) => {
+    let column = `bloqueado_${periodo}`;
+    const query = `SELECT ${column} FROM laboratorio WHERE tipoLaboratorio = ? AND numeroLaboratorio = ? LIMIT 1;`;
     const [rows] = await connection.execute(query, [tipoLaboratorio, numeroLaboratorio]);
-    return rows.length > 0 && rows[0].bloqueado === 1;
+    return rows.length > 0 && rows[0][column] === 1;
 };
 
 module.exports = {

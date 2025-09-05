@@ -95,17 +95,21 @@ const AdminDashboard = () => {
     const [labsStatus, setLabsStatus] = useState({});
     const [loadingLabs, setLoadingLabs] = useState(false);
     const [labsError, setLabsError] = useState('');
-    // State para status de bloqueio de cada laboratório
+    // State para status de bloqueio de cada laboratório por período
     const fetchLabs = async () => {
         setLoadingLabs(true);
         setLabsError('');
         try {
             const response = await axios.get(`${config.apiUrl}/labs/all`);
             setLabs(response.data);
-            // Inicializa o status de bloqueio de cada laboratório
+            // Inicializa o status de bloqueio de cada laboratório por período
             const status = {};
             response.data.forEach(lab => {
-                status[lab.idLaboratorio] = lab.bloqueado === 1;
+                status[lab.idLaboratorio] = {
+                    manha: lab.bloqueado_manha === 1,
+                    tarde: lab.bloqueado_tarde === 1,
+                    noite: lab.bloqueado_noite === 1
+                };
             });
             setLabsStatus(status);
             if (!response.data || response.data.length === 0) {
@@ -117,6 +121,39 @@ const AdminDashboard = () => {
             setLabsError('Erro ao buscar laboratórios.');
         } finally {
             setLoadingLabs(false);
+        }
+    };
+
+    // Função para alternar bloqueio/desbloqueio por período
+    const handleToggleLabPeriod = async (lab, periodo) => {
+        const novoStatus = !labsStatus[lab.idLaboratorio]?.[periodo];
+        try {
+            const res = await axios.post(`${config.apiUrl}/labs/bloqueio`, {
+                tipoLaboratorio: lab.tipoLaboratorio,
+                numeroLaboratorio: lab.numeroLaboratorio,
+                periodo: periodo,
+                action: novoStatus ? 'bloquear' : 'desbloquear'
+            }, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            Swal.fire({
+                icon: novoStatus ? 'warning' : 'success',
+                title: novoStatus ? 'Laboratório bloqueado!' : 'Laboratório desbloqueado!',
+                text: res.data.message || (novoStatus ? 'Nenhum usuário poderá reservar este laboratório até ser desbloqueado.' : 'Agora é possível reservar este laboratório normalmente.')
+            });
+            setLabsStatus(prev => ({
+                ...prev,
+                [lab.idLaboratorio]: {
+                    ...prev[lab.idLaboratorio],
+                    [periodo]: novoStatus
+                }
+            }));
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: err?.response?.data?.message || 'Não foi possível atualizar o status do laboratório.'
+            });
         }
     };
 
@@ -415,7 +452,9 @@ const AdminDashboard = () => {
                                     <tr style={{ background: '#232323', color: '#ef4444' }}>
                                         <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Tipo</th>
                                         <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Número</th>
-                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Bloqueado</th>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Bloqueado (Manhã)</th>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Bloqueado (Tarde)</th>
+                                        <th style={{ padding: '8px', borderBottom: '1px solid #333' }}>Bloqueado (Noite)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -426,29 +465,7 @@ const AdminDashboard = () => {
                                             <td style={{ padding: '8px', textAlign: 'left' }}>
                                                 <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
                                                     <span
-                                                        onClick={async () => {
-                                                            const novoStatus = !labsStatus[lab.idLaboratorio];
-                                                            try {
-                                                                const res = await axios.post(`${config.apiUrl}/labs/${novoStatus ? 'bloquear' : 'desbloquear'}`, {
-                                                                    tipoLaboratorio: lab.tipoLaboratorio,
-                                                                    numeroLaboratorio: lab.numeroLaboratorio
-                                                                }, {
-                                                                    headers: { 'Content-Type': 'application/json' }
-                                                                });
-                                                                Swal.fire({
-                                                                    icon: novoStatus ? 'warning' : 'success',
-                                                                    title: novoStatus ? 'Laboratório bloqueado!' : 'Laboratório desbloqueado!',
-                                                                    text: res.data.message || (novoStatus ? 'Nenhum usuário poderá reservar este laboratório até ser desbloqueado.' : 'Agora é possível reservar este laboratório normalmente.')
-                                                                });
-                                                                setLabsStatus(prev => ({ ...prev, [lab.idLaboratorio]: novoStatus }));
-                                                            } catch (err) {
-                                                                Swal.fire({
-                                                                    icon: 'error',
-                                                                    title: 'Erro',
-                                                                    text: err?.response?.data?.message || 'Não foi possível atualizar o status do laboratório.'
-                                                                });
-                                                            }
-                                                        }}
+                                                        onClick={() => handleToggleLabPeriod(lab, 'manha')}
                                                         style={{
                                                             display: 'inline-flex',
                                                             alignItems: 'center',
@@ -462,14 +479,14 @@ const AdminDashboard = () => {
                                                             width: '44px',
                                                             height: '24px',
                                                             borderRadius: '12px',
-                                                            background: labsStatus[lab.idLaboratorio] ? '#ef4444' : '#22c55e',
+                                                            background: labsStatus[lab.idLaboratorio]?.manha ? '#ef4444' : '#22c55e',
                                                             position: 'relative',
                                                             transition: 'background 0.3s',
                                                             boxShadow: '0 0 4px #0002'
                                                         }}>
                                                             <span style={{
                                                                 position: 'absolute',
-                                                                left: labsStatus[lab.idLaboratorio] ? '22px' : '2px',
+                                                                left: labsStatus[lab.idLaboratorio]?.manha ? '22px' : '2px',
                                                                 top: '2px',
                                                                 width: '20px',
                                                                 height: '20px',
@@ -479,12 +496,95 @@ const AdminDashboard = () => {
                                                                 transition: 'left 0.3s'
                                                             }} />
                                                         </span>
-                                                        <span style={{ color: labsStatus[lab.idLaboratorio] ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
-                                                            {labsStatus[lab.idLaboratorio] ? 'Bloqueado' : 'Liberado'}
+                                                        <span style={{ color: labsStatus[lab.idLaboratorio]?.manha ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
+                                                            {labsStatus[lab.idLaboratorio]?.manha ? 'Bloqueado' : 'Liberado'}
                                                         </span>
                                                     </span>
                                                 </label>
                                             </td>
+
+                                            <td style={{ padding: '8px', textAlign: 'left' }}>
+                                                <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
+                                                    <span
+                                                        onClick={() => handleToggleLabPeriod(lab, 'tarde')}
+                                                        style={{
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-around',
+                                                            cursor: 'pointer',
+                                                            gap: '10px',
+                                                            width: '100%'
+                                                        }}
+                                                    >
+                                                        <span style={{
+                                                            width: '44px',
+                                                            height: '24px',
+                                                            borderRadius: '12px',
+                                                            background: labsStatus[lab.idLaboratorio]?.tarde ? '#ef4444' : '#22c55e',
+                                                            position: 'relative',
+                                                            transition: 'background 0.3s',
+                                                            boxShadow: '0 0 4px #0002'
+                                                        }}>
+                                                            <span style={{
+                                                                position: 'absolute',
+                                                                left: labsStatus[lab.idLaboratorio]?.tarde ? '22px' : '2px',
+                                                                top: '2px',
+                                                                width: '20px',
+                                                                height: '20px',
+                                                                borderRadius: '50%',
+                                                                background: '#fff',
+                                                                boxShadow: '0 1px 4px #0002',
+                                                                transition: 'left 0.3s'
+                                                            }} />
+                                                        </span>
+                                                        <span style={{ color: labsStatus[lab.idLaboratorio]?.tarde ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
+                                                            {labsStatus[lab.idLaboratorio]?.tarde ? 'Bloqueado' : 'Liberado'}
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </td>
+
+                                            <td style={{ padding: '8px', textAlign: 'left' }}>
+                                                <label style={{ display: 'flex', alignItems: 'left', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
+                                                    <span
+                                                        onClick={() => handleToggleLabPeriod(lab, 'noite')}
+                                                        style={{
+                                                            display: 'inline-flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-around',
+                                                            cursor: 'pointer',
+                                                            gap: '10px',
+                                                            width: '100%'
+                                                        }}
+                                                    >
+                                                        <span style={{
+                                                            width: '44px',
+                                                            height: '24px',
+                                                            borderRadius: '12px',
+                                                            background: labsStatus[lab.idLaboratorio]?.noite ? '#ef4444' : '#22c55e',
+                                                            position: 'relative',
+                                                            transition: 'background 0.3s',
+                                                            boxShadow: '0 0 4px #0002'
+                                                        }}>
+                                                            <span style={{
+                                                                position: 'absolute',
+                                                                left: labsStatus[lab.idLaboratorio]?.noite ? '22px' : '2px',
+                                                                top: '2px',
+                                                                width: '20px',
+                                                                height: '20px',
+                                                                borderRadius: '50%',
+                                                                background: '#fff',
+                                                                boxShadow: '0 1px 4px #0002',
+                                                                transition: 'left 0.3s'
+                                                            }} />
+                                                        </span>
+                                                        <span style={{ color: labsStatus[lab.idLaboratorio]?.noite ? '#ef4444' : '#22c55e', fontWeight: 600, textAlign: 'right' }}>
+                                                            {labsStatus[lab.idLaboratorio]?.noite ? 'Bloqueado' : 'Liberado'}
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </td>
+
                                         </tr>
                                     ))}
                                 </tbody>

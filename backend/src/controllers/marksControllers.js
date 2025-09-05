@@ -44,7 +44,7 @@ const createMark = async (req, res) => {
         }
 
         // Verifica se o laboratório está bloqueado
-        const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio);
+        const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio, periodo);
         if (bloqueado) {
             return res.status(403).json({ error: 'Este laboratório está bloqueado para reservas.', type: 'lab_blocked' });
         }

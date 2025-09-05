@@ -39,34 +39,34 @@ const getAllLabs = async (req, res) => {
 };
 
 // Bloquear laboratório
-const bloquearLab = async (req, res) => {
-    const { tipoLaboratorio, numeroLaboratorio } = req.body;
-    try {
-        await labsModels.bloquearLab(tipoLaboratorio, numeroLaboratorio);
-        return res.status(200).json({ message: 'Laboratório bloqueado com sucesso.' });
-    } catch (error) {
-        console.error('Erro ao bloquear laboratório:', error);
-        return res.status(500).json({ message: 'Erro ao bloquear laboratório.' });
+const bloqueio = async (req, res) => {
+    const { tipoLaboratorio, numeroLaboratorio, periodo, action } = req.body;
+    if (action == "bloquear") {
+        try {
+            await labsModels.bloquearLab(tipoLaboratorio, numeroLaboratorio, periodo);
+            return res.status(200).json({ message: 'Laboratório bloqueado com sucesso para o período ' + periodo + '.' });
+        } catch (error) {
+            console.error('Erro ao bloquear laboratório:', error);
+            return res.status(500).json({ message: 'Erro ao bloquear laboratório.' });
+        }
+    } else if (action == "desbloquear") {
+        try {
+            await labsModels.desbloquearLab(tipoLaboratorio, numeroLaboratorio, periodo);
+            return res.status(200).json({ message: 'Laboratório desbloqueado com sucesso para o período ' + periodo + '.' });
+        } catch (error) {
+            console.error('Erro ao desbloquear laboratório:', error);
+            return res.status(500).json({ message: 'Erro ao desbloquear laboratório.' });
+        }
     }
 };
 
-// Desbloquear laboratório
-const desbloquearLab = async (req, res) => {
-    const { tipoLaboratorio, numeroLaboratorio } = req.body;
-    try {
-        await labsModels.desbloquearLab(tipoLaboratorio, numeroLaboratorio);
-        return res.status(200).json({ message: 'Laboratório desbloqueado com sucesso.' });
-    } catch (error) {
-        console.error('Erro ao desbloquear laboratório:', error);
-        return res.status(500).json({ message: 'Erro ao desbloquear laboratório.' });
-    }
-};
+
 
 // Verificar se laboratório está bloqueado
 const isLabBloqueado = async (req, res) => {
-    const { tipoLaboratorio, numeroLaboratorio } = req.query;
+    const { tipoLaboratorio, numeroLaboratorio, periodo } = req.query;
     try {
-        const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio);
+        const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio, periodo);
         return res.status(200).json({ bloqueado });
     } catch (error) {
         console.error('Erro ao verificar bloqueio:', error);
@@ -76,8 +76,6 @@ const isLabBloqueado = async (req, res) => {
 module.exports = {
     getAll,
     getDataFromType,
-    bloquearLab,
-    desbloquearLab,
-    isLabBloqueado,
+    bloqueio,
     getAllLabs
 }

@@ -42,8 +42,9 @@ router.put('/updPass/:idProfessor', profController.updateSenha);
 router.get('/labs', labsControllers.getAll);
 router.get('/labs/all', labsControllers.getAllLabs);
 router.get('/labsType/:tipoLaboratorio', labsControllers.getDataFromType);
-router.post('/labs/bloquear', labsControllers.bloquearLab);
-router.post('/labs/desbloquear', labsControllers.desbloquearLab);
+// router.post('/labs/bloquear', labsControllers.bloquearLab);
+// router.post('/labs/desbloquear', labsControllers.desbloquearLab);
+router.post('/labs/bloqueio', labsControllers.bloqueio);
 
 // Reservas
 router.post('/marks', marksControllers.getData);
