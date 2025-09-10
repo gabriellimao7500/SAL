@@ -80,6 +80,14 @@ def generate_reservas_sql(excel_path: str, output_sql: str, start_date: str, end
                                 continue
                             motivo_text = f"{aula} - {turma}".replace("'", "''")
                             f.write(f"        -- {day} (Laboratório {lab_num} - {periodo}) - Aula {i}\n")
+                            # Adiciona o DELETE antes do INSERT
+                            f.write(
+                                "        DELETE FROM reserva\n"
+                                f"        WHERE dataReserva = data_atual{offset}\n"
+                                f"          AND periodo = '{periodo}'\n"
+                                f"          AND aulaReserva = {i}\n"
+                                f"          AND idLaboratorio = {lab_num};\n"
+                            )
                             f.write(
                                 "        INSERT INTO reserva "
                                 "(dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)\n"
@@ -99,6 +107,14 @@ def generate_reservas_sql(excel_path: str, output_sql: str, start_date: str, end
                                 continue
                             motivo_text = f"{materia} - {turma}".replace("'", "''")
                             f.write(f"        -- {day} (Laboratório {lab_num} - Noite) - Aula {i}\n")
+                            # Adiciona o DELETE antes do INSERT
+                            f.write(
+                                "        DELETE FROM reserva\n"
+                                f"        WHERE dataReserva = data_atual{offset}\n"
+                                f"          AND periodo = 'Noite'\n"
+                                f"          AND aulaReserva = {i}\n"
+                                f"          AND idLaboratorio = {lab_num};\n"
+                            )
                             f.write(
                                 "        INSERT INTO reserva "
                                 "(dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)\n"
