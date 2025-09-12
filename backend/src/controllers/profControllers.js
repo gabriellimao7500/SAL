@@ -22,10 +22,21 @@ const getDataFromId = async (req, res) => {
     }
 }
 
+const createProfessor = async (req, res) => {
+    const { name, email, senha } = req.body;
+    try {
+        const result = await profModels.createProfessor(name, email, senha);
+        return res.status(201).json(result);
+    } catch (error) {
+        console.error('Erro ao criar professor:', error);
+        return res.status(500).json({ message: "Erro ao criar professor" });
+    }
+};
+
 const updateImagem = async (req, res) => {
     const { idProfessor } = req.params;
     const { imagem } = req.body;
-    
+
     try {
         const result = await profModels.updateImagem(idProfessor, imagem);
         return res.status(200).json(result);
@@ -38,7 +49,7 @@ const updateImagem = async (req, res) => {
 const updateSenha = async (req, res) => {
     const { idProfessor } = req.params;
     const { senha } = req.body;
-    
+
     try {
         const result = await profModels.updateSenha(idProfessor, senha);
         return res.status(200).json(result);
@@ -54,5 +65,6 @@ module.exports = {
     getData,
     getDataFromId,
     updateImagem,
-    updateSenha
+    updateSenha,
+    createProfessor,
 };

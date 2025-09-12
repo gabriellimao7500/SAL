@@ -11,6 +11,22 @@ const getDataFromId = async (idProfessor) => {
     return professor;
 };
 
+const createProfessor = async (name, email, senha) => {
+    try {
+        const query = "INSERT INTO professor (nome, email, senha) VALUES (?, ?, ?)";
+        const [result] = await connection.execute(query, [name, email, senha]);
+
+        if (result.affectedRows > 0) {
+            return { success: true, message: 'Professor criado com sucesso' };
+        } else {
+            return { success: false, message: 'Erro ao criar professor' };
+        }
+    } catch (error) {
+        console.error('Erro ao criar professor:', error);
+        throw new Error('Erro ao criar professor no banco de dados');
+    }
+};
+
 const updateImagem = async (idProfessor, imagem) => {
     try {
         const query = "UPDATE professor SET imagem = ? WHERE idProfessor = ?";
@@ -81,5 +97,6 @@ module.exports = {
     updateSenha,
     updateImagem,
     updateProfessor,
-    deleteProfessor
+    deleteProfessor,
+    createProfessor,
 };

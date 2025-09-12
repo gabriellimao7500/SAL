@@ -196,16 +196,50 @@ const AdminDashboard = () => {
     // Salvar edição
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await axios.put(`${config.apiUrl}/teachers/${editingId}`, form);
-            setIsModalOpen(false);
-            setForm({ name: '', email: '', senha: '' });
-            setEditingId(null);
-            fetchTeachers();
-        } catch (error) {
-            console.error('Erro ao salvar professor:', error);
+
+        if (editingId) {
+            try {
+                await axios.put(`${config.apiUrl}/teachers/${editingId}`, form);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso',
+                    text: 'Professor atualizado com sucesso!'
+                });
+                closeModal();
+                fetchTeachers();
+            } catch (error) {
+                console.error('Erro ao salvar professor:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Não foi possível atualizar o professor.'
+                });
+            }
+        } else {
+            try {
+                await axios.post(`${config.apiUrl}/prof/create`, form);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso',
+                    text: 'Professor adicionado com sucesso!'
+                });
+                closeModal();
+                setForm({ name: '', email: '', senha: '' });
+                setEditingId(null);
+                fetchTeachers();
+            } catch (error) {
+                console.error('Erro ao adicionar professor:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Não foi possível adicionar o professor.'
+                });
+
+            }
         }
     };
+
+
 
     // Excluir professor
     const handleDelete = async () => {
@@ -213,10 +247,21 @@ const AdminDashboard = () => {
             await axios.delete(`${config.apiUrl}/teachers/${editingId}`, {
                 data: { name: form.name, email: form.email }
             });
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso',
+                text: 'Professor excluído com sucesso!'
+            });
             closeModal();
             fetchTeachers();
         } catch (error) {
             console.error('Erro ao excluir professor:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: 'Não foi possível excluir o professor.'
+            });
+            closeModal();
         }
     };
 

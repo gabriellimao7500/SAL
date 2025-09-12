@@ -37,6 +37,7 @@ router.get('/prof', profController.getData);
 router.get('/prof/:idProfessor', profController.getDataFromId);
 router.put('/updImage/:idProfessor', profController.updateImagem);
 router.put('/updPass/:idProfessor', profController.updateSenha);
+router.post("/prof/create", profController.createProfessor);
 
 // Laboratórios
 router.get('/labs', labsControllers.getAll);
