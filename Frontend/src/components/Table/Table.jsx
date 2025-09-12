@@ -414,18 +414,29 @@ function Table({
     } */
 
 
-
+        let classesFinal = '';
 
 
         if (idx.includes(index)) {
-            var email = reservasFiltradas[0].email;
-            if (JSON.parse(sessionStorage.getItem('professor'))) {
-                var profEmail = JSON.parse(sessionStorage.getItem('professor')).email;
-            }
-            if (email === profEmail) {
-                return `ocupado ${index} isYou`
-            }
-            return `ocupado ${index}`;
+            const r = reservasFiltradas[0] || {};
+            const email = r.email || '';
+            const motivo = r.motivo || '';
+            const prof = JSON.parse(sessionStorage.getItem('professor')) || {};
+            const profEmail = prof.email || '';
+            const motivoLower = motivo.toLowerCase();
+
+            const isYou = profEmail && email === profEmail;
+            const isCleaning = motivoLower.includes('limpeza');
+            const isMaintenance = motivoLower.includes('manutenção') || motivoLower.includes('manutencao');
+            const parts = [];
+            if (isYou) parts.push('isYou');
+            parts.push('ocupado');
+            if (index) parts.push(`${index}`);
+            if (isCleaning) parts.push('limpeza'); // <-- use styles.limpeza
+            if (isMaintenance) parts.push('manutenção');
+
+            classesFinal = parts.join(' ');
+            return classesFinal;
         } else {
             return styles.select;
         }

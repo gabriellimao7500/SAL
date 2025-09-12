@@ -879,6 +879,33 @@ BEGIN
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
         VALUES (data_atual + INTERVAL 1 DAY, 'Tarde', 6, 3, 3, 'TIAA - 3º ADM MODULAR - ELVIS  ');
 
+        -- QUINTA (Laboratório 3 - Tarde) - Aula 1
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 3 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 1
+          AND idLaboratorio = 3;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 3 DAY, 'Tarde', 1, 3, 3, 'Limpeza - Jaine');
+
+        -- QUINTA (Laboratório 3 - Tarde) - Aula 2
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 3 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 2
+          AND idLaboratorio = 3;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 3 DAY, 'Tarde', 2, 3, 3, 'Limpeza - Jaine');
+
+        -- QUINTA (Laboratório 3 - Tarde) - Aula 3
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 3 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 3
+          AND idLaboratorio = 3;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 3 DAY, 'Tarde', 3, 3, 3, 'Limpeza - Jaine');
+
         -- QUINTA (Laboratório 3 - Tarde) - Aula 4
         DELETE FROM reserva
         WHERE dataReserva = data_atual + INTERVAL 3 DAY
@@ -968,6 +995,33 @@ BEGIN
           AND idLaboratorio = 4;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
         VALUES (data_atual + INTERVAL 2 DAY, 'Tarde', 1, 3, 4, 'DDM II - 3º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM INFORMÁTICA PARA INTERNET - MTEC  - CARLOS / DANADONI');
+
+        -- QUINTA (Laboratório 4 - Tarde) - Aula 1
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 3 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 1
+          AND idLaboratorio = 4;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 3 DAY, 'Tarde', 1, 3, 4, 'Limpeza - Jaine');
+
+        -- QUINTA (Laboratório 4 - Tarde) - Aula 2
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 3 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 2
+          AND idLaboratorio = 4;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 3 DAY, 'Tarde', 2, 3, 4, 'Limpeza - Jaine');
+
+        -- QUINTA (Laboratório 4 - Tarde) - Aula 3
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 3 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 3
+          AND idLaboratorio = 4;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 3 DAY, 'Tarde', 3, 3, 4, 'Limpeza - Jaine');
 
         -- QUINTA (Laboratório 4 - Tarde) - Aula 4
         DELETE FROM reserva

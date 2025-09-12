@@ -1,4 +1,4 @@
-.select_main{
+.select_main {
     height: 14vh;
     width: 100vw;
     z-index: 11;
@@ -8,11 +8,12 @@
     justify-content: space-around;
 }
 
-.isYou{
+.isYou {
     background-color: #f7f7f7 !important;
     color: black;
 }
-.ocupado{
+
+.ocupado {
     background: #FF3162;
     min-height: 44px;
     height: 100%;
@@ -20,15 +21,42 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: url("../public/hand.png"),not-allowed !important;
-    transition: 150ms ease-in ;
+    cursor: url("../public/hand.png"), not-allowed !important;
+    transition: 150ms ease-in;
     border: 2px solid black;
     border-radius: 4px;
     font-weight: bold;
-}.ocupado:hover{
+}
+
+.ocupado:hover {
     border: none;
     outline: white 1px solid;
     transition: 150ms ease-out;
-}.ocupado::after{
-    content: 'ocupado';
+}
+
+.ocupado::after {
+    content: 'Ocupado';
+}
+
+.limpeza {
+    background-color: #dfdf34;
+    color: #000000;
+    content: 'Limpeza';
+}
+
+.limpeza::after {
+    background-color: #dfdf34;
+    color: #000000;
+    content: 'Limpeza';
+}
+
+.manutenção {
+    background-color: #34afdf;
+    color: #000000;
+    content: 'Manutenção';
+}
+
+.manutenção::after {
+    color: #000000;
+    content: 'Manutenção';
 }

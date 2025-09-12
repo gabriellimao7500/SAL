@@ -15,6 +15,7 @@ const AdminDashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [file, setFile] = useState(null);
     const [uploadStatus, setUploadStatus] = useState('');
+    const [uploading, setUploading] = useState(false); // Adicione este state
 
     // Modal edição professor
     const [form, setForm] = useState({ name: '', email: '', senha: '' });
@@ -294,6 +295,7 @@ const AdminDashboard = () => {
             setUploadStatus(['Selecione um arquivo primeiro.']);
             return;
         }
+        setUploading(true); // Ativa o loading
         try {
             const formData = new FormData();
             formData.append('file', file);
@@ -321,6 +323,8 @@ const AdminDashboard = () => {
                 setUploadStatus(['Erro ao enviar arquivo.']);
             }
             console.error(error);
+        } finally {
+            setUploading(false); // Desativa o loading
         }
     };
 
@@ -464,8 +468,19 @@ const AdminDashboard = () => {
                                 <label htmlFor="file-upload">Escolher arquivo</label>
                                 {file && <span className="selected-file-name">{file.name}</span>}
                             </div>
-                            <button onClick={handleUpload}>
-                                Enviar Arquivo
+                            <button onClick={handleUpload} disabled={uploading} style={{ position: 'relative', minWidth: 120 }}>
+                                {uploading ? (
+                                    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                                        <svg width="22" height="22" viewBox="0 0 50 50">
+                                            <circle cx="25" cy="25" r="20" fill="none" stroke="#8b5cf6" strokeWidth="5" strokeDasharray="31.4 31.4" strokeLinecap="round">
+                                                <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite" />
+                                            </circle>
+                                        </svg>
+                                        Enviando...
+                                    </span>
+                                ) : (
+                                    "Enviar Arquivo"
+                                )}
                             </button>
                             {uploadStatus && Array.isArray(uploadStatus) && (
                                 <div className={uploadStatus.some(s => s.includes('Erro')) ? 'status-error' : 'status-success'}>

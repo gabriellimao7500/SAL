@@ -132,6 +132,10 @@ td {
     color: white !important;
 }
 
+.limpeza {
+    background-color: #cfcf67;
+}
+
 @media (max-width: 430px) {
 
     .navigation {
