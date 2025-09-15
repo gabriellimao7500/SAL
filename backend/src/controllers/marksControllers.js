@@ -59,11 +59,18 @@ const createMark = async (req, res) => {
                 return res.status(400).json({ error: 'Período inválido.' });
         }
 
-        // Verifica se o laboratório está bloqueado
-        const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio, newPeriodo);
-        if (bloqueado) {
-            return res.status(403).json({ error: 'Este laboratório está bloqueado para reservas.', type: 'lab_blocked' });
+
+        //Verifica se o professor é admin, se for libera a reserva mesmo se o laboratório estiver bloqueado
+        const isAdmin = await markModels.isProfessorAdmin(idProfessor);
+        if (!isAdmin) {
+            // Verifica se o laboratório está bloqueado
+            const bloqueado = await labsModels.isLabBloqueado(tipoLaboratorio, numeroLaboratorio, newPeriodo);
+            if (bloqueado) {
+                return res.status(403).json({ error: 'Este laboratório está bloqueado para reservas.', type: 'lab_blocked' });
+            }
         }
+        console.log("Professor é admin? ", isAdmin);
+
         // de '2025-08-22T03:00:00.000Z' para '2025-08-22'
 
         let d = new Date(dataReserva);

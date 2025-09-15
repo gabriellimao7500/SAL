@@ -13,6 +13,60 @@ import axios from 'axios';
 import config from "../../../config"
 import { set } from 'date-fns';
 
+// Funções utilitárias
+function getWeeksPassed(initialYear, initialMonth, initialDay) {
+    const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
+    const currentDate = new Date();
+    const diffInMs = currentDate - initialDate;
+    const msInAWeek = 1000 * 60 * 60 * 24 * 7;
+    const weeksPassed = diffInMs / msInAWeek;
+    return Math.floor(weeksPassed);
+}
+
+function getWeeksPassed2(initialYear, initialMonth, initialDay, endYear, endMonth, endDay) {
+    const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
+    const endDate = new Date(endYear, endMonth - 1, endDay);
+    const diffInMs = endDate - initialDate;
+    const msInAWeek = 1000 * 60 * 60 * 24 * 7;
+    const weeksPassed = diffInMs / msInAWeek;
+    return Math.floor(weeksPassed);
+}
+
+function getYearsPassed(initialYear, initialMonth, initialDay, weeks) {
+    const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
+    const daysToAdd = weeks * 7;
+    const finalDate = new Date(initialDate);
+    finalDate.setDate(finalDate.getDate() + daysToAdd);
+    return finalDate.getFullYear() - initialDate.getFullYear();
+}
+
+function getDayOfWeek(dateString) {
+    const date = new Date(dateString);
+    const day = date.getUTCDay();
+    // Ajustar para que segunda-feira seja 1 e sexta-feira seja 5
+    return day === 0 || day === 6 ? null : day;
+}
+
+function calculateDate(startDay, startMonth, startYear, weeksPassed, weekDay) {
+    let startDate = new Date(startYear, startMonth - 1, startDay);
+    let totalDays = weeksPassed * 7 + (weekDay - 1);
+    startDate.setDate(startDate.getDate() + totalDays);
+    let year = startDate.getFullYear();
+    let month = (startDate.getMonth() + 1).toString().padStart(2, '0');
+    let day = startDate.getDate().toString().padStart(2, '0');
+    var dateReserva = new Date(Date.UTC(year, month - 1, day, 3, 0, 0));
+    return dateReserva;
+}
+
+function erroDeAgendamento(erro) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: erro
+    });
+}
+
+// Componente principal Table
 function Table({
     reserva,
     pullMarks,
@@ -23,7 +77,8 @@ function Table({
     handleToggleSelectMode,
     adminMode = false
 }) {
-    // Modal customizado para admin
+    // --- HOOKS ---
+    // Modais e campos
     const [adminModalOpen, setAdminModalOpen] = useState(false);
     const [adminCampos, setAdminCampos] = useState({
         professor: '',
@@ -34,67 +89,32 @@ function Table({
         diaDaSemana: 0
     });
     const [editandoAdmin, setEditandoAdmin] = useState(false);
-
-    // Controle do modo seleção e células/ids selecionados para exclusão
-    // const [selectedIndices, setSelectedIndices] = useState([]);
     const [selectedIds, setSelectedIds] = useState([]);
+    const [onReserva, setOnReserva] = useState(false);
+    const [type, setType] = useState("no");
+    const [aulaAtu, setAulaAtu] = useState(1);
+    const [dateReserva, setDateReserva] = useState('');
+    const [objDefault, setObjDefault] = useState([{}]);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-    let diaDaSemanaGlobal = 0;
-
+    // --- DATAS E SEMANAS ---
     const date = new Date();
     const dia = date.getDate();
     const mesatu = date.getMonth();
-
-    //data inicial
-    //ano inicial
     const ano = 2025;
-    //mes inicial
-    let mes = 1;
-    mes--;
-    //dia inicial
+    let mes = 1; mes--;
     let day = 6;
-
-
-
     const a = ano;
     const m = mes + 1;
     const d = day;
-
-    //data de referencia
-    //ano de referencia
-    const anoR = 2024
-    const mesR = 1
-    const diaR = 1
-
-
-
-
-
-    const mes2 = mes;
-    const day2 = day;
-    const year2 = ano;
-
-    var semanasPraMais = 2;
-
-
-
-
-
-
-
+    const anoR = 2024, mesR = 1, diaR = 1;
+    let semanasPraMais = 2;
     if (JSON.parse(sessionStorage.getItem('professor'))) {
         let user = JSON.parse(sessionStorage.getItem('professor'));
-        if (user.rule === "admin") {
-            semanasPraMais = 52;
-        } else {
-            semanasPraMais = 2;
-        }
+        semanasPraMais = user.rule === "admin" ? 52 : 2;
     }
-
-
     const ebb = getWeeksPassed(a, m, d);
     const yearPlus = getYearsPassed(a, m, d, ebb);
-
     const [wp, setWp] = useState(getWeeksPassed2(anoR, mesR, diaR, a, m, d));
     const [realWeek, setRealWeek] = useState(wp);
     const [currentWeek, setCurrentWeek] = useState(ebb);
@@ -109,81 +129,40 @@ function Table({
     const [prevDisabled, setPrevDisabled] = useState(true);
     const [nextDisabled, setNextDisabled] = useState(false);
 
-
-    function getWeeksPassed(initialYear, initialMonth, initialDay) {
-        const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
-        const currentDate = new Date();
-        const diffInMs = currentDate - initialDate;
-        const msInAWeek = 1000 * 60 * 60 * 24 * 7;
-        const weeksPassed = diffInMs / msInAWeek;
-        return Math.floor(weeksPassed);
-    }
-
-    function getWeeksPassed2(initialYear, initialMonth, initialDay, endYear, endMonth, endDay) {
-        const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
-        const endDate = new Date(endYear, endMonth - 1, endDay);
-        const diffInMs = endDate - initialDate;
-        const msInAWeek = 1000 * 60 * 60 * 24 * 7;
-        const weeksPassed = diffInMs / msInAWeek;
-        return Math.floor(weeksPassed);
-
-    }
-    function getYearsPassed(initialYear, initialMonth, initialDay, weeks) {
-
-        const initialDate = new Date(initialYear, initialMonth - 1, initialDay);
-
-
-        const daysToAdd = weeks * 7;
-
-
-        const finalDate = new Date(initialDate);
-        finalDate.setDate(finalDate.getDate() + daysToAdd);
-        return finalDate.getFullYear() - initialDate.getFullYear();
-    }
-
-
-
-    const weeksPass = ebb;
-
+    // --- LÓGICA DE SEMANAS ---
     const DiasDoMes = [31, currentAno % 4 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
     const verify = (day, temp) => {
         day += temp;
-
-
-        if (mes > 11) {
-            mes = 0;
-        }
+        if (mes > 11) mes = 0;
         if (day > DiasDoMes[mes]) {
             day = day - DiasDoMes[mes];
             mes += 1;
         }
         return day;
     };
-
-    const weeks = [
-        [day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]
-    ];
-
+    const weeksPass = ebb;
+    const weeks = [[day, day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]];
     for (let i = 0; i < weeksPass + semanasPraMais; i++) {
         weeks.push([day = verify(day, 3), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1), day = verify(day, 1)]);
     }
+    const week = weeks[currentWeek];
+    const isMonthTransition = week.includes(1) && week.some(day => [28, 29, 30, 31].includes(day));
+    const isYearTransition = isMonthTransition && currentWeek % 52 === 0;
+    const monthLabels = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
 
+    // --- EFFECTS ---
     useEffect(() => {
-
-
         setPrevDisabled(currentWeek === 0);
         setNextDisabled(currentWeek === weeks.length - 1);
     }, [currentWeek, weeks.length]);
 
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
-    const week = weeks[currentWeek];
-    const isMonthTransition = week.includes(1) && week.some(day => [28, 29, 30, 31].includes(day));
-    const isYearTransition = isMonthTransition && currentWeek % 52 === 0;
-
-
-
-
+    // --- HANDLERS E FUNÇÕES DE RENDER ---
     const changeWeek = (direction) => {
 
         if (isMonthTransition) {
@@ -235,23 +214,6 @@ function Table({
 
     };
 
-    const monthLabels = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
-
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-    useEffect(() => {
-
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
-
     const renderMonthLabel = () => {
 
         if (currentWeek !== 0 && isMonthTransition) {
@@ -298,13 +260,6 @@ function Table({
             );
         }
     };
-
-    function getDayOfWeek(dateString) {
-        const date = new Date(dateString);
-        const day = date.getUTCDay();
-        // Ajustar para que segunda-feira seja 1 e sexta-feira seja 5
-        return day === 0 || day === 6 ? null : day;
-    }
 
     var idx = []
     reserva.map((reserva, id) => {
@@ -429,9 +384,9 @@ function Table({
             const isCleaning = motivoLower.includes('limpeza');
             const isMaintenance = motivoLower.includes('manutenção') || motivoLower.includes('manutencao');
             const parts = [];
-            if (isYou) parts.push('isYou');
             parts.push('ocupado');
             if (index) parts.push(`${index}`);
+            if (isYou) parts.push('isYou');
             if (isCleaning) parts.push('limpeza'); // <-- use styles.limpeza
             if (isMaintenance) parts.push('manutenção');
 
@@ -441,251 +396,6 @@ function Table({
             return styles.select;
         }
     };
-
-    const [onReserva, setOnReserva] = useState(false);
-    const [type, setType] = useState("no");
-
-
-    function reservasOff() {
-        setOnReserva(false)
-        pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
-    }
-
-
-    function calculateDate(startDay, startMonth, startYear, weeksPassed, weekDay) {
-        // Cria uma nova data com base nos parâmetros fornecidos
-        let startDate = new Date(startYear, startMonth - 1, startDay);
-
-        // Calcula o número total de dias a serem adicionados
-        let totalDays = weeksPassed * 7 + (weekDay - 1);
-
-        // Adiciona os dias à data inicial
-        startDate.setDate(startDate.getDate() + totalDays);
-
-        // Retorna a data final no formato YYYY-MM-DD
-        let year = startDate.getFullYear();
-        let month = (startDate.getMonth() + 1).toString().padStart(2, '0');
-        let day = startDate.getDate().toString().padStart(2, '0');
-
-        var dateReserva = new Date(Date.UTC(year, month - 1, day, 3, 0, 0));
-
-        return dateReserva;
-    }
-
-
-    const [aulaAtu, setAulaAtu] = useState(1)
-    const [dateReserva, setDateReserva] = useState('')
-
-
-    const [objDefault, setObjDefault] = useState([{}])
-
-    const onReser = async (rowIndex, colIndex, event) => {
-        const index = rowIndex * 5 + colIndex
-        var indie = index
-        let aula = Math.floor(indie / 5) + 1;
-        let diaSem = (indie % 5) + 1;
-        setAdminCampos({ ...adminCampos, diaDaSemana: diaSem });
-        console.log("Dia da semana global:", diaDaSemanaGlobal);
-
-        let wp = currentWeek;
-        while (aula > 6) {
-            aula -= 6;
-            wp++;
-        }
-        let temp = calculateDate(d, m, a, wp, diaSem)
-        var formatoISO = temp.toISOString();
-
-        setDateReserva(formatoISO)
-        setAulaAtu(aula)
-
-        const target = event.target;
-        const user = JSON.parse(sessionStorage.getItem('professor'));
-        if (user && user.rule === "admin") {
-            // ADMIN: abre modal customizado
-            let campos = {
-                professor: user?.nome || '',
-                disciplina: '',
-                motivo: '',
-                dataInicio: formatoISO.substring(0, 10),
-                dataFim: formatoISO.substring(0, 10),
-                diaDaSemana: diaSem
-            };
-            if (target.classList.contains('ocupado')) {
-                var e = target.className;
-                var b = e.split(" ");
-                var bb = parseInt(b[1]);
-                const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
-                setObjDefault(reservasFiltradas);
-                if (reservasFiltradas.length > 0) {
-                    campos.professor = reservasFiltradas[0].nome || '';
-                    campos.disciplina = reservasFiltradas[0].disciplina || '';
-                    campos.motivo = reservasFiltradas[0].motivo || '';
-                    campos.dataInicio = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
-                    campos.dataFim = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
-                    campos.idReserva = reservasFiltradas[0].id || reservasFiltradas[0].idReserva;
-                    setEditandoAdmin(true);
-                } else {
-                    setEditandoAdmin(false);
-                }
-            } else {
-                setEditandoAdmin(false);
-            }
-            setAdminCampos(campos);
-            setAdminModalOpen(true);
-        } else {
-            // NÃO ADMIN: modal padrão
-            let data2;
-            if (date && typeof date.setHours === 'function') {
-                date.setHours(0, 0, 0, 0);
-                data2 = date.toISOString();
-            } else {
-                const hoje = new Date();
-                hoje.setHours(0, 0, 0, 0);
-                data2 = hoje.toISOString();
-            }
-            if (target.classList.contains('ocupado')) {
-                var e = target.className;
-                var b = e.split(" ");
-                var bb = parseInt(b[1]);
-                const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
-                setObjDefault(reservasFiltradas)
-                if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
-                    if (target.classList.contains('isYou')) {
-                        setType("me")
-                    } else {
-                        setType("other")
-                    }
-                    setOnReserva(true)
-                } else {
-                    setType("other")
-                    setOnReserva(true)
-                }
-            } else {
-                if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
-                    if (localStorage.getItem('periodo') === "Noite" && rowIndex > 1) {
-                        erroDeAgendamento('Você só pode agendar uma aula disponivel!')
-                    } else {
-                        setType("nothing")
-                        setOnReserva(true)
-                    }
-                } else {
-                    erroDeAgendamento('Você não pode agendar um dia anterior ao dia atual!')
-                }
-            }
-        }
-        let data2;
-        if (date && typeof date.setHours === 'function') {
-            date.setHours(0, 0, 0, 0);
-            data2 = date.toISOString();
-        } else {
-            const hoje = new Date();
-            hoje.setHours(0, 0, 0, 0);
-            data2 = hoje.toISOString();
-        }
-
-
-
-        if (target.classList.contains('ocupado')) {
-
-            var e = target.className;
-            var b = e.split(" ");
-            var bb = parseInt(b[1]);
-
-            const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
-            setObjDefault(reservasFiltradas)
-
-            if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
-                if (target.classList.contains('isYou')) {
-                    setType("me")
-                } else {
-                    setType("other")
-                }
-                setOnReserva(true)
-            } else {
-                setType("other")
-                setOnReserva(true)
-            }
-
-        } else {
-            if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
-                console.log('data selecionada: ', formatoISO);
-
-                if (localStorage.getItem('periodo') === "Noite" && rowIndex > 1) {
-                    erroDeAgendamento('Você só pode agendar uma aula disponivel!')
-                } else {
-                    setType("nothing")
-                    setOnReserva(true)
-                }
-            } else {
-                erroDeAgendamento('Você não pode agendar um dia anterior ao dia atual!')
-            }
-        }
-
-    }
-
-    const handleDelete = async () => {
-        // Tenta obter o id a partir dos campos mais comuns
-        const id = adminCampos.idReserva || adminCampos.id || adminCampos.id_reserva;
-        if (!id) {
-            alert('ID da reserva não disponível para exclusão.');
-            return;
-        }
-        if (!window.confirm('Confirma exclusão desta reserva?')) return;
-
-        try {
-            if (onDelete && typeof onDelete === 'function') {
-                await onDelete(id);
-            } else {
-                console.warn('onDelete não fornecido');
-            }
-            setAdminModalOpen(false);
-            console.log(`Reserva ${id} excluída com sucesso.`);
-        } catch (err) {
-            console.error('Erro ao apagar reserva:', err);
-            alert('Erro ao apagar a reserva. Tente novamente.');
-        }
-    };
-
-    const handleDeleteMany = async (ids) => {
-        console.log(`Tentando excluir reservas: ${ids.join(', ')}`);
-
-        if (!ids.length) {
-            alert('IDs das reservas não disponíveis para exclusão.');
-            return;
-        }
-        if (!window.confirm('Confirma exclusão destas reservas?')) return;
-
-        ids.forEach(async element => {
-            try {
-                let r = await axios.delete(`${config.apiUrl}/marks/${element}`);
-                if (r.status === 200) {
-                    console.log(`Reserva ${element} excluída com sucesso.`);
-
-                } else {
-                    console.error(`Erro ao excluir reserva ${element}:`, r.data);
-                }
-            } catch (err) {
-                console.error('Erro ao apagar reservas:', err);
-                alert(`Erro ao apagar a reserva ${element}. Tente novamente.`);
-            }
-        });
-        setSelectedIds([]);
-        handleToggleSelectMode(false);
-        // Recarrega as reservas após exclusão
-        await pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
-        pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
-        pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
-        setAdminModalOpen(false);
-        console.log(`Reservas excluídas com sucesso.`);
-    };
-
-    function erroDeAgendamento(erro) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: erro
-        });
-    }
 
 
     const toggleHorarioSelecionado = (rowIndex, colIndex) => {
@@ -812,12 +522,124 @@ function Table({
         }
     };
 
+    // Função para fechar o modal de reserva e recarregar as reservas
+    function reservasOff() {
+        setOnReserva(false);
+        pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+    }
+
+    // Função para lidar com o clique em uma célula para reservar
+    const onReser = async (rowIndex, colIndex, event) => {
+        const index = rowIndex * 5 + colIndex;
+        var indie = index;
+        let aula = Math.floor(indie / 5) + 1;
+        let diaSem = (indie % 5) + 1;
+        setAdminCampos({ ...adminCampos, diaDaSemana: diaSem });
+        let wp = currentWeek;
+        while (aula > 6) {
+            aula -= 6;
+            wp++;
+        }
+        let temp = calculateDate(d, m, a, wp, diaSem);
+        var formatoISO = temp.toISOString();
+        setDateReserva(formatoISO);
+        setAulaAtu(aula);
+        const target = event.target;
+        console.log("Célula clicada:", target);
+        const user = JSON.parse(sessionStorage.getItem('professor'));
+        if (user && user.rule === "admin" && adminMode) {
+            console.log("Modo Admin Ativo");
+
+            // ADMIN: abre modal customizado
+            let campos = {
+                professor: user?.nome || '',
+                disciplina: '',
+                motivo: '',
+                dataInicio: formatoISO.substring(0, 10),
+                dataFim: formatoISO.substring(0, 10),
+                diaDaSemana: diaSem
+            };
+            if (target.classList.contains('ocupado')) {
+                var e = target.className;
+                var b = e.split(" ");
+                var bb = parseInt(b[1]);
+                const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
+                setObjDefault(reservasFiltradas);
+                if (reservasFiltradas.length > 0) {
+                    campos.professor = reservasFiltradas[0].nome || '';
+                    campos.disciplina = reservasFiltradas[0].disciplina || '';
+                    campos.motivo = reservasFiltradas[0].motivo || '';
+                    campos.dataInicio = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
+                    campos.dataFim = reservasFiltradas[0].dataReserva?.substring(0, 10) || formatoISO.substring(0, 10);
+                    campos.idReserva = reservasFiltradas[0].id || reservasFiltradas[0].idReserva;
+                    setEditandoAdmin(true);
+                } else {
+                    setEditandoAdmin(false);
+                }
+            } else {
+                setEditandoAdmin(false);
+            }
+            setAdminCampos(campos);
+            setAdminModalOpen(true);
+        } else {
+            console.log("Modo Admin Desativado");
+            // NÃO ADMIN: modal padrão
+            let data2;
+            if (date && typeof date.setHours === 'function') {
+                date.setHours(0, 0, 0, 0);
+                data2 = date.toISOString();
+            } else {
+                const hoje = new Date();
+                hoje.setHours(0, 0, 0, 0);
+                data2 = hoje.toISOString();
+            }
+            if (target.classList.contains('ocupado')) {
+                var e = target.className;
+                console.log(e);
+
+                var b = e.split(" ");
+                console.log(b);
+
+                var bb = parseInt(b[1]);
+
+                console.log("reserva clicada com índice:", bb);
+
+                const reservasFiltradas = reserva.filter(reserva => reserva.index === bb);
+                console.log("Reservas filtradas:", reservasFiltradas);
+
+                setObjDefault(reservasFiltradas);
+                if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
+                    if (target.classList.contains('isYou')) {
+                        setType("me");
+                    } else {
+                        setType("other");
+                    }
+                    setOnReserva(true);
+                } else {
+                    setType("other");
+                    setOnReserva(true);
+                }
+            } else {
+                if (formatoISO.substring(0, 10) >= data2.substring(0, 10)) {
+                    if (localStorage.getItem('periodo') === "Noite" && rowIndex > 1) {
+                        erroDeAgendamento('Você só pode agendar uma aula disponivel!');
+                    } else {
+                        setType("nothing");
+                        setOnReserva(true);
+                    }
+                } else {
+                    erroDeAgendamento('Você não pode agendar um dia anterior ao dia atual!');
+                }
+            }
+        }
+    };
+
     return (
         <section className={styles.calendar}>
             {/* Renderiza apenas o modal correto */}
             {
                 (() => {
-
+                    console.log("Renderizando modal: ", adminMode ? "AdminReservaModal" : "ReservaModal");
                     if (adminMode) {
 
                         return (

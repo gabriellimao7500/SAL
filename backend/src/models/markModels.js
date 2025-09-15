@@ -154,6 +154,12 @@ const getMarkOfTheHour = async (periodo, aulaReserva, idLaboratorio, dia) => {
     }
 };
 
+const isProfessorAdmin = async (idProfessor) => {
+    const query = "SELECT * FROM professor WHERE idProfessor = ? AND rule = 'admin'";
+    const [rows] = await connection.execute(query, [idProfessor]);
+    return rows.length > 0;
+};
+
 module.exports = {
     createReserva,
     getData,
@@ -162,5 +168,6 @@ module.exports = {
     getDataFromDate,
     updateReserva,
     executeRawQuery,
-    deleteReservasExistentes
+    deleteReservasExistentes,
+    isProfessorAdmin
 };
