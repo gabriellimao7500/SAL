@@ -86,7 +86,7 @@ function Login() {
         <h1>Login</h1>
         <form className='inputs' onSubmit={handleLogin}>
           <Inputs
-            text="email"
+            text="Email Institucional"
             type="email"
             name="email"
             value={email}
@@ -94,7 +94,7 @@ function Login() {
             required
           />
           <Inputs
-            text="password"
+            text="Matrícula"
             type="password"
             name="senha"
             value={senha}
