@@ -117,6 +117,34 @@ npm run dev
 ```
 
 O servidor backend estará disponível em `http://192.168.1.40:3333`.
+### Uso (Linux)
+
+Algumas notas específicas para rodar o projeto em Linux:
+
+- Arquivos de configuração
+   - Edite os arquivos de configuração do projeto (por exemplo `config.js` e `connection.js`) antes de executar, pois determinados scripts não leem automaticamente o `.env`. Esses arquivos geralmente estão na pasta `backend` (ou em `backend/src` / `backend/src/models/connection` dependendo da organização do seu repositório). Ajuste host, usuário, senha e nome do banco conforme necessário.
+
+- Ajuste do executável Python
+   - Em Linux o comando padrão para Python costuma ser `python3`. Abra o arquivo que executa o script Python (por exemplo `backend/src/controllers/processXlsxController.js`) e substitua chamadas que usam `python` por `python3`.
+   - Exemplo (antes → depois):
+      - Antes:
+         - exec('python path/to/script.py', ... )
+      - Depois:
+         - exec('python3 path/to/script.py', ... )
+
+- Alternativa portátil (recomendada)
+   - Para manter compatibilidade entre Windows e Linux, considere:
+      - Colocar um shebang no script Python (`#!/usr/bin/env python3`) e marcar o arquivo como executável; então chame diretamente o script.
+      - Ou no código Node detectar a plataforma e escolher `python` ou `python3` dinamicamente:
+         - const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
+         - exec(`${pythonCmd} path/to/script.py`, ...)
+
+- Reiniciar e testar
+   - Após ajustar as configurações e as chamadas ao Python, reinicie o servidor de desenvolvimento:
+      - npm run dev
+   - Verifique os logs para confirmar que a chamada ao script Python foi executada corretamente.
+
+Essas alterações deixam o projeto pronto para execução em ambientes Linux sem impactar o fluxo de desenvolvimento no Windows.
 
 ### Endpoints (192.168.1.40:3333)
 
