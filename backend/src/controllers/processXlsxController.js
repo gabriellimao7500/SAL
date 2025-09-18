@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const { exec } = require('child_process');
 const connection = require('../models/connection/connection'); // use o objeto connection diretamente
+require('dotenv').config();
 
 exports.handleUpload = async (req, res) => {
     const steps = [];
@@ -20,7 +21,7 @@ exports.handleUpload = async (req, res) => {
 
     steps.push(`Caminho do arquivo: ${xlsxPath}`);
 
-    exec(`python "${path.resolve(__dirname, '../../process_xlsx.py')}" "${xlsxPath}"`, async (error, stdout, stderr) => {
+    exec(`${process.env.PLATAFORM == 'LINUX' ? 'python3' : 'python'} "${path.resolve(__dirname, '../../process_xlsx.py')}" "${xlsxPath}"`, async (error, stdout, stderr) => {
         fs.unlink(xlsxPath, (err) => {
             if (err) {
                 steps.push(`Erro ao excluir arquivo XLSX: ${err.message}`);
