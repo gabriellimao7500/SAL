@@ -1,6 +1,11 @@
 const markModels = require('../models/markModels');
 const labsModels = require('../models/labsModels');
 
+
+// Limites centralizados
+const MAX_RESERVAS_PROFESSOR_COMUM_SEMANA = 4;
+const MAX_RESERVAS_PROFESSOR_COMUM_MES = 10;
+
 function calcularDiasSemana(startDate, endDate, dayOfWeek) {
     // dayOfWeek: 1=segunda, 2=terça, ..., 5=sexta
     const result = [];
@@ -68,6 +73,17 @@ const createMark = async (req, res) => {
             if (bloqueado) {
                 return res.status(403).json({ error: 'Este laboratório está bloqueado para reservas.', type: 'lab_blocked' });
             }
+
+            // Verifica limites semanais e mensais
+            const reservasSemana = await markModels.countReservasByProfessorSemana(idProfessor, dataReserva);
+            const reservasMes = await markModels.countReservasByProfessorMes(idProfessor, dataReserva);
+
+            if (reservasSemana >= MAX_RESERVAS_PROFESSOR_COMUM_SEMANA) {
+                return res.status(403).json({ error: `Limite semanal de ${MAX_RESERVAS_PROFESSOR_COMUM_SEMANA} reservas atingido para este professor.`, type: 'reservation_limit_week' });
+            }
+            if (reservasMes >= MAX_RESERVAS_PROFESSOR_COMUM_MES) {
+                return res.status(403).json({ error: `Limite mensal de ${MAX_RESERVAS_PROFESSOR_COMUM_MES} reservas atingido para este professor.`, type: 'reservation_limit_month' });
+            }
         }
         console.log("Professor é admin? ", isAdmin);
 
@@ -84,15 +100,13 @@ const createMark = async (req, res) => {
             idProfessor,
             numeroLaboratorio,
             tipoLaboratorio,
-            motivo
+            motivo,
+            MAX_RESERVAS_PROFESSOR_COMUM_SEMANA
         };
 
 
 
         const createdReserva = await markModels.createReserva(reservaData);
-        if (createdReserva.error) {
-            return res.status(403).json({ error: createdReserva.error, type: 'reservation_limit' });
-        }
 
         console.log("Reserva criada com sucesso: ", createdReserva);
         return res.status(201).json({

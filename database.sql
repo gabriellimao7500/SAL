@@ -4,32 +4,24 @@ USE sal;
 
 -- Criar tabela professor
 -- CREATE TABLE professor (
-    -- idProfessor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    -- nome VARCHAR(50) NOT NULL,
-    -- email VARCHAR(50) NOT NULL UNIQUE,
-   -- senha VARCHAR(16) NOT NULL,
-     -- rule ENUM('comum', 'admin') NOT NULL,
-    -- imagem LONGBLOB
+-- idProfessor INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+-- nome VARCHAR(50) NOT NULL,
+-- email VARCHAR(50) NOT NULL UNIQUE,
+-- senha VARCHAR(16) NOT NULL,
+-- rule ENUM('comum', 'admin') NOT NULL,
+-- imagem LONGBLOB
 -- );
-
-
-
-
 
 -- alter table para adcionar o campo rule
 
-ALTER TABLE professor ADD COLUMN rule ENUM('comum', 'admin') NOT NULL;
+ALTER TABLE professor
+ADD COLUMN rule ENUM('comum', 'admin') NOT NULL;
 
 -- exemplo de upgrade para o cargo de adm em um professor
 -- UPDATE professor SET rule = 'admin' WHERE idProfessor = 3;
 
 -- exemplo de downgrade para o cargo comum em um professor
 -- UPDATE professor SET rule = 'comum' WHERE idProfessor = 3;
-
-
-
-
-
 
 SELECT * FROM professor;
 
@@ -50,8 +42,8 @@ CREATE TABLE reserva (
     idProfessor INT NOT NULL,
     idLaboratorio INT NOT NULL,
     motivo VARCHAR(150),
-    FOREIGN KEY (idProfessor) REFERENCES professor(idProfessor),
-    FOREIGN KEY (idLaboratorio) REFERENCES laboratorio(idLaboratorio)
+    FOREIGN KEY (idProfessor) REFERENCES professor (idProfessor),
+    FOREIGN KEY (idLaboratorio) REFERENCES laboratorio (idLaboratorio)
 );
 
 -- Criar tabela requisicao
@@ -63,23 +55,16 @@ CREATE TABLE requisicao (
     motivo VARCHAR(200) NOT NULL,
     statusRequisicao BIT,
     idReserva INT NOT NULL,
-    FOREIGN KEY (idProfessorRequisitor) REFERENCES professor(idProfessor),
-    FOREIGN KEY (idProfessorRequisitado) REFERENCES professor(idProfessor),
-    FOREIGN KEY (idReserva) REFERENCES reserva(idReserva)
+    FOREIGN KEY (idProfessorRequisitor) REFERENCES professor (idProfessor),
+    FOREIGN KEY (idProfessorRequisitado) REFERENCES professor (idProfessor),
+    FOREIGN KEY (idReserva) REFERENCES reserva (idReserva)
 );
-
 
 DROP PROCEDURE IF EXISTS sp_createReserva;
 
-
-
-
-
-
 DELETE FROM reserva
 
-
-DELIMITER //
+DELIMITER / /
 
 CREATE PROCEDURE sp_createReserva(
     IN p_dataReserva DATE,
@@ -89,6 +74,7 @@ CREATE PROCEDURE sp_createReserva(
     IN p_numeroLaboratorio INT,
     IN p_tipoLaboratorio VARCHAR(70),
     IN p_motivo VARCHAR(150),
+    IN limite INT,
     OUT p_result VARCHAR(255)
 )
 BEGIN
@@ -131,8 +117,8 @@ BEGIN
               AND dataReserva BETWEEN v_startOfWeek AND v_endOfWeek;
 
             -- Verifica se atingiu o limite de 3 reservas por semana
-            IF v_reservationCount >= 3 THEN
-                SET p_result = 'Limite de 3 agendamentos por semana atingido para este professor.';
+            IF v_reservationCount >= limite THEN
+                SET p_result = CONCAT('Limite de ', limite, ' agendamentos por semana atingido para este professor.');
             ELSE
                 -- Insere a nova reserva
                 INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
@@ -144,8 +130,4 @@ BEGIN
     END IF;
 END //
 
-DELIMITER ;
-
-
-
-
+DELIMITER;

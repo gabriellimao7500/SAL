@@ -2,7 +2,7 @@ const connection = require('./connection/connection');
 const { format, startOfWeek, endOfWeek } = require('date-fns');
 
 const createReserva = async (reservaData) => {
-    const { dataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo } = reservaData;
+    const { dataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo, limite } = reservaData;
     //console.log('Dados da reserva:', reservaData);
 
 
@@ -14,13 +14,13 @@ const createReserva = async (reservaData) => {
     console.log('Data da reserva formatada:', formattedDataReserva);
 
     const callQuery = `
-        CALL sp_createReserva(?, ?, ?, ?, ?, ?, ?, @result);
+        CALL sp_createReserva(?, ?, ?, ?, ?, ?, ?, ?, @result);
     `;
     const selectQuery = `
         SELECT @result AS result;
     `;
     try {
-        await connection.query(callQuery, [formattedDataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo]);
+        await connection.query(callQuery, [formattedDataReserva, periodo, aulaReserva, idProfessor, numeroLaboratorio, tipoLaboratorio, motivo, limite]);
         const [rows] = await connection.query(selectQuery);
         const result = rows[0].result;
 
@@ -160,6 +160,61 @@ const isProfessorAdmin = async (idProfessor) => {
     return rows.length > 0;
 };
 
+/**
+ * Conta o número de reservas feitas por um professor.
+ * @param {number|string} idProfessor
+ * @returns {Promise<number>}
+ */
+async function countReservasByProfessor(idProfessor) {
+
+    const query = 'SELECT COUNT(*) AS total FROM reserva WHERE idProfessor = ?';
+    const [rows] = await connection.query(query, [idProfessor]);
+    return Number(rows[0].total);
+}
+
+/**
+ * Conta o número de reservas feitas por um professor em uma semana específica.
+ * @param {number|string} idProfessor
+ * @param {string} dataReferencia formato 'YYYY-MM-DD'
+ * @returns {Promise<number>}
+ */
+async function countReservasByProfessorSemana(idProfessor, dataReferencia) {
+    // Calcula o início e fim da semana (segunda a domingo)
+    const refDate = new Date(dataReferencia);
+    const dayOfWeek = refDate.getDay() === 0 ? 7 : refDate.getDay(); // domingo=7
+    const start = new Date(refDate);
+    start.setDate(refDate.getDate() - (dayOfWeek - 1));
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+
+    const startStr = `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}-${String(start.getDate()).padStart(2, '0')}`;
+    const endStr = `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, '0')}-${String(end.getDate()).padStart(2, '0')}`;
+
+    const query = 'SELECT COUNT(*) AS total FROM reserva WHERE idProfessor = ? AND dataReserva BETWEEN ? AND ?';
+    const [rows] = await connection.query(query, [idProfessor, startStr, endStr]);
+    return Number(rows[0].total);
+}
+
+/**
+ * Conta o número de reservas feitas por um professor no mês da data de referência.
+ * @param {number|string} idProfessor
+ * @param {string} dataReferencia formato 'YYYY-MM-DD'
+ * @returns {Promise<number>}
+ */
+async function countReservasByProfessorMes(idProfessor, dataReferencia) {
+    const refDate = new Date(dataReferencia);
+    const ano = refDate.getFullYear();
+    const mes = refDate.getMonth() + 1;
+
+    const startStr = `${ano}-${String(mes).padStart(2, '0')}-01`;
+    const endDate = new Date(ano, mes, 0); // último dia do mês
+    const endStr = `${ano}-${String(mes).padStart(2, '0')}-${String(endDate.getDate()).padStart(2, '0')}`;
+
+    const query = 'SELECT COUNT(*) AS total FROM reserva WHERE idProfessor = ? AND dataReserva BETWEEN ? AND ?';
+    const [rows] = await connection.query(query, [idProfessor, startStr, endStr]);
+    return Number(rows[0].total);
+}
+
 module.exports = {
     createReserva,
     getData,
@@ -169,5 +224,8 @@ module.exports = {
     updateReserva,
     executeRawQuery,
     deleteReservasExistentes,
-    isProfessorAdmin
+    isProfessorAdmin,
+    countReservasByProfessor,
+    countReservasByProfessorSemana,
+    countReservasByProfessorMes
 };

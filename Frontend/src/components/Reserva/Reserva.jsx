@@ -82,9 +82,10 @@ function Reserva({ reserva, onBotaoClique, type, date, aula, pullMarks }) {
       });
 
     } catch (error) {
-      console.log(error.response.error || error.error);
+      const data = error.response
+      console.log("Erro ao criar reserva:", data);
 
-      switch (error.response?.status) {
+      switch (error.response.status) {
         case 403:
           Swal.fire({
             title: 'Proibido',
