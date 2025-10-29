@@ -217,8 +217,7 @@ export default function OverviewPage() {
                 width: '100vw',
                 flexDirection: "column",
                 justifyContent: "flex-start",
-                alignItems: "center",
-                height: "90%"
+                alignItems: "center"
             }}>
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 16, width: '100vw' }}>
                     <h2 style={{ color: "#646BC1", fontWeight: 700, fontSize: 28 }}>Visão Geral dos Laboratórios</h2>

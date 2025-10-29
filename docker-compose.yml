@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: sal
+      MYSQL_USER: sal
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=sal
+      - DB_PASSWORD=1234
+      - DB_NAME=sal
+      - PORT=3333
+    volumes:
+      - ./backend/uploads:/app/uploads
+    ports:
+      - "3333:3333"
+    depends_on:
+      - mysql
+
+  frontend:
+    build:
+      context: ./Frontend
+      args:
+        API_URL: http://backend:3333
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
