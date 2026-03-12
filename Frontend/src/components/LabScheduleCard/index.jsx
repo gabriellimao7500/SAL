@@ -23,7 +23,16 @@ const horarios = {
  * @param {React.ReactNode} props.nextlab - Conteúdo da seção "Próxima Aula".
  * @returns {JSX.Element}
  */
-export function LabScheduleCard({ lab, horarioAula, horarios }) {
+export function LabScheduleCard({
+    lab,
+    horarioAula,
+    horarios = [],
+    previousIndex = null,
+    nextIndex = null,
+    isBreak = false,
+    previousHorarioLabel = null,
+    nextHorarioLabel = null
+}) {
     // (lab.next == undefined) || (lab.previous == undefined) || (lab.current == undefined) ? (console.log("Trabalhando com lab: ", lab)) : null
 
     // console.log("Conteúdo current:", lab.current);
@@ -127,7 +136,7 @@ export function LabScheduleCard({ lab, horarioAula, horarios }) {
                                 }} />
                                 Aula Anterior
                                 <i style={{ border: "1px solid #cbd5e1", marginLeft: 8, color: "#cbd5e1", fontWeight: 500, fontSize: 12, background: "rgba(0,0,0,0.5)", padding: "1px 4px", borderRadius: "4px" }}>
-                                    {` ${horarios[horarioAula - 1]}`}</i>
+                                    {` ${previousHorarioLabel || (previousIndex != null ? horarios[previousIndex] : "Sem horario anterior")}`}</i>
                             </div>
 
                             <div className="textArea-old">
@@ -157,13 +166,13 @@ export function LabScheduleCard({ lab, horarioAula, horarios }) {
                                     boxShadow: "0 0 8px rgba(52,211,153,0.12)",
                                     marginRight: 8,
                                 }} />
-                                Aula Atual  <span style={{
+                                {isBreak ? "Sem aula no momento" : "Aula Atual"}  <span style={{
                                     border: "1px solid #86efac", marginLeft: 8, color: "#86efac", fontWeight: 500, fontSize: 12,
                                     background: "rgba(0,0,0,0.5)", padding: "1px 4px", borderRadius: "4px"
-                                }}>{` ${horarios[horarioAula]}`}</span>
+                                }}>{` ${horarioAula != null ? horarios[horarioAula] : "Intervalo entre aulas"}`}</span>
                             </div>
                             <div className="textArea-current">
-                                <div style={{ padding: "14px 16px", }}>{lab.current.motivo}</div>
+                                <div style={{ padding: "14px 16px", }}>{lab.current?.motivo || "Sem aula no momento"}</div>
                             </div>
                         </div>
                     </SwiperSlide>
@@ -188,7 +197,7 @@ export function LabScheduleCard({ lab, horarioAula, horarios }) {
                                     background: "#2563eb",
                                     marginRight: 8,
                                 }} />
-                                Próxima Aula {`${horarios[horarioAula + 1]}`}
+                                Próxima Aula {`${nextHorarioLabel || (nextIndex != null ? horarios[nextIndex] : "Sem próxima aula")}`}
                             </div>
                             <div className="textArea-next">
 

@@ -1,8 +1,6 @@
 import React from 'react';
 
 const AdminReservaModal = ({ open, campos, editando, onChange, onClose, onSubmit, diaSemana, onSuccess, onDelete }) => {
-    console.log("modal admin reserva: ", reserva);
-
     if (!open) return null;
 
     campos.diaDaSemana = diaSemana; // Segunda, terça, quarta, quinta, sexta de acordo com a célula selecionada

@@ -33,24 +33,6 @@ BEGIN
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
         VALUES (data_atual + INTERVAL 2 DAY, 'Manhã', 3, 3, 1, 'PDTCC -3º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESNVOLVIMENTO DE SISTEMAS - MTEC - ALINE / THAYANI');
 
-        -- QUARTA (Laboratório 1 - Manhã) - Aula 4
-        DELETE FROM reserva
-        WHERE dataReserva = data_atual + INTERVAL 2 DAY
-          AND periodo = 'Manhã'
-          AND aulaReserva = 4
-          AND idLaboratorio = 1;
-        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 2 DAY, 'Manhã', 4, 3, 1, 'BD II - 2º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESNVOLVIMENTO DE SISTEMAS - MTEC - ALINE /  ');
-
-        -- QUARTA (Laboratório 1 - Manhã) - Aula 5
-        DELETE FROM reserva
-        WHERE dataReserva = data_atual + INTERVAL 2 DAY
-          AND periodo = 'Manhã'
-          AND aulaReserva = 5
-          AND idLaboratorio = 1;
-        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 2 DAY, 'Manhã', 5, 3, 1, 'BD II - 2º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESNVOLVIMENTO DE SISTEMAS - MTEC - ALINE /  ');
-
         -- QUINTA (Laboratório 1 - Manhã) - Aula 1
         DELETE FROM reserva
         WHERE dataReserva = data_atual + INTERVAL 3 DAY
@@ -265,7 +247,7 @@ BEGIN
           AND aulaReserva = 5
           AND idLaboratorio = 3;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 0 DAY, 'Manhã', 5, 3, 3, 'AI - ELVIS /');
+        VALUES (data_atual + INTERVAL 0 DAY, 'Manhã', 5, 3, 3, 'AI - ELVIS / MAURICIO');
 
         -- SEGUNDA (Laboratório 3 - Manhã) - Aula 6
         DELETE FROM reserva
@@ -274,7 +256,7 @@ BEGIN
           AND aulaReserva = 6
           AND idLaboratorio = 3;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 0 DAY, 'Manhã', 6, 3, 3, 'AI - ELVIS / ');
+        VALUES (data_atual + INTERVAL 0 DAY, 'Manhã', 6, 3, 3, 'AI - ELVIS / MAURICIO');
 
         -- TERÇA (Laboratório 3 - Manhã) - Aula 4
         DELETE FROM reserva
@@ -293,6 +275,24 @@ BEGIN
           AND idLaboratorio = 3;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
         VALUES (data_atual + INTERVAL 1 DAY, 'Manhã', 5, 3, 3, 'PDTCC - 3º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM QUIMICA - MTEC - FELIPE  / ALBERTO ');
+
+        -- QUARTA (Laboratório 3 - Manhã) - Aula 1
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 2 DAY
+          AND periodo = 'Manhã'
+          AND aulaReserva = 1
+          AND idLaboratorio = 3;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 2 DAY, 'Manhã', 1, 3, 3, 'BD II - 2º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESNVOLVIMENTO DE SISTEMAS - MTEC - ALINE /  ');
+
+        -- QUARTA (Laboratório 3 - Manhã) - Aula 2
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 2 DAY
+          AND periodo = 'Manhã'
+          AND aulaReserva = 2
+          AND idLaboratorio = 3;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 2 DAY, 'Manhã', 2, 3, 3, 'BD II - 2º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESNVOLVIMENTO DE SISTEMAS - MTEC - ALINE /  ');
 
         -- QUINTA (Laboratório 3 - Manhã) - Aula 1
         DELETE FROM reserva
@@ -328,7 +328,7 @@ BEGIN
           AND aulaReserva = 3
           AND idLaboratorio = 4;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 0 DAY, 'Manhã', 3, 3, 4, 'DD  - 1º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESENVOLVIMENTO DE SISTEMAS - MTEC - THAYANI/');
+        VALUES (data_atual + INTERVAL 0 DAY, 'Manhã', 3, 3, 4, 'DD  - 1º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESENVOLVIMENTO DE SISTEMAS - MTEC - THAYANI /');
 
         -- SEGUNDA (Laboratório 4 - Manhã) - Aula 5
         DELETE FROM reserva
@@ -436,7 +436,7 @@ BEGIN
           AND aulaReserva = 5
           AND idLaboratorio = 4;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 2 DAY, 'Manhã', 5, 3, 4, 'PW I - 1º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESENVOLVIMENTO DE SISTEMAS - MTEC - EVERSON /THAYANI');
+        VALUES (data_atual + INTERVAL 2 DAY, 'Manhã', 5, 3, 4, 'PW I - 1º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESENVOLVIMENTO DE SISTEMAS - MTEC - EVERSON / THAYANI');
 
         -- QUARTA (Laboratório 4 - Manhã) - Aula 6
         DELETE FROM reserva
@@ -445,7 +445,7 @@ BEGIN
           AND aulaReserva = 6
           AND idLaboratorio = 4;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 2 DAY, 'Manhã', 6, 3, 4, 'PWI - 1º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESENVOLVIMENTO DE SISTEMAS - MTEC - EVERSON /THAYANI');
+        VALUES (data_atual + INTERVAL 2 DAY, 'Manhã', 6, 3, 4, 'PWI - 1º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM DESENVOLVIMENTO DE SISTEMAS - MTEC - EVERSON / THAYANI');
 
         -- QUINTA (Laboratório 4 - Manhã) - Aula 3
         DELETE FROM reserva
@@ -517,7 +517,7 @@ BEGIN
           AND aulaReserva = 1
           AND idLaboratorio = 1;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 1, 3, 1, 'LIMPEZA - LIMPEZA');
+        VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 1, 3, 1, 'LIMPEZA - Jaine');
 
         -- SEGUNDA (Laboratório 1 - Tarde) - Aula 2
         DELETE FROM reserva
@@ -526,7 +526,7 @@ BEGIN
           AND aulaReserva = 2
           AND idLaboratorio = 1;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 2, 3, 1, 'LIMPEZA - LIMPEZA');
+        VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 2, 3, 1, 'LIMPEZA - Jaine');
 
         -- SEGUNDA (Laboratório 1 - Tarde) - Aula 3
         DELETE FROM reserva
@@ -536,15 +536,6 @@ BEGIN
           AND idLaboratorio = 1;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
         VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 3, 3, 1, 'CNWI - 2º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM INFORMÁTICA PARA INTERNET - MTEC - ELVIS / CARLOS');
-
-        -- SEGUNDA (Laboratório 1 - Tarde) - Aula 4
-        DELETE FROM reserva
-        WHERE dataReserva = data_atual + INTERVAL 0 DAY
-          AND periodo = 'Tarde'
-          AND aulaReserva = 4
-          AND idLaboratorio = 1;
-        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
-        VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 4, 3, 1, 'CNWI - 2º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM INFORMÁTICA PARA INTERNET - MTEC - ELVIS / CARLOS');
 
         -- SEGUNDA (Laboratório 1 - Tarde) - Aula 5
         DELETE FROM reserva
@@ -726,6 +717,24 @@ BEGIN
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
         VALUES (data_atual + INTERVAL 4 DAY, 'Tarde', 6, 3, 1, 'CNW II - 3º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM INFORMÁTICA PARA INTERNET - MTEC  - DANADONI');
 
+        -- SEGUNDA (Laboratório 2 - Tarde) - Aula 1
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 0 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 1
+          AND idLaboratorio = 2;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 1, 3, 2, 'LIMPEZA - Jaine');
+
+        -- SEGUNDA (Laboratório 2 - Tarde) - Aula 2
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 0 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 2
+          AND idLaboratorio = 2;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 2, 3, 2, 'LIMPEZA - Jaine');
+
         -- TERÇA (Laboratório 2 - Tarde) - Aula 1
         DELETE FROM reserva
         WHERE dataReserva = data_atual + INTERVAL 1 DAY
@@ -824,6 +833,24 @@ BEGIN
           AND idLaboratorio = 3;
         INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
         VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 2, 3, 3, 'SW II - 3º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM INFORMÁTICA PARA INTERNET - MTEC  - EVERSON / CARLOS');
+
+        -- SEGUNDA (Laboratório 3 - Tarde) - Aula 3
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 0 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 3
+          AND idLaboratorio = 3;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 3, 3, 3, 'CNWI - 2º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM INFORMÁTICA PARA INTERNET - MTEC - ELVIS / CARLOS');
+
+        -- SEGUNDA (Laboratório 3 - Tarde) - Aula 4
+        DELETE FROM reserva
+        WHERE dataReserva = data_atual + INTERVAL 0 DAY
+          AND periodo = 'Tarde'
+          AND aulaReserva = 4
+          AND idLaboratorio = 3;
+        INSERT INTO reserva (dataReserva, periodo, aulaReserva, idProfessor, idLaboratorio, motivo)
+        VALUES (data_atual + INTERVAL 0 DAY, 'Tarde', 4, 3, 3, 'CNWI - 2º ENSINO MÉDIO COM HABILITAÇÃO PROFISSIONAL TÉCNICA EM INFORMÁTICA PARA INTERNET - MTEC - ELVIS / CARLOS');
 
         -- TERÇA (Laboratório 3 - Tarde) - Aula 1
         DELETE FROM reserva

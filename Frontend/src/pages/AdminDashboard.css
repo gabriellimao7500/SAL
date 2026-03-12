@@ -84,22 +84,26 @@
     margin-top: 5%;
     background: #181818;
     font-family: 'Segoe UI', Arial, sans-serif;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .dashboard-header {
     background: #23232375;
     color: #fff;
-    margin: 40px;
+    margin: 40px auto 0;
     margin-top: 5%;
     padding: 20px 40px;
     text-align: left;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.20);
     position: sticky;
-    width: 90vw;
+    width: calc(100% - 80px);
+    max-width: 1400px;
     top: 0;
     z-index: 10;
     backdrop-filter: blur(8px);
     border-bottom: 1px solid #232323;
+    box-sizing: border-box;
 }
 
 .dashboard-header h1 {
@@ -117,9 +121,9 @@
     justify-content: center;
     align-items: flex-start;
     margin: 40px auto;
-    max-width: 90vw;
+    max-width: min(1400px, calc(100% - 32px));
     flex-wrap: wrap;
-
+    box-sizing: border-box;
 }
 
 .dashboard-card {
@@ -127,8 +131,8 @@
     border-radius: 14px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
     padding: 32px 28px;
-    min-width: 340px;
-    max-width: 40vw;
+    min-width: min(340px, 100%);
+    max-width: min(40vw, 100%);
     margin-bottom: 24px;
     display: flex;
     flex-direction: column;
@@ -136,6 +140,7 @@
     border: 1px solid #333;
     animation: fadeInUp 0.8s cubic-bezier(.77, .2, .32, 1) 0.2s both;
     transition: box-shadow 0.3s, transform 0.3s;
+    box-sizing: border-box;
 }
 
 .dashboard-card:hover {
@@ -149,7 +154,35 @@
 
 .teachers-card {
     flex: 2 1 500px;
-    max-width: 30vw;
+    max-width: min(30vw, 100%);
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        width: calc(100% - 24px);
+        margin: 24px auto 0;
+        padding: 16px 20px;
+    }
+
+    .dashboard-summary-row {
+        width: calc(100% - 24px);
+        gap: 16px;
+    }
+
+    .dashboard-content {
+        max-width: calc(100% - 24px);
+        gap: 20px;
+    }
+
+    .dashboard-card {
+        min-width: 100%;
+        max-width: 100%;
+        padding: 24px 20px;
+    }
+
+    .teachers-card {
+        max-width: 100%;
+    }
 }
 
 .dashboard-card h2 {

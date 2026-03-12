@@ -37,7 +37,7 @@ function Header() {
   }, []);
 
   return (
-    <header>
+    <header className="app-header">
       <Hamburguer />
       <section className="division">
         <div className="spacing_2"></div>

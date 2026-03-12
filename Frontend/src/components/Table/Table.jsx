@@ -348,6 +348,31 @@ function Table({
         //     console.error('Erro ao excluir reserva:', err);
         //     Swal.fire({ icon: 'error', title: 'Erro ao excluir', text: 'Não foi possível excluir a reserva. Tente novamente.' });
         // }
+        pullMarks(localStorage.getItem('periodo'), localStorage.getItem('typeLab'), localStorage.getItem('numLab'));
+    };
+
+    const handleDeleteMany = async (ids) => {
+        if (!Array.isArray(ids) || ids.length === 0) {
+            Swal.fire({ icon: 'info', title: 'Nenhum agendamento selecionado' });
+            return;
+        }
+
+        try {
+            await onDelete(ids);
+            setSelectedIds([]);
+            Swal.fire({
+                icon: 'success',
+                title: 'Agendamentos excluidos',
+                text: `${ids.length} agendamento(s) removido(s) com sucesso.`
+            });
+        } catch (err) {
+            console.error('Erro ao excluir agendamentos em lote:', err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro ao excluir',
+                text: 'Nao foi possivel excluir os agendamentos selecionados.'
+            });
+        }
     };
 
     const getClassName = (index) => {
@@ -656,7 +681,7 @@ function Table({
                                     submitReserva(1);
                                     setAdminModalOpen(false);
                                 }}
-                                onDelete={handleDelete}
+                                onDelete={() => onDelete(objDefault[0]?.id || objDefault[0]?.idReserva)}
                                 diaSemana={adminCampos.diaDaSemana}
                                 onSuccess={() => {
                                     // Recarregar as reservas após o sucesso

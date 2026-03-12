@@ -385,7 +385,7 @@ const AdminDashboard = () => {
     const handleToggleSelectMode = (value) => setAdminSelectMode(typeof value === 'boolean' ? value : !adminSelectMode);
 
     return (
-        <span style={{ display: 'block', width: '100vw', height: '100%', color: '#fff', background: '#181818' }}>
+        <span style={{ display: 'block', width: '100%', minHeight: '100vh', color: '#fff', background: '#181818', overflowX: 'hidden' }}>
             <header className="dashboard-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <h1>Dashboard Administrativa</h1>
                 <a href="/" className="btn-voltar-home">Voltar para Home</a>
