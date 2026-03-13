@@ -119,22 +119,25 @@ const AdminReservaModal = ({ open, campos, editando, onChange, onClose, onSubmit
                             boxShadow: '0 2px 8px rgba(139,92,246,0.08)'
                         }}
                     />
-                    <input
-                        type="text"
+                    <textarea
                         placeholder="Motivo"
                         value={campos.motivo}
                         onChange={e => onChange({ ...campos, motivo: e.target.value })}
+                        rows={4}
                         style={{
                             marginBottom: '14px',
                             padding: '12px',
                             width: '92%',
+                            minHeight: '110px',
                             borderRadius: '8px',
                             border: '1.5px solid #8b5cf6',
                             background: '#181818',
                             color: '#fff',
                             fontSize: '1rem',
                             outline: 'none',
-                            boxShadow: '0 2px 8px rgba(139,92,246,0.08)'
+                            boxShadow: '0 2px 8px rgba(139,92,246,0.08)',
+                            resize: 'vertical',
+                            fontFamily: 'inherit'
                         }}
                     />
                     <div style={{ display: 'flex', gap: '12px', marginBottom: '14px', justifyContent: 'center' }}>

@@ -221,6 +221,42 @@ const deleteMark = async (req, res) => {
     }
 };
 
+const deleteMarkFromTo = async (req, res) => {
+    const {
+        startDate,
+        endDate,
+        periodo,
+        aulaReserva,
+        tipoLaboratorio,
+        numeroLaboratorio,
+        diaDaSemana
+    } = req.body;
+
+    if (!startDate || !endDate || !periodo || !aulaReserva || !tipoLaboratorio || !numeroLaboratorio || !diaDaSemana) {
+        return res.status(400).json({ error: 'Dados insuficientes para excluir a serie de reservas.' });
+    }
+
+    try {
+        const affectedRows = await markModels.deleteReservasFromTo({
+            startDate,
+            endDate,
+            periodo,
+            aulaReserva,
+            tipoLaboratorio,
+            numeroLaboratorio,
+            diaDaSemana
+        });
+
+        return res.status(200).json({
+            message: 'Reservas excluidas com sucesso.',
+            affectedRows
+        });
+    } catch (err) {
+        console.error('Erro ao excluir reservas em serie:', err);
+        return res.status(500).json({ error: 'Erro ao excluir reservas em serie.' });
+    }
+};
+
 const getDataFromId = async (req, res) => {
     const { idReserva } = req.params;
     try {
@@ -285,6 +321,7 @@ module.exports = {
     createMark,
     getData,
     deleteMark,
+    deleteMarkFromTo,
     getDataFromId,
     updateReserva,
     executeRawQuery,

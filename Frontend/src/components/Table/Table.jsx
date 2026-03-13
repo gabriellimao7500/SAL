@@ -101,6 +101,7 @@ function Table({
     const date = new Date();
     const dia = date.getDate();
     const mesatu = date.getMonth();
+    const anoAtual = date.getFullYear();
     const ano = 2025;
     let mes = 1; mes--;
     let day = 6;
@@ -149,6 +150,9 @@ function Table({
     const isMonthTransition = week.includes(1) && week.some(day => [28, 29, 30, 31].includes(day));
     const isYearTransition = isMonthTransition && currentWeek % 52 === 0;
     const monthLabels = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
+    const displayedWeekDates = week.map((_, idx) => calculateDate(d, m, a, currentWeek, idx + 1));
+    const firstDisplayedDate = displayedWeekDates[0];
+    const lastDisplayedDate = displayedWeekDates[displayedWeekDates.length - 1];
 
     // --- EFFECTS ---
     useEffect(() => {
@@ -215,50 +219,28 @@ function Table({
     };
 
     const renderMonthLabel = () => {
+        const firstMonth = firstDisplayedDate.getUTCMonth();
+        const lastMonth = lastDisplayedDate.getUTCMonth();
 
-        if (currentWeek !== 0 && isMonthTransition) {
-
-            const nextMonth = (currentMes + 1) % 12;
-            return (
-                <div>
-                    {monthLabels[currentMes % 12]} - {monthLabels[nextMonth % 12]}
-                </div>
-            );
-        } else if (currentWeek === 0 && isMonthTransition) {
-            const nextMonth = (currentMes + 1) % 12;
-            return (
-                <div>
-                    {monthLabels[currentMes % 12]} - {monthLabels[nextMonth % 12]}
-                </div>
-            );
-        } else {
-
-            return (
-                <div>
-                    {monthLabels[currentMes % 12]}
-                </div>
-            );
-        }
+        return (
+            <div>
+                {firstMonth === lastMonth
+                    ? monthLabels[firstMonth]
+                    : `${monthLabels[firstMonth]} - ${monthLabels[lastMonth]}`}
+            </div>
+        );
     };
 
 
     const renderYearLabel = () => {
-        if (isYearTransition) {
+        const firstYear = firstDisplayedDate.getUTCFullYear();
+        const lastYear = lastDisplayedDate.getUTCFullYear();
 
-            return (
-                <div>
-                    {currentAno} - {currentAno + 1}
-                </div>
-            );
-        } else {
-
-
-            return (
-                <div>
-                    {currentAno}
-                </div>
-            );
-        }
+        return (
+            <div>
+                {firstYear === lastYear ? firstYear : `${firstYear} - ${lastYear}`}
+            </div>
+        );
     };
 
     var idx = []
@@ -311,21 +293,31 @@ function Table({
     }
 
     const onDelete = async (idReserva) => {
-
         const startDate = adminCampos.dataInicio;
         const endDate = adminCampos.dataFim;
+        const reservaSelecionada = objDefault[0] || {};
 
         if (!Array.isArray(idReserva)) {
-            if (idReserva.length === 0) {
+            if (!idReserva) {
                 alert('ID da reserva não disponível para exclusão.');
                 return;
             }
-            console.log("Excluindo reserva:", idReserva);
-            await axios.delete(`${config.apiUrl}/marksFromTo/${startDate}/${endDate}`).catch(err => {
-                console.error(`Erro ao excluir reserva ${idReserva}:`, err);
-                return;
+            console.log("Excluindo serie de reservas a partir da reserva:", idReserva);
+            await axios.delete(`${config.apiUrl}/marksFromTo`, {
+                data: {
+                    startDate,
+                    endDate,
+                    periodo: reservaSelecionada.periodo || localStorage.getItem('periodo'),
+                    aulaReserva: reservaSelecionada.aulaReserva || aulaAtu,
+                    tipoLaboratorio: reservaSelecionada.tipoLaboratorio || localStorage.getItem('typeLab'),
+                    numeroLaboratorio: reservaSelecionada.numeroLaboratorio || localStorage.getItem('numLab'),
+                    diaDaSemana: adminCampos.diaDaSemana
+                }
+            }).catch(err => {
+                console.error(`Erro ao excluir serie da reserva ${idReserva}:`, err);
+                throw err;
             });
-            console.log(`Reserva ${idReserva} excluída com sucesso.`);
+            console.log(`Serie da reserva ${idReserva} excluída com sucesso.`);
 
         } else {
             console.log("Várias reservas para exclusão");
@@ -715,8 +707,15 @@ function Table({
                             <thead>
                                 <tr>
                                     {week.map((day, idx) => (
-                                        <th key={idx}
-                                            className={day === dia && ((currentMes === mesatu && currentAno === ano) || (currentMes + 1 === mesatu && currentAno === ano)) && currentWeek === weeksPass ? styles.in : ""}>
+                                                <th key={idx}
+                                            className={
+                                                displayedWeekDates[idx].getUTCDate() === dia &&
+                                                    displayedWeekDates[idx].getUTCMonth() === mesatu &&
+                                                    displayedWeekDates[idx].getUTCFullYear() === anoAtual &&
+                                                    currentWeek === weeksPass
+                                                    ? styles.in
+                                                    : ""
+                                            }>
                                             {['Seg', 'Ter', 'Qua', 'Qui', 'Sex'][idx]}
                                             <br />
                                             <span className={styles.day}>{day}</span>

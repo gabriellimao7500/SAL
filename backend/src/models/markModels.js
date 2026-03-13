@@ -140,6 +140,41 @@ const deleteReservasExistentes = async (aulaReserva, periodo, dataReserva, idLab
 
 };
 
+const deleteReservasFromTo = async ({
+    startDate,
+    endDate,
+    periodo,
+    aulaReserva,
+    tipoLaboratorio,
+    numeroLaboratorio,
+    diaDaSemana
+}) => {
+    const query = `
+        DELETE reserva
+        FROM reserva
+        INNER JOIN laboratorio ON reserva.idLaboratorio = laboratorio.idLaboratorio
+        WHERE reserva.dataReserva BETWEEN ? AND ?
+          AND reserva.periodo = ?
+          AND reserva.aulaReserva = ?
+          AND laboratorio.tipoLaboratorio = ?
+          AND laboratorio.numeroLaboratorio = ?
+          AND DAYOFWEEK(reserva.dataReserva) = ?
+    `;
+
+    const values = [
+        startDate,
+        endDate,
+        periodo,
+        aulaReserva,
+        tipoLaboratorio,
+        Number(numeroLaboratorio),
+        Number(diaDaSemana) + 1
+    ];
+
+    const [result] = await connection.execute(query, values);
+    return result.affectedRows;
+};
+
 
 const getMarkOfTheHour = async (periodo, aulaReserva, idLaboratorio, dia) => {
     try {
@@ -224,6 +259,7 @@ module.exports = {
     updateReserva,
     executeRawQuery,
     deleteReservasExistentes,
+    deleteReservasFromTo,
     isProfessorAdmin,
     countReservasByProfessor,
     countReservasByProfessorSemana,

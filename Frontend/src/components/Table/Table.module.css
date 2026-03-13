@@ -137,7 +137,6 @@ td {
 }
 
 @media (max-width: 430px) {
-
     .navigation {
         position: fixed;
         flex-direction: row-reverse;
